@@ -153,4 +153,377 @@
     }
 
     .feature-icon {
-      font-size: 40
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+
+    footer {
+      background: #0b1f3a;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-box {
+      background: white;
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      border-radius: 15px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .modal-box input,
+    .modal-box select {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .close {
+      float: left;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    @media(max-width: 800px) {
+      .search-box {
+        grid-template-columns: 1fr;
+      }
+
+      .trips,
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Nerea Travel</div>
+
+  <nav>
+    <a href="#trips">الرحلات</a>
+    <a href="#services">خدماتنا</a>
+    <a href="#contact">تواصل معنا</a>
+  </nav>
+</header>
+
+<section class="hero">
+
+  <h1>احجز رحلتك بسهولة</h1>
+
+  <p>
+    اكتشف أجمل الوجهات والرحلات مع Nerea Travel
+  </p>
+
+  <div class="search-box">
+
+    <input
+      type="text"
+      id="destination"
+      placeholder="إلى أين تريد الذهاب؟"
+    >
+
+    <input type="date" id="date">
+
+    <select id="guests">
+      <option>1 فرد</option>
+      <option>2 أفراد</option>
+      <option>3 أفراد</option>
+      <option>4 أفراد</option>
+      <option>5 أفراد</option>
+      <option>6+ أفراد</option>
+    </select>
+
+    <select>
+      <option>رحلة داخلية</option>
+      <option>رحلة خارجية</option>
+    </select>
+
+    <button onclick="searchTrips()">بحث</button>
+
+  </div>
+
+</section>
+
+<section class="section" id="trips">
+
+  <h2>الرحلات المميزة</h2>
+
+  <div class="trips" id="tripList">
+
+    <div class="card" data-city="شرم الشيخ">
+      <div class="card-img">🏖️</div>
+
+      <div class="card-content">
+        <h3>شرم الشيخ</h3>
+
+        <p>رحلة 4 أيام / 3 ليالي</p>
+
+        <div class="price">من 4,500 جنيه</div>
+
+        <button onclick="openBooking('شرم الشيخ')">
+          احجز الآن
+        </button>
+      </div>
+    </div>
+
+    <div class="card" data-city="دهب">
+      <div class="card-img">🌊</div>
+
+      <div class="card-content">
+        <h3>دهب</h3>
+
+        <p>رحلة 4 أيام / 3 ليالي</p>
+
+        <div class="price">من 3,800 جنيه</div>
+
+        <button onclick="openBooking('دهب')">
+          احجز الآن
+        </button>
+      </div>
+    </div>
+
+    <div class="card" data-city="الساحل الشمالي">
+      <div class="card-img">🌴</div>
+
+      <div class="card-content">
+        <h3>الساحل الشمالي</h3>
+
+        <p>رحلة 3 أيام / ليلتين</p>
+
+        <div class="price">من 2,500 جنيه</div>
+
+        <button onclick="openBooking('الساحل الشمالي')">
+          احجز الآن
+        </button>
+      </div>
+    </div>
+
+    <div class="card" data-city="العين السخنة">
+      <div class="card-img">☀️</div>
+
+      <div class="card-content">
+        <h3>العين السخنة</h3>
+
+        <p>رحلة 3 أيام / ليلتين</p>
+
+        <div class="price">من 2,200 جنيه</div>
+
+        <button onclick="openBooking('العين السخنة')">
+          احجز الآن
+        </button>
+      </div>
+    </div>
+
+    <div class="card" data-city="الأقصر">
+      <div class="card-img">🏛️</div>
+
+      <div class="card-content">
+        <h3>الأقصر وأسوان</h3>
+
+        <p>رحلة 5 أيام / 4 ليالي</p>
+
+        <div class="price">من 5,500 جنيه</div>
+
+        <button onclick="openBooking('الأقصر وأسوان')">
+          احجز الآن
+        </button>
+      </div>
+    </div>
+
+    <div class="card" data-city="الغردقة">
+      <div class="card-img">🐠</div>
+
+      <div class="card-content">
+        <h3>الغردقة</h3>
+
+        <p>رحلة 4 أيام / 3 ليالي</p>
+
+        <div class="price">من 4,000 جنيه</div>
+
+        <button onclick="openBooking('الغردقة')">
+          احجز الآن
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section" id="services">
+
+  <h2>ليه تحجز مع Nerea Travel؟</h2>
+
+  <div class="features">
+
+    <div class="feature">
+      <div class="feature-icon">🏨</div>
+      <h3>فنادق متنوعة</h3>
+      <p>اختيارات إقامة تناسب ميزانيتك.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">🚌</div>
+      <h3>انتقالات</h3>
+      <p>تنظيم الانتقالات من وإلى الوجهة.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">📞</div>
+      <h3>دعم العملاء</h3>
+      <p>نساعدك قبل وأثناء الرحلة.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<footer id="contact">
+
+  <h3>Nerea Travel</h3>
+
+  <p>رحلتك تبدأ من هنا ✈️</p>
+
+  <p>© 2026 Nerea Travel</p>
+
+</footer>
+
+<div class="modal" id="bookingModal">
+
+  <div class="modal-box">
+
+    <span class="close" onclick="closeBooking()">×</span>
+
+    <h2>طلب حجز</h2>
+
+    <p id="selectedTrip"></p>
+
+    <input
+      type="text"
+      id="name"
+      placeholder="الاسم بالكامل"
+    >
+
+    <input
+      type="tel"
+      id="phone"
+      placeholder="رقم الهاتف"
+    >
+
+    <input
+      type="number"
+      id="people"
+      placeholder="عدد الأفراد"
+      min="1"
+    >
+
+    <input type="date" id="bookingDate">
+
+    <button onclick="confirmBooking()" style="width:100%;">
+      تأكيد طلب الحجز
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+function openBooking(trip) {
+
+  document.getElementById("bookingModal").style.display = "flex";
+
+  document.getElementById("selectedTrip").innerText =
+    "الرحلة المختارة: " + trip;
+}
+
+function closeBooking() {
+
+  document.getElementById("bookingModal").style.display = "none";
+}
+
+function confirmBooking() {
+
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let people = document.getElementById("people").value;
+  let date = document.getElementById("bookingDate").value;
+
+  if (!name || !phone || !people || !date) {
+
+    alert("من فضلك املأ جميع البيانات");
+
+    return;
+  }
+
+  alert(
+    "تم إرسال طلب الحجز بنجاح! سنتواصل معك لتأكيد الحجز."
+  );
+
+  closeBooking();
+}
+
+function searchTrips() {
+
+  let search =
+    document.getElementById("destination").value
+    .trim()
+    .toLowerCase();
+
+  let cards =
+    document.querySelectorAll(".card");
+
+  cards.forEach(function(card) {
+
+    let city =
+      card.getAttribute("data-city").toLowerCase();
+
+    if (search === "" || city.includes(search)) {
+
+      card.style.display = "block";
+
+    } else {
+
+      card.style.display = "none";
+    }
+
+  });
+
+  document.getElementById("trips").scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
+</script>
+
+</body>
+</html>
