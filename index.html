@@ -278,102 +278,7 @@
 
   <div class="trips" id="tripList">
 
-    <div class="card" data-city="شرم الشيخ">
-      <div class="card-img">🏖️</div>
-
-      <div class="card-content">
-        <h3>شرم الشيخ</h3>
-
-        <p>رحلة 4 أيام / 3 ليالي</p>
-
-        <div class="price">من 4,500 جنيه</div>
-
-        <button onclick="openBooking('شرم الشيخ')">
-          احجز الآن
-        </button>
-      </div>
-    </div>
-
-    <div class="card" data-city="دهب">
-      <div class="card-img">🌊</div>
-
-      <div class="card-content">
-        <h3>دهب</h3>
-
-        <p>رحلة 4 أيام / 3 ليالي</p>
-
-        <div class="price">من 3,800 جنيه</div>
-
-        <button onclick="openBooking('دهب')">
-          احجز الآن
-        </button>
-      </div>
-    </div>
-
-    <div class="card" data-city="الساحل الشمالي">
-      <div class="card-img">🌴</div>
-
-      <div class="card-content">
-        <h3>الساحل الشمالي</h3>
-
-        <p>رحلة 3 أيام / ليلتين</p>
-
-        <div class="price">من 2,500 جنيه</div>
-
-        <button onclick="openBooking('الساحل الشمالي')">
-          احجز الآن
-        </button>
-      </div>
-    </div>
-
-    <div class="card" data-city="العين السخنة">
-      <div class="card-img">☀️</div>
-
-      <div class="card-content">
-        <h3>العين السخنة</h3>
-
-        <p>رحلة 3 أيام / ليلتين</p>
-
-        <div class="price">من 2,200 جنيه</div>
-
-        <button onclick="openBooking('العين السخنة')">
-          احجز الآن
-        </button>
-      </div>
-    </div>
-
-    <div class="card" data-city="الأقصر">
-      <div class="card-img">🏛️</div>
-
-      <div class="card-content">
-        <h3>الأقصر وأسوان</h3>
-
-        <p>رحلة 5 أيام / 4 ليالي</p>
-
-        <div class="price">من 5,500 جنيه</div>
-
-        <button onclick="openBooking('الأقصر وأسوان')">
-          احجز الآن
-        </button>
-      </div>
-    </div>
-
-    <div class="card" data-city="الغردقة">
-      <div class="card-img">🐠</div>
-
-      <div class="card-content">
-        <h3>الغردقة</h3>
-
-        <p>رحلة 4 أيام / 3 ليالي</p>
-
-        <div class="price">من 4,000 جنيه</div>
-
-        <button onclick="openBooking('الغردقة')">
-          احجز الآن
-        </button>
-      </div>
-    </div>
-
+<div id="dynamicTrips"></div>
   </div>
 
 </section>
@@ -466,6 +371,46 @@ const supabase = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 console.log("Supabase connected:", supabase);
+  async function loadDestinations() {
+
+  const { data, error } = await supabase
+    .from("destinations")
+    .select('*')
+    .order("id");
+
+  if (error) {
+    console.error("Error loading destinations:", error);
+    return;
+  }
+
+  const container = document.getElementById("dynamicTrips");
+
+  container.innerHTML = "";
+
+  data.forEach(function(destination) {
+
+    container.innerHTML += `
+      <div class="card" data-city="${destination.Name}">
+        
+        <div class="card-img">🏖️</div>
+
+        <div class="card-content">
+          <h3>${destination.Name}</h3>
+
+          <p>${destination.Description}</p>
+
+          <button onclick="openBooking('${destination.Name}')">
+            احجز الآن
+          </button>
+        </div>
+
+      </div>
+    `;
+
+  });
+}
+
+loadDestinations();
 function openBooking(trip) {
 
   document.getElementById("bookingModal").style.display = "flex";
