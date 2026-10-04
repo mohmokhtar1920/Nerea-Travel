@@ -1,483 +1,231 @@
+mkdir -p /mnt/user-data/outputs && cat > /mnt/user-data/outputs/index.html <<'EOF'
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Nerea Travel | احجز رحلتك</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #f5f7fa;
-      color: #172033;
-    }
-
-    header {
-      background: #0b1f3a;
-      color: white;
-      padding: 18px 7%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 26px;
-      font-weight: bold;
-      color: #d9b45b;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-right: 20px;
-    }
-
-    .hero {
-      min-height: 470px;
-      padding: 80px 7%;
-      background: linear-gradient(135deg, #0b1f3a, #176b87);
-      color: white;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: 42px;
-      margin-bottom: 15px;
-    }
-
-    .hero p {
-      font-size: 19px;
-      margin-bottom: 35px;
-    }
-
-    .search-box {
-      max-width: 1000px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr auto;
-      gap: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.2);
-    }
-
-    .search-box input,
-    .search-box select {
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      width: 100%;
-    }
-
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 14px 20px;
-      background: #d9b45b;
-      color: #0b1f3a;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .section {
-      padding: 55px 7%;
-    }
-
-    .section h2 {
-      text-align: center;
-      margin-bottom: 35px;
-      font-size: 30px;
-    }
-
-    .trips {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 5px 20px rgba(0,0,0,.08);
-    }
-
-    .card-img {
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 65px;
-      background: linear-gradient(135deg, #65c7f7, #0052d4);
-    }
-
-    .card-content {
-      padding: 20px;
-    }
-
-    .card-content h3 {
-      margin-bottom: 10px;
-    }
-
-    .price {
-      color: #176b87;
-      font-size: 22px;
-      font-weight: bold;
-      margin: 15px 0;
-    }
-
-    .card button {
-      width: 100%;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      text-align: center;
-    }
-
-    .feature {
-      background: white;
-      padding: 30px 20px;
-      border-radius: 15px;
-    }
-
-    .feature-icon {
-      font-size: 40px;
-      margin-bottom: 15px;
-    }
-
-    footer {
-      background: #0b1f3a;
-      color: white;
-      text-align: center;
-      padding: 30px;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.65);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal-box {
-      background: white;
-      width: 90%;
-      max-width: 500px;
-      padding: 30px;
-      border-radius: 15px;
-    }
-
-    .modal-box h2 {
-      margin-bottom: 20px;
-    }
-
-    .modal-box input,
-    .modal-box select {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-
-    .close {
-      float: left;
-      font-size: 25px;
-      cursor: pointer;
-    }
-
-    @media(max-width: 800px) {
-      .search-box {
-        grid-template-columns: 1fr;
-      }
-
-      .trips,
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .hero h1 {
-        font-size: 32px;
-      }
-
-      nav {
-        display: none;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nerea Travel | احجز رحلتك</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f5f7fa;color:#172033}
+header{background:#0b1f3a;color:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:26px;font-weight:bold;color:#d9b45b}
+nav a{color:#fff;text-decoration:none;margin-right:20px}
+.hero{min-height:420px;padding:70px 7%;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;text-align:center}
+.hero h1{font-size:42px;margin-bottom:15px}
+.hero p{font-size:19px;margin-bottom:35px}
+.search-box{max-width:900px;margin:auto;background:#fff;padding:20px;border-radius:15px;display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+input,select{padding:13px;border:1px solid #ddd;border-radius:8px;width:100%}
+button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer}
+.section{padding:55px 7%}
+.section h2{text-align:center;margin-bottom:35px;font-size:30px}
+.trips{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
+.card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08)}
+.card-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:65px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover}
+.card-content{padding:20px}
+.card-content h3{margin-bottom:10px}
+.card-content p{margin-bottom:12px;color:#555}
+.price{color:#176b87;font-size:20px;font-weight:bold;margin:12px 0}
+.card button{width:100%}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center}
+.feature{background:#fff;padding:30px 20px;border-radius:15px}
+.feature-icon{font-size:40px;margin-bottom:15px}
+footer{background:#0b1f3a;color:#fff;text-align:center;padding:30px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);justify-content:center;align-items:center;z-index:1000;overflow:auto}
+.modal-box{background:#fff;width:92%;max-width:520px;max-height:92vh;overflow:auto;padding:25px;border-radius:15px}
+.modal-box input,.modal-box select{margin-bottom:10px}
+.close{float:left;font-size:28px;cursor:pointer}
+.himg{height:160px;border-radius:10px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:60px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover}
+.info{background:#f0f6fa;padding:10px;border-radius:8px;margin-bottom:10px;font-size:14px}
+label{display:block;font-size:13px;margin:4px 0;color:#555}
+.total{font-size:20px;font-weight:bold;color:#176b87;margin:10px 0}
+.note{text-align:center;color:#777;grid-column:1/-1}
+@media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}}
+</style>
 </head>
-
 <body>
-
-<header>
-  <div class="logo">Nerea Travel</div>
-
-  <nav>
-    <a href="#trips">الرحلات</a>
-    <a href="#services">خدماتنا</a>
-    <a href="#contact">تواصل معنا</a>
-  </nav>
-</header>
+<header><div class="logo">Nerea Travel</div>
+<nav><a href="#trips">الرحلات</a><a href="#services">خدماتنا</a><a href="#contact">تواصل معنا</a></nav></header>
 
 <section class="hero">
-
-  <h1>احجز رحلتك بسهولة</h1>
-
-  <p>
-    اكتشف أجمل الوجهات والرحلات مع Nerea Travel
-  </p>
-
-  <div class="search-box">
-
-    <input
-      type="text"
-      id="destination"
-      placeholder="إلى أين تريد الذهاب؟"
-    >
-
-    <input type="date" id="date">
-
-    <select id="guests">
-      <option>1 فرد</option>
-      <option>2 أفراد</option>
-      <option>3 أفراد</option>
-      <option>4 أفراد</option>
-      <option>5 أفراد</option>
-      <option>6+ أفراد</option>
-    </select>
-
-    <select>
-      <option>رحلة داخلية</option>
-      <option>رحلة خارجية</option>
-    </select>
-
-    <button onclick="searchTrips()">بحث</button>
-
-  </div>
-
+<h1>احجز رحلتك بسهولة</h1>
+<p>اكتشف أجمل الوجهات والرحلات مع Nerea Travel</p>
+<div class="search-box">
+<select id="destination"><option value="">إلى أين تريد الذهاب؟</option></select>
+<input type="date" id="date">
+<select id="guests"><option value="1">1 فرد</option><option value="2">2 أفراد</option><option value="3">3 أفراد</option><option value="4">4 أفراد</option><option value="5">5 أفراد</option><option value="6">6 أفراد</option></select>
+<button onclick="searchTrips()">بحث</button>
+</div>
 </section>
 
 <section class="section" id="trips">
+<h2>الوجهات المميزة</h2>
+<div class="trips" id="dynamicTrips"></div>
+</section>
 
-  <h2>الرحلات المميزة</h2>
-
-  <div class="trips" id="tripList">
-
-<div id="dynamicTrips"></div>
-  </div>
-
+<section class="section" id="hotels" style="display:none">
+<h2 id="hotelsTitle">الفنادق المتاحة</h2>
+<div class="trips" id="hotelList"></div>
 </section>
 
 <section class="section" id="services">
-
-  <h2>ليه تحجز مع Nerea Travel؟</h2>
-
-  <div class="features">
-
-    <div class="feature">
-      <div class="feature-icon">🏨</div>
-      <h3>فنادق متنوعة</h3>
-      <p>اختيارات إقامة تناسب ميزانيتك.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">🚌</div>
-      <h3>انتقالات</h3>
-      <p>تنظيم الانتقالات من وإلى الوجهة.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">📞</div>
-      <h3>دعم العملاء</h3>
-      <p>نساعدك قبل وأثناء الرحلة.</p>
-    </div>
-
-  </div>
-
+<h2>ليه تحجز مع Nerea Travel؟</h2>
+<div class="features">
+<div class="feature"><div class="feature-icon">🏨</div><h3>فنادق متنوعة</h3><p>اختيارات إقامة تناسب ميزانيتك.</p></div>
+<div class="feature"><div class="feature-icon">🚌</div><h3>انتقالات</h3><p>تنظيم الانتقالات من وإلى الوجهة.</p></div>
+<div class="feature"><div class="feature-icon">📞</div><h3>دعم العملاء</h3><p>نساعدك قبل وأثناء الرحلة.</p></div>
+</div>
 </section>
 
-<footer id="contact">
+<footer id="contact"><h3>Nerea Travel</h3><p>رحلتك تبدأ من هنا ✈️</p><p>© 2026 Nerea Travel</p></footer>
 
-  <h3>Nerea Travel</h3>
+<div class="modal" id="hotelModal"><div class="modal-box">
+<span class="close" onclick="closeModal()">×</span>
+<div class="himg" id="mImg">🏨</div>
+<h2 id="mName"></h2>
+<p id="mDesc" style="margin:8px 0;color:#555"></p>
+<div class="info" id="mInfo"></div>
 
-  <p>رحلتك تبدأ من هنا ✈️</p>
-
-  <p>© 2026 Nerea Travel</p>
-
-</footer>
-
-<div class="modal" id="bookingModal">
-
-  <div class="modal-box">
-
-    <span class="close" onclick="closeBooking()">×</span>
-
-    <h2>طلب حجز</h2>
-
-    <p id="selectedTrip"></p>
-
-    <input
-      type="text"
-      id="name"
-      placeholder="الاسم بالكامل"
-    >
-
-    <input
-      type="tel"
-      id="phone"
-      placeholder="رقم الهاتف"
-    >
-
-    <input
-      type="number"
-      id="people"
-      placeholder="عدد الأفراد"
-      min="1"
-    >
-
-    <input type="date" id="bookingDate">
-
-    <button onclick="confirmBooking()" style="width:100%;">
-      تأكيد طلب الحجز
-    </button>
-
-  </div>
-
+<div id="serBox" style="display:none">
+<label>نقطة التحرك</label><select id="dep" onchange="calc()"></select>
+<label>عدد كراسي الباص</label><input type="number" id="seats" min="1" oninput="calc()">
 </div>
+<div id="nonBox" style="display:none">
+<label>Check-in</label><input type="date" id="cin" onchange="calc()">
+<label>Check-out</label><input type="date" id="cout" onchange="calc()">
+</div>
+
+<label>عدد الأفراد</label><input type="number" id="people" min="1" oninput="calc()">
+<label>عدد الغرف</label><input type="number" id="rooms" min="1" value="1" oninput="calc()">
+<label>نوع الغرفة</label><select id="roomType"><option>Double</option><option>Triple</option></select>
+
+<div class="total" id="total"></div>
+
+<label>الاسم بالكامل</label><input type="text" id="name">
+<label>رقم الموبايل</label><input type="tel" id="phone">
+<label><input type="checkbox" id="callMe" style="width:auto"> أريد مكالمة من خدمة العملاء</label>
+<select id="callTime"><option>في أي وقت</option><option>صباحًا</option><option>ظهرًا</option><option>مساءً</option></select>
+<button style="width:100%" onclick="sendBooking()">إرسال طلب الحجز</button>
+</div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-
 const SUPABASE_URL = "https://saqgyyedcemfszzqbgtu.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-console.log("Supabase connected:", db);
-  async function loadDestinations() {
+let dests = [], deps = [], list = [], tripsOn = [], sel = null;
+const $ = id => document.getElementById(id);
 
-  const { data, error } = await db
-    .from("destinations")
-    .select('*')
-    .order("id");
+async function init() {
+  const d = await db.from("destinations").select("*").order("id");
+  if (d.error) { console.error(d.error); return; }
+  dests = d.data || [];
+  $("destination").innerHTML = '<option value="">إلى أين تريد الذهاب؟</option>' +
+    dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
+  $("dynamicTrips").innerHTML = dests.map(x => `
+    <div class="card">
+      <div class="card-img" style="${x.Image_url ? `background-image:url('${x.Image_url}')` : ''}">${x.Image_url ? '' : '🏖️'}</div>
+      <div class="card-content"><h3>${x.Name}</h3><p>${x.Description || ''}</p>
+      <button onclick="pickDest(${x.id})">اختر الفندق</button></div>
+    </div>`).join("");
+  const p = await db.from("departure_points").select("*").order("id");
+  deps = p.data || [];
+  $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
+}
 
-  if (error) {
-    console.error("Error loading destinations:", error);
-    return;
+function pickDest(id) {
+  $("destination").value = id;
+  if (!$("date").value) { alert("اختر تاريخ السفر أولاً ثم اضغط بحث"); window.scrollTo({top: 0, behavior: "smooth"}); return; }
+  searchTrips();
+}
+
+async function searchTrips() {
+  const destId = $("destination").value, date = $("date").value;
+  if (!destId || !date) { alert("اختر الوجهة والتاريخ"); return; }
+  const t = await db.from("Series_Trips").select("*").eq("start_date", date);
+  const h = await db.from("Hotels").select("*").eq("Destination_id", destId);
+  if (t.error || h.error) { console.error(t.error, h.error); alert("حدث خطأ في التحميل"); return; }
+  tripsOn = t.data || [];
+  const hotels = h.data || [];
+  let isSeries = hotels.some(x => x.is_series && tripsOn.some(y => y.hotel_id == x.id));
+  list = isSeries
+    ? hotels.filter(x => x.is_series && tripsOn.some(y => y.hotel_id == x.id)).map(x => ({h: x, t: tripsOn.find(y => y.hotel_id == x.id)}))
+    : hotels.filter(x => !x.is_series).map(x => ({h: x, t: null}));
+  const dn = dests.find(x => x.id == destId).Name;
+  $("hotelsTitle").innerText = (isSeries ? "رحلات سيريال في " : "فنادق في ") + dn;
+  $("hotelList").innerHTML = list.length ? list.map((o, i) => `
+    <div class="card">
+      <div class="card-img" style="${o.h.image_url ? `background-image:url('${o.h.image_url}')` : ''}">${o.h.image_url ? '' : '🏨'}</div>
+      <div class="card-content"><h3>${o.h.Name}</h3><p>${o.h.description || ''}</p>
+      ${o.t ? `<p>📅 ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p>` : ''}
+      <div class="price">${o.t ? o.t.price_per_person + ' جنيه / للفرد' : (o.h.price_per_night || '-') + ' جنيه / الليلة'}</div>
+      <button onclick="showHotel(${i})">عرض التفاصيل</button></div>
+    </div>`).join("") : '<p class="note">لا توجد فنادق متاحة لهذا التاريخ</p>';
+  $("hotels").style.display = "block";
+  $("hotels").scrollIntoView({behavior: "smooth"});
+}
+
+function showHotel(i) {
+  sel = list[i];
+  const h = sel.h, t = sel.t, g = $("guests").value;
+  $("mName").innerText = h.Name;
+  $("mDesc").innerText = h.description || "";
+  $("mImg").style.backgroundImage = h.image_url ? `url('${h.image_url}')` : "";
+  $("mImg").innerText = h.image_url ? "" : "🏨";
+  $("people").value = g; $("seats").value = g; $("rooms").value = Math.ceil(g / 2);
+  $("serBox").style.display = t ? "block" : "none";
+  $("nonBox").style.display = t ? "none" : "block";
+  $("mInfo").innerText = t ? `رحلة سيريال: ${t.start_date} ← ${t.end_date} (${t.nights} ليالي)، السعر شامل الانتقال من القاهرة` : "اختر تاريخ الدخول والخروج";
+  if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
+  calc();
+  $("hotelModal").style.display = "flex";
+}
+function closeModal() { $("hotelModal").style.display = "none"; }
+
+let total = 0;
+function calc() {
+  if (!sel) return;
+  const people = +$("people").value || 0, rooms = +$("rooms").value || 0;
+  if (sel.t) {
+    const d = deps.find(x => x.id == $("dep").value);
+    total = sel.t.price_per_person * people + (d ? d.extra_price * (+$("seats").value || 0) : 0);
+  } else {
+    const n = Math.round((new Date($("cout").value) - new Date($("cin").value)) / 86400000);
+    total = n > 0 ? (sel.h.price_per_night || 0) * rooms * n : 0;
   }
-
-  const container = document.getElementById("dynamicTrips");
-
-  container.innerHTML = "";
-
-  data.forEach(function(destination) {
-
-    container.innerHTML += `
-      <div class="card" data-city="${destination.Name}">
-        
-        <div class="card-img">🏖️</div>
-
-        <div class="card-content">
-          <h3>${destination.Name}</h3>
-
-          <p>${destination.Description}</p>
-
-          <button onclick="openBooking('${destination.Name}')">
-            احجز الآن
-          </button>
-        </div>
-
-      </div>
-    `;
-
-  });
+  $("total").innerText = total > 0 ? "الإجمالي: " + total + " جنيه" : "الإجمالي: اختر التواريخ";
 }
 
-loadDestinations();
-function openBooking(trip) {
-
-  document.getElementById("bookingModal").style.display = "flex";
-
-  document.getElementById("selectedTrip").innerText =
-    "الرحلة المختارة: " + trip;
+async function sendBooking() {
+  const name = $("name").value.trim(), phone = $("phone").value.trim();
+  if (!name || !phone) { alert("من فضلك اكتب الاسم ورقم الموبايل"); return; }
+  if (!sel.t && !(total > 0)) { alert("اختر تاريخ الدخول والخروج"); return; }
+  const t = sel.t;
+  const row = {
+    customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
+    Series_Trips_id: t ? t.id : null,
+    check_in: t ? t.start_date : $("cin").value,
+    check_out: t ? t.end_date : $("cout").value,
+    number_of_people: +$("people").value, number_of_rooms: +$("rooms").value,
+    departure_points_id: t ? +$("dep").value : null,
+    bus_seats: t ? +$("seats").value : null,
+    total_price: total, status: "Pending Confirmation",
+    customer_service_call: $("callMe").checked,
+    preferred_call_time: $("callMe").checked ? $("callTime").value : null
+  };
+  const r = await db.from("bookings").insert(row);
+  if (r.error) { console.error(r.error); alert("تعذر إرسال الطلب، حاول مرة أخرى"); return; }
+  alert("تم إرسال طلب الحجز! سيتواصل معك فريق المبيعات للتأكيد.");
+  closeModal();
 }
 
-function closeBooking() {
-
-  document.getElementById("bookingModal").style.display = "none";
-}
-
-function confirmBooking() {
-
-  let name = document.getElementById("name").value;
-  let phone = document.getElementById("phone").value;
-  let people = document.getElementById("people").value;
-  let date = document.getElementById("bookingDate").value;
-
-  if (!name || !phone || !people || !date) {
-
-    alert("من فضلك املأ جميع البيانات");
-
-    return;
-  }
-
-  alert(
-    "تم إرسال طلب الحجز بنجاح! سنتواصل معك لتأكيد الحجز."
-  );
-
-  closeBooking();
-}
-
-function searchTrips() {
-
-  let search =
-    document.getElementById("destination").value
-    .trim()
-    .toLowerCase();
-
-  let cards =
-    document.querySelectorAll(".card");
-
-  cards.forEach(function(card) {
-
-    let city =
-      card.getAttribute("data-city").toLowerCase();
-
-    if (search === "" || city.includes(search)) {
-
-      card.style.display = "block";
-
-    } else {
-
-      card.style.display = "none";
-    }
-
-  });
-
-  document.getElementById("trips").scrollIntoView({
-    behavior: "smooth"
-  });
-
-}
-
+init();
 </script>
-
 </body>
 </html>
+EOF
+wc -c /mnt/user-data/outputs/index.html
+Output
+
+12523 /mnt/user-data/outputs/index.html
