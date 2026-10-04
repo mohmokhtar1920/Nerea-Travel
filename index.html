@@ -366,14 +366,14 @@
 const SUPABASE_URL = "https://saqgyyedcemfszzqbgtu.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
 
-const supabase = window.supabase.createClient(
+const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
-console.log("Supabase connected:", supabase);
+console.log("Supabase connected:", db);
   async function loadDestinations() {
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("destinations")
     .select('*')
     .order("id");
