@@ -123,12 +123,23 @@ async function init() {
   dests = d.data || [];
   $("destination").innerHTML = '<option value="">إلى أين تريد الذهاب؟</option>' +
     dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
-  $("dynamicTrips").innerHTML = dests.map(x => `
-    <div class="card">
-      <div class="card-img" style="${x.Image_url ? `background-image:url('${x.Image_url}')` : ''}">${x.Image_url ? '' : '🏖️'}</div>
-      <div class="card-content"><h3>${x.Name}</h3><p>${x.Description || ''}</p>
-      <button onclick="pickDest(${x.id})">اختر الفندق</button></div>
-    </div>`).join("");
+ $("dynamicTrips").innerHTML = dests.map(x => `
+  <div class="card">
+    <div class="card-img" style="${
+      x["Image_-url"]
+        ? `background-image:url('${x["Image_-url"]}')`
+        : ''
+    }">
+      ${x["Image_-url"] ? '' : '🏖️'}
+    </div>
+
+    <div class="card-content">
+      <h3>${x.Name}</h3>
+      <p>${x.Description || ''}</p>
+      <button onclick="pickDest(${x.id})">اختر الفندق</button>
+    </div>
+  </div>
+`).join("");
   const p = await db.from("departure_points").select("*").order("id");
   deps = p.data || [];
   $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
