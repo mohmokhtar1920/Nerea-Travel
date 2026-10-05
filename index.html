@@ -87,7 +87,10 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <div class="info" id="mInfo"></div>
 
 <div id="serBox" style="display:none">
-  <label>كراسي إضافية للأطفال</label>
+<label>نقطة التحرك</label><select id="dep" onchange="calc()"></select>
+<label>عدد كراسي الباص</label><input type="number" id="seats" min="1" oninput="calc()">
+</div>
+    <label>كراسي إضافية للأطفال</label>
 <input
   type="number"
   id="extraChildSeats"
@@ -95,9 +98,6 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
   value="0"
   oninput="calc()"
 >
-<label>نقطة التحرك</label><select id="dep" onchange="calc()"></select>
-<label>عدد كراسي الباص</label><input type="number" id="seats" min="1" oninput="calc()">
-</div>
 <div id="nonBox" style="display:none">
 <label>Check-in</label><input type="date" id="cin" onchange="calc()">
 <label>Check-out</label><input type="date" id="cout" onchange="calc()">
