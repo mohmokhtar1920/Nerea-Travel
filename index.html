@@ -97,8 +97,11 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 
 <label>عدد الأفراد</label><input type="number" id="people" min="1" oninput="calc()">
 <label>عدد الغرف</label><input type="number" id="rooms" min="1" value="1" oninput="calc()">
-<label>نوع الغرفة</label><select id="roomType"><option>Double</option><option>Triple</option></select>
-
+<label>نوع الغرفة</label><select id="roomType" onchange="calc()">
+  <option value="Double">Double - دبل</option>
+  <option value="Triple">Triple - تربل</option>
+  <option value="Single">Single - سنجل</option>
+</select>
 <div class="total" id="total"></div>
 
 <label>الاسم بالكامل</label><input type="text" id="name">
@@ -197,15 +200,54 @@ function closeModal() { $("hotelModal").style.display = "none"; }
 let total = 0;
 function calc() {
   if (!sel) return;
-  const people = +$("people").value || 0, rooms = +$("rooms").value || 0;
+
+  const people = +$("people").value || 0;
+  const rooms = +$("rooms").value || 0;
+  const roomType = $("roomType").value;
+
   if (sel.t) {
+    // السيريال
+    let roomPrice = Number(sel.t.price_per_person || 0);
+
+    // الـ Single له سعر مختلف
+    if (roomType === "Single") {
+      roomPrice = Number(sel.t.price_single || 0);
+    }
+
+    // Double و Triple نفس سعر الفرد
+    const basePrice = roomPrice * people;
+
+    // تكلفة المقاعد الإضافية / نقطة التحرك
     const d = deps.find(x => x.id == $("dep").value);
-    total = sel.t.price_per_person * people + (d ? d.extra_price * (+$("seats").value || 0) : 0);
+    const seats = +$("seats").value || 0;
+
+    const transportExtra = d
+      ? Number(d.extra_price || 0) * seats
+      : 0;
+
+    total = basePrice + transportExtra;
+
   } else {
-    const n = Math.round((new Date($("cout").value) - new Date($("cin").value)) / 86400000);
-    total = n > 0 ? (sel.h.price_per_night || 0) * rooms * n : 0;
+    // الأوت سيريال
+   // الأوت سيريال - السعر بالليلة
+const cin = $("cin").value;
+const cout = $("cout").value;
+
+const n = Math.round(
+  (new Date(cout) - new Date(cin)) / 86400000
+);
+
+const pricePerNight = Number(sel.h.price_per_night || 0);
+
+total = n > 0
+  ? pricePerNight * rooms * n
+  : 0;
   }
-  $("total").innerText = total > 0 ? "الإجمالي: " + total + " جنيه" : "الإجمالي: اختر التواريخ";
+
+  $("total").innerText =
+    total > 0
+      ? "الإجمالي: " + total.toLocaleString() + " جنيه"
+      : "الإجمالي: اختر البيانات المطلوبة";
 }
 
 async function sendBooking() {
