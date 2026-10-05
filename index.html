@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -14,7 +13,7 @@ nav a{color:#fff;text-decoration:none;margin-right:20px}
 .hero{min-height:420px;padding:70px 7%;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;text-align:center}
 .hero h1{font-size:42px;margin-bottom:15px}
 .hero p{font-size:19px;margin-bottom:35px}
-.search-box{max-width:900px;margin:auto;background:#fff;padding:20px;border-radius:15px;display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.search-box{max-width:980px;margin:auto;background:#fff;padding:20px;border-radius:15px;display:grid;grid-template-columns:1.4fr 1fr .7fr .7fr auto;gap:10px;align-items:end;text-align:right;box-shadow:0 10px 30px rgba(0,0,0,.2)}
 input,select{padding:13px;border:1px solid #ddd;border-radius:8px;width:100%}
 button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer}
 .section{padding:55px 7%}
@@ -38,6 +37,8 @@ footer{background:#0b1f3a;color:#fff;text-align:center;padding:30px}
 .himg{height:160px;border-radius:10px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:60px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover}
 .info{background:#f0f6fa;padding:10px;border-radius:8px;margin-bottom:10px;font-size:14px}
 label{display:block;font-size:13px;margin:4px 0;color:#555}
+.chk{display:flex;align-items:center;gap:8px;margin:8px 0}
+.chk input{width:auto;margin:0}
 .total{font-size:20px;font-weight:bold;color:#176b87;margin:10px 0}
 .note{text-align:center;color:#777;grid-column:1/-1}
 @media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}}
@@ -51,22 +52,16 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <h1>احجز رحلتك بسهولة</h1>
 <p>اكتشف أجمل الوجهات والرحلات مع Nerea Travel</p>
 <div class="search-box">
-<select id="destination"><option value="">إلى أين تريد الذهاب؟</option></select>
-<input type="date" id="date">
-<select id="guests"><option value="1">1 فرد</option><option value="2">2 أفراد</option><option value="3">3 أفراد</option><option value="4">4 أفراد</option><option value="5">5 أفراد</option><option value="6">6 أفراد</option></select>
+<div><label style="color:#555">الوجهة</label><select id="destination"><option value="">إلى أين تريد الذهاب؟</option></select></div>
+<div><label style="color:#555">التاريخ</label><input type="date" id="date"></div>
+<div><label style="color:#555">كبار</label><select id="sAdults"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+<div><label style="color:#555">أطفال</label><select id="sChildren"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
 <button onclick="searchTrips()">بحث</button>
 </div>
 </section>
 
-<section class="section" id="trips">
-<h2>الوجهات المميزة</h2>
-<div class="trips" id="dynamicTrips"></div>
-</section>
-
-<section class="section" id="hotels" style="display:none">
-<h2 id="hotelsTitle">الفنادق المتاحة</h2>
-<div class="trips" id="hotelList"></div>
-</section>
+<section class="section" id="trips"><h2>الوجهات المميزة</h2><div class="trips" id="dynamicTrips"></div></section>
+<section class="section" id="hotels" style="display:none"><h2 id="hotelsTitle">الفنادق المتاحة</h2><div class="trips" id="hotelList"></div></section>
 
 <section class="section" id="services">
 <h2>ليه تحجز مع Nerea Travel؟</h2>
@@ -86,41 +81,29 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <p id="mDesc" style="margin:8px 0;color:#555"></p>
 <div class="info" id="mInfo"></div>
 
-<div id="serBox" style="display:none">
-<label>نقطة التحرك</label><select id="dep" onchange="calc()"></select>
-<label>عدد كراسي الباص</label><input type="number" id="seats" min="1" oninput="calc()">
-</div>
-    <label>كراسي إضافية للأطفال</label>
-<input
-  type="number"
-  id="extraChildSeats"
-  min="0"
-  value="0"
-  oninput="calc()"
->
 <div id="nonBox" style="display:none">
 <label>Check-in</label><input type="date" id="cin" onchange="calc()">
 <label>Check-out</label><input type="date" id="cout" onchange="calc()">
 </div>
 
-<label>عدد البالغين</label>
-<input type="number" id="adults" min="1" value="1" oninput="updatePeople();calc()">
+<label>عدد البالغين</label><input type="number" id="adults" min="1" value="1" oninput="calc()">
+<label>عدد الأطفال <span id="childAge"></span></label><input type="number" id="children" min="0" value="0" oninput="calc()">
+<label>عدد الغرف (الطفل لا يحتاج غرفة)</label><input type="number" id="rooms" min="1" value="1" oninput="calc()">
+<label>نوع الغرفة</label>
+<select id="roomType" onchange="calc()"><option value="Double">Double - دبل</option><option value="Triple">Triple - تريبل</option><option value="Single">Single - سنجل</option></select>
 
-<label>عدد الأطفال</label>
-<input type="number" id="children" min="0" value="0" oninput="updatePeople();calc()">
+<div class="chk" id="transRow"><input type="checkbox" id="transChk" onchange="toggleTrans()"><label style="margin:0">محتاج انتقالات؟</label></div>
+<div id="transBox">
+<label>نقطة التحرك</label><select id="dep" onchange="calc()"></select>
+<label>كراسي باص إضافية (بسعرها)</label><input type="number" id="extraSeats" min="0" value="0" oninput="calc()">
+<div class="info" id="seatInfo"></div>
+</div>
 
-<input type="hidden" id="people">
-<label>عدد الغرف</label><input type="number" id="rooms" min="1" value="1" oninput="calc()">
-<label>نوع الغرفة</label><select id="roomType" onchange="calc()">
-  <option value="Double">Double - دبل</option>
-  <option value="Triple">Triple - تربل</option>
-  <option value="Single">Single - سنجل</option>
-</select>
 <div class="total" id="total"></div>
 
 <label>الاسم بالكامل</label><input type="text" id="name">
 <label>رقم الموبايل</label><input type="tel" id="phone">
-<label><input type="checkbox" id="callMe" style="width:auto"> أريد مكالمة من خدمة العملاء</label>
+<div class="chk"><input type="checkbox" id="callMe"><label style="margin:0">أريد مكالمة من خدمة العملاء</label></div>
 <select id="callTime"><option>في أي وقت</option><option>صباحًا</option><option>ظهرًا</option><option>مساءً</option></select>
 <button style="width:100%" onclick="sendBooking()">إرسال طلب الحجز</button>
 </div></div>
@@ -131,8 +114,10 @@ const SUPABASE_URL = "https://saqgyyedcemfszzqbgtu.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let dests = [], deps = [], list = [], tripsOn = [], sel = null;
+let dests = [], deps = [], list = [], sel = null, total = 0;
 const $ = id => document.getElementById(id);
+const N = v => Number(v) || 0;
+const img = x => x.Image_url || x["Image_-url"] || x.image_url || "";
 
 async function init() {
   const d = await db.from("destinations").select("*").order("id");
@@ -140,23 +125,12 @@ async function init() {
   dests = d.data || [];
   $("destination").innerHTML = '<option value="">إلى أين تريد الذهاب؟</option>' +
     dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
- $("dynamicTrips").innerHTML = dests.map(x => `
-  <div class="card">
-    <div class="card-img" style="${
-      x["Image_-url"]
-        ? `background-image:url('${x["Image_-url"]}')`
-        : ''
-    }">
-      ${x["Image_-url"] ? '' : '🏖️'}
-    </div>
-
-    <div class="card-content">
-      <h3>${x.Name}</h3>
-      <p>${x.Description || ''}</p>
-      <button onclick="pickDest(${x.id})">اختر الفندق</button>
-    </div>
-  </div>
-`).join("");
+  $("dynamicTrips").innerHTML = dests.map(x => `
+    <div class="card">
+      <div class="card-img" style="${img(x) ? `background-image:url('${img(x)}')` : ''}">${img(x) ? '' : '🏖️'}</div>
+      <div class="card-content"><h3>${x.Name}</h3><p>${x.Description || ''}</p>
+      <button onclick="pickDest(${x.id})">اختر الفندق</button></div>
+    </div>`).join("");
   const p = await db.from("departure_points").select("*").order("id");
   deps = p.data || [];
   $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
@@ -174,143 +148,109 @@ async function searchTrips() {
   const t = await db.from("Series_Trips").select("*").eq("start_date", date);
   const h = await db.from("Hotels").select("*").eq("Destination_id", destId);
   if (t.error || h.error) { console.error(t.error, h.error); alert("حدث خطأ في التحميل"); return; }
-  tripsOn = t.data || [];
-  const hotels = h.data || [];
-  const seriesHotels = hotels
-  .filter(x => x.is_series && tripsOn.some(y => y.hotel_id == x.id))
-  .map(x => ({
-    h: x,
-    t: tripsOn.find(y => y.hotel_id == x.id)
-  }));
-
-const nonSeriesHotels = hotels
-  .filter(x => !x.is_series)
-  .map(x => ({
-    h: x,
-    t: null
-  }));
-
-list = [...seriesHotels, ...nonSeriesHotels];
-  const dn = dests.find(x => x.id == destId).Name;
- $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + dn;
-  $("hotelList").innerHTML = list.length ? list.map((o, i) => `
-    <div class="card">
-      <div class="card-img" style="${o.h.image_url ? `background-image:url('${o.h.image_url}')` : ''}">${o.h.image_url ? '' : '🏨'}</div>
+  const trips = t.data || [], hotels = h.data || [];
+  const ser = hotels.filter(x => x.is_series && trips.some(y => y.hotel_id == x.id)).map(x => ({h: x, t: trips.find(y => y.hotel_id == x.id)}));
+  const non = hotels.filter(x => !x.is_series).map(x => ({h: x, t: null}));
+  list = [...ser, ...non];
+  $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + dests.find(x => x.id == destId).Name;
+  $("hotelList").innerHTML = list.length ? list.map((o, i) => {
+    const np = N(o.h.price_double) || N(o.h.price_per_night);
+    return `<div class="card">
+      <div class="card-img" style="${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}">${img(o.h) ? '' : '🏨'}</div>
       <div class="card-content"><h3>${o.h.Name}</h3><p>${o.h.description || ''}</p>
-      ${o.t ? `<p>📅 ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p>` : ''}
-    <div class="price">
-  ${o.t
-    ? o.t.price_per_person + ' جنيه / للفرد'
-    : (o.h.price_per_night
-        ? o.h.price_per_night.toLocaleString() + ' جنيه / الليلة'
-        : 'السعر غير محدد')}
-</div>
-      <button onclick="showHotel(${i})">عرض التفاصيل</button></div>
-    </div>`).join("") : '<p class="note">لا توجد فنادق متاحة لهذا التاريخ</p>';
+      ${o.t ? `<p>📅 ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي) • شامل الانتقال</p>` : ''}
+      <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + ' جنيه / للفرد' : (np ? np.toLocaleString() + ' جنيه / الليلة' : 'السعر غير محدد')}</div>
+      <button onclick="showHotel(${i})">عرض التفاصيل</button></div></div>`;
+  }).join("") : '<p class="note">لا توجد فنادق متاحة لهذا التاريخ</p>';
   $("hotels").style.display = "block";
   $("hotels").scrollIntoView({behavior: "smooth"});
 }
 
 function showHotel(i) {
   sel = list[i];
-  const h = sel.h, t = sel.t, g = $("guests").value;
+  const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
   $("mName").innerText = h.Name;
   $("mDesc").innerText = h.description || "";
-  $("mImg").style.backgroundImage = h.image_url ? `url('${h.image_url}')` : "";
-  $("mImg").innerText = h.image_url ? "" : "🏨";
-  $("people").value = g; $("seats").value = g; $("rooms").value = Math.ceil(g / 2);
-  $("serBox").style.display = t ? "block" : "none";
+  $("mImg").style.backgroundImage = img(h) ? `url('${img(h)}')` : "";
+  $("mImg").innerText = img(h) ? "" : "🏨";
+  $("adults").value = a;
+  $("children").value = $("sChildren").value;
+  $("rooms").value = Math.ceil(a / 2);
+  $("extraSeats").value = 0;
+  $("roomType").value = "Double";
+  $("transChk").checked = false;
   $("nonBox").style.display = t ? "none" : "block";
-  $("mInfo").innerText = t ? `رحلة سيريال: ${t.start_date} ← ${t.end_date} (${t.nights} ليالي)، السعر شامل الانتقال من القاهرة` : "اختر تاريخ الدخول والخروج";
+  $("transRow").style.display = t ? "none" : "flex";
+  $("transBox").style.display = t ? "block" : "none";
+  $("childAge").innerText = "(حتى " + (N((t && t.child_max_age) || h.child_max_age) || 12) + " سنة)";
+  $("mInfo").innerText = t ? `رحلة سيريال: ${t.start_date} ← ${t.end_date} (${t.nights} ليالي)، السعر شامل الانتقال` : "اختر تاريخ الدخول والخروج";
   if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
   calc();
   $("hotelModal").style.display = "flex";
 }
 function closeModal() { $("hotelModal").style.display = "none"; }
+function toggleTrans() { $("transBox").style.display = $("transChk").checked ? "block" : "none"; calc(); }
 
-let total = 0;
-  function updatePeople() {
-  const adults = Number($("adults").value) || 0;
-  const children = Number($("children").value) || 0;
-
-  $("people").value = adults + children;
-}
 function calc() {
   if (!sel) return;
-
-  const people = +$("people").value || 0;
-  const rooms = +$("rooms").value || 0;
-  const roomType = $("roomType").value;
-
-  if (sel.t) {
-    // السيريال
-    let roomPrice = Number(sel.t.price_per_person || 0);
-
-if (roomType === "Single") {
-  roomPrice = Number(sel.t.price_single || 0);
-}
-
-const adults = Number($("adults").value) || 0;
-const children = Number($("children").value) || 0;
-const childPrice = Number(sel.t.price_per_child || 0);
-
-const basePrice =
-  (roomPrice * adults) +
-  (childPrice * children);
-
-    // تكلفة المقاعد الإضافية / نقطة التحرك
-    const d = deps.find(x => x.id == $("dep").value);
-    const seats = +$("seats").value || 0;
-
-    const transportExtra = d
-      ? Number(d.extra_price || 0) * seats
-      : 0;
-
-    total = basePrice + transportExtra;
-
+  const h = sel.h, t = sel.t, a = N($("adults").value), c = N($("children").value), r = N($("rooms").value) || 1;
+  const x = N($("extraSeats").value), type = $("roomType").value;
+  const needT = !!t || $("transChk").checked, seats = a + c + x;
+  const d = deps.find(y => y.id == $("dep").value), dep = d ? N(d.extra_price) : 0;
+  $("seatInfo").innerText = needT ? `كراسي الباص: ${seats} (${a + c} أفراد + ${x} إضافي)` : "";
+  total = 0;
+  if (t) {
+    const rp = type === "Single" ? (N(t.price_single) || N(t.price_per_person)) : N(t.price_per_person);
+    total = rp * a + (N(t.price_per_child) || rp) * c + x * N(t.extra_seat_price) + dep * seats;
   } else {
-    // الأوت سيريال
-   // الأوت سيريال - السعر بالليلة
-const cin = $("cin").value;
-const cout = $("cout").value;
-
-const n = Math.round(
-  (new Date(cout) - new Date(cin)) / 86400000
-);
-
-const pricePerNight = Number(sel.h.price_per_night || 0);
-
-total = n > 0
-  ? pricePerNight * rooms * n
-  : 0;
+    const n = Math.round((new Date($("cout").value) - new Date($("cin").value)) / 86400000);
+    const rp = N(h["price_" + type.toLowerCase()]) || N(h.price_per_night);
+    if (n > 0) {
+      total = rp * r * n;
+      if (needT) total += seats * (N(h.extra_seat_price) + dep);
+    }
   }
-
-  $("total").innerText =
-    total > 0
-      ? "الإجمالي: " + total.toLocaleString() + " جنيه"
-      : "الإجمالي: اختر البيانات المطلوبة";
+  $("total").innerText = total > 0 ? "الإجمالي: " + total.toLocaleString() + " جنيه" : "الإجمالي: اختر البيانات المطلوبة";
 }
 
 async function sendBooking() {
   const name = $("name").value.trim(), phone = $("phone").value.trim();
   if (!name || !phone) { alert("من فضلك اكتب الاسم ورقم الموبايل"); return; }
-  if (!sel.t && !(total > 0)) { alert("اختر تاريخ الدخول والخروج"); return; }
-  const t = sel.t;
+  if (!(total > 0)) { alert("اختر تاريخ الدخول والخروج"); return; }
+  const t = sel.t, a = N($("adults").value), c = N($("children").value), x = N($("extraSeats").value);
+  const needT = !!t || $("transChk").checked;
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
     Series_Trips_id: t ? t.id : null,
     check_in: t ? t.start_date : $("cin").value,
     check_out: t ? t.end_date : $("cout").value,
-    number_of_people: +$("people").value, number_of_rooms: +$("rooms").value,
-    departure_points_id: t ? +$("dep").value : null,
-    bus_seats: t ? +$("seats").value : null,
+    number_of_people: a + c, number_of_rooms: N($("rooms").value),
+    departure_points_id: needT ? N($("dep").value) : null,
+    bus_seats: needT ? a + c + x : null,
     total_price: total, status: "Pending Confirmation",
     customer_service_call: $("callMe").checked,
-    preferred_call_time: $("callMe").checked ? $("callTime").value : null
+    preferred_call_time: $("callMe").checked ? $("callTime").value : null,
+    adults: a, children: c, room_type: $("roomType").value, needs_transport: needT, extra_seats: x
   };
-  const r = await db.from("bookings").insert(row);
+  let r = await db.from("bookings").insert(row);
+  if (r.error && r.error.code === "42703") {
+    const {adults, children, room_type, needs_transport, extra_seats, ...min} = row;
+    r = await db.from("bookings").insert(min);
+  }
   if (r.error) { console.error(r.error); alert("تعذر إرسال الطلب، حاول مرة أخرى"); return; }
   alert("تم إرسال طلب الحجز! سيتواصل معك فريق المبيعات للتأكيد.");
+  closeModal();
+}
+
+init();
+</script>
+</body>
+</html>
+EOF
+tail -c 60 /mnt/user-data/outputs/index.html
+Output
+
+د.");
   closeModal();
 }
 
