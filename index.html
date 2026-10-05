@@ -162,12 +162,23 @@ async function searchTrips() {
   if (t.error || h.error) { console.error(t.error, h.error); alert("حدث خطأ في التحميل"); return; }
   tripsOn = t.data || [];
   const hotels = h.data || [];
-  let isSeries = hotels.some(x => x.is_series && tripsOn.some(y => y.hotel_id == x.id));
-  list = isSeries
-    ? hotels.filter(x => x.is_series && tripsOn.some(y => y.hotel_id == x.id)).map(x => ({h: x, t: tripsOn.find(y => y.hotel_id == x.id)}))
-    : hotels.filter(x => !x.is_series).map(x => ({h: x, t: null}));
+  const seriesHotels = hotels
+  .filter(x => x.is_series && tripsOn.some(y => y.hotel_id == x.id))
+  .map(x => ({
+    h: x,
+    t: tripsOn.find(y => y.hotel_id == x.id)
+  }));
+
+const nonSeriesHotels = hotels
+  .filter(x => !x.is_series)
+  .map(x => ({
+    h: x,
+    t: null
+  }));
+
+list = [...seriesHotels, ...nonSeriesHotels];
   const dn = dests.find(x => x.id == destId).Name;
-  $("hotelsTitle").innerText = (isSeries ? "رحلات سيريال في " : "فنادق في ") + dn;
+ $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + dn;
   $("hotelList").innerHTML = list.length ? list.map((o, i) => `
     <div class="card">
       <div class="card-img" style="${o.h.image_url ? `background-image:url('${o.h.image_url}')` : ''}">${o.h.image_url ? '' : '🏨'}</div>
