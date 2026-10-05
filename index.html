@@ -238,13 +238,17 @@ function calc() {
     // السيريال
     let roomPrice = Number(sel.t.price_per_person || 0);
 
-    // الـ Single له سعر مختلف
-    if (roomType === "Single") {
-      roomPrice = Number(sel.t.price_single || 0);
-    }
+if (roomType === "Single") {
+  roomPrice = Number(sel.t.price_single || 0);
+}
 
-    // Double و Triple نفس سعر الفرد
-    const basePrice = roomPrice * people;
+const adults = Number($("adults").value) || 0;
+const children = Number($("children").value) || 0;
+const childPrice = Number(sel.t.price_per_child || 0);
+
+const basePrice =
+  (roomPrice * adults) +
+  (childPrice * children);
 
     // تكلفة المقاعد الإضافية / نقطة التحرك
     const d = deps.find(x => x.id == $("dep").value);
