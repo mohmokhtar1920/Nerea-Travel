@@ -184,7 +184,13 @@ list = [...seriesHotels, ...nonSeriesHotels];
       <div class="card-img" style="${o.h.image_url ? `background-image:url('${o.h.image_url}')` : ''}">${o.h.image_url ? '' : '🏨'}</div>
       <div class="card-content"><h3>${o.h.Name}</h3><p>${o.h.description || ''}</p>
       ${o.t ? `<p>📅 ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p>` : ''}
-      <div class="price">${o.t ? o.t.price_per_person + ' جنيه / للفرد' : (o.h.price_per_night || '-') + ' جنيه / الليلة'}</div>
+    <div class="price">
+  ${o.t
+    ? o.t.price_per_person + ' جنيه / للفرد'
+    : (o.h.price_per_night
+        ? o.h.price_per_night.toLocaleString() + ' جنيه / الليلة'
+        : 'السعر غير محدد')}
+</div>
       <button onclick="showHotel(${i})">عرض التفاصيل</button></div>
     </div>`).join("") : '<p class="note">لا توجد فنادق متاحة لهذا التاريخ</p>';
   $("hotels").style.display = "block";
