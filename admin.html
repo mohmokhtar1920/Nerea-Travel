@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <title>Nerea Travel | لوحة التحكم</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#f5f7fa;color:#172033}
 header{background:#0b1f3a;color:#fff;padding:16px 5%;display:flex;justify-content:space-between;align-items:center}
 .logo{font-size:22px;font-weight:bold;color:#d9b45b}
 button{border:none;border-radius:8px;padding:10px 16px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer}
+button:hover{opacity:.9}
 input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 #login{max-width:360px;margin:80px auto;background:#fff;padding:25px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.1)}
 #login input{margin-bottom:12px}
@@ -24,118 +26,119 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 .price{font-size:18px;font-weight:bold;color:#176b87;margin:8px 0}
 .call{background:#fff3cd;padding:6px 8px;border-radius:6px;font-size:13px;margin:6px 0}
 .card a{color:#176b87;font-weight:bold;text-decoration:none;margin-left:10px}
-.s-Pending{border-color:#e0a800}.s-Confirmed{border-color:#17a2b8}.s-Paid{border-color:#28a745}.s-Cancelled{border-color:#dc3545}.s-Waiting{border-color:#fd7e14}
+.editBtn{width:100%;margin-top:10px;background:#0b1f3a;color:#fff}
+.s-Pending{border-color:#e0a800}
+.s-Confirmed{border-color:#17a2b8}
+.s-Paid{border-color:#28a745}
+.s-Cancelled{border-color:#dc3545}
+.s-Waiting{border-color:#fd7e14}
 #msg{color:#c00;margin-bottom:10px;font-size:14px}
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
 
-.modalBox {
-  background: #fff;
-  width: 100%;
-  max-width: 850px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border-radius: 18px;
-  padding: 25px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+/* Edit modal */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
-
-.modalHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.modalBox{
+  background:#fff;
+  width:100%;
+  max-width:850px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
-
-.modalHeader h2 {
-  margin: 0;
+.modalHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
 }
-
-.modalHeader button {
-  border: 0;
-  background: transparent;
-  font-size: 30px;
-  cursor: pointer;
+.modalHeader h2{margin:0}
+.modalHeader button{
+  border:0;
+  background:transparent;
+  color:#172033;
+  font-size:30px;
+  cursor:pointer;
+  padding:0 8px;
 }
-
-.formGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+.formGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
 }
-
-.formGrid label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
+.formGrid label{
+  display:block;
+  margin-bottom:6px;
+  font-weight:bold;
 }
-
 .formGrid input,
-.formGrid select {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-sizing: border-box;
+.formGrid select{
+  width:100%;
+  padding:11px;
+  border:1px solid #ddd;
+  border-radius:10px;
 }
-
-.modalActions {
-  display: flex;
-  gap: 10px;
-  margin-top: 25px;
+.modalActions{
+  display:flex;
+  gap:10px;
+  margin-top:25px;
 }
-
-.modalActions button {
-  padding: 12px 25px;
-  border: 0;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
+.modalActions button{
+  padding:12px 25px;
 }
+.cancelBtn{background:#ddd;color:#172033}
 
-.cancelBtn {
-  background: #ddd;
-}
-
-@media (max-width: 600px) {
-  .formGrid {
-    grid-template-columns: 1fr;
-  }
+@media(max-width:600px){
+  .formGrid{grid-template-columns:1fr}
+  .bar{flex-wrap:wrap}
+  .bar select{max-width:none}
 }
 </style>
 </head>
+
 <body>
-<header><div class="logo">Nerea Travel | لوحة التحكم</div><button id="outBtn" style="display:none" onclick="logout()">خروج</button></header>
+
+<header>
+  <div class="logo">Nerea Travel | لوحة التحكم</div>
+  <button id="outBtn" style="display:none" onclick="logout()">خروج</button>
+</header>
 
 <div id="login">
-<h2 style="margin-bottom:15px">تسجيل الدخول</h2>
-<div id="msg"></div>
-<input type="email" id="email" placeholder="الإيميل">
-<input type="password" id="pass" placeholder="كلمة السر">
-<button style="width:100%" onclick="login()">دخول</button>
+  <h2 style="margin-bottom:15px">تسجيل الدخول</h2>
+  <div id="msg"></div>
+  <input type="email" id="email" placeholder="الإيميل">
+  <input type="password" id="pass" placeholder="كلمة السر">
+  <button style="width:100%" onclick="login()">دخول</button>
 </div>
 
 <div id="app">
-<div class="bar">
-<select id="filter" onchange="render()"><option value="">كل الحالات</option></select>
-<button onclick="loadAll()">تحديث</button>
-<span id="count"></span>
+  <div class="bar">
+    <select id="filter" onchange="render()">
+      <option value="">كل الحالات</option>
+    </select>
+    <button onclick="loadAll()">تحديث</button>
+    <span id="count"></span>
+  </div>
+
+  <div class="grid" id="list"></div>
 </div>
-<div class="grid" id="list"></div>
-</div>
+
+<!-- Edit Modal -->
 <div id="editModal" class="modal">
   <div class="modalBox">
+
     <div class="modalHeader">
       <h2>تعديل الحجز</h2>
-      <button onclick="closeEdit()">×</button>
+      <button type="button" onclick="closeEdit()">×</button>
     </div>
 
     <div class="formGrid">
@@ -202,95 +205,260 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
     </div>
 
     <div class="modalActions">
-      <button onclick="saveEdit()">حفظ التعديلات</button>
-      <button class="cancelBtn" onclick="closeEdit()">إلغاء</button>
+      <button type="button" onclick="saveEdit()">حفظ التعديلات</button>
+      <button type="button" class="cancelBtn" onclick="closeEdit()">إلغاء</button>
     </div>
+
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const db = window.supabase.createClient("https://saqgyyedcemfszzqbgtu.supabase.co", "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB");
+const SUPABASE_URL = "https://saqgyyedcemfszzqbgtu.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
 const $ = id => document.getElementById(id);
-const ST = ["Pending Confirmation","Waiting Confirmation","Confirmed","Waiting Payment","Paid","Cancelled"];
-let rows = [], hotels = {};
-const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const ST = [
+  "Pending Confirmation",
+  "Waiting Confirmation",
+  "Confirmed",
+  "Waiting Payment",
+  "Paid",
+  "Cancelled"
+];
+
+let rows = [];
+let hotels = {};
+let editingId = null;
+
+const esc = v =>
+  String(v ?? "").replace(
+    /[&<>"']/g,
+    c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c])
+  );
+
 const cls = s => "s-" + String(s || "").split(" ")[0];
 
-$("filter").innerHTML += ST.map(s => `<option>${s}</option>`).join("");
+$("filter").innerHTML += ST
+  .map(s => `<option value="${esc(s)}">${esc(s)}</option>`)
+  .join("");
 
-async function start() {
-  const { data } = await db.auth.getSession();
+async function start(){
+  const { data, error } = await db.auth.getSession();
+
+  if(error){
+    console.error(error);
+  }
+
   const ok = !!data.session;
+
   $("login").style.display = ok ? "none" : "block";
   $("app").style.display = ok ? "block" : "none";
   $("outBtn").style.display = ok ? "block" : "none";
-  if (ok) loadAll();
+
+  if(ok){
+    await loadAll();
+  }
 }
-async function login() {
+
+async function login(){
   $("msg").innerText = "";
-  const { error } = await db.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pass").value });
-  if (error) { $("msg").innerText = "الإيميل أو كلمة السر غير صحيحة"; return; }
-  start();
+
+  const { error } = await db.auth.signInWithPassword({
+    email: $("email").value.trim(),
+    password: $("pass").value
+  });
+
+  if(error){
+    $("msg").innerText = "الإيميل أو كلمة السر غير صحيحة";
+    return;
+  }
+
+  await start();
 }
-async function logout() { await db.auth.signOut(); start(); }
 
-async function loadAll() {
- const h = await db
-  .from("Hotels")
-  .select("id, Name")
-  .order("Name");
+async function logout(){
+  await db.auth.signOut();
+  await start();
+}
 
-hotels = {};
+async function loadAll(){
 
-(h.data || []).forEach(x => {
-  hotels[x.id] = x.Name;
-});
-  const r = await db.from("bookings").select("*").order("created_at", { ascending: false });
-  if (r.error) { console.error(r.error); alert("تعذر تحميل الحجوزات. تأكد من صلاحيات القراءة."); return; }
+  /* Load all hotels with their real names */
+  const h = await db
+    .from("Hotels")
+    .select("id, Name")
+    .order("Name", { ascending:true });
+
+  if(h.error){
+    console.error(h.error);
+    alert("تعذر تحميل أسماء الفنادق: " + h.error.message);
+    return;
+  }
+
+  hotels = {};
+
+  (h.data || []).forEach(x => {
+    hotels[String(x.id)] = x.Name || "بدون اسم";
+  });
+
+  /* Load bookings */
+  const r = await db
+    .from("bookings")
+    .select("*")
+    .order("created_at", { ascending:false });
+
+  if(r.error){
+    console.error(r.error);
+    alert("تعذر تحميل الحجوزات. تأكد من صلاحيات القراءة.");
+    return;
+  }
+
   rows = r.data || [];
+
   render();
 }
 
-function render() {
+function render(){
+
   const f = $("filter").value;
-  const list = f ? rows.filter(x => x.status === f) : rows;
+
+  const list = f
+    ? rows.filter(x => x.status === f)
+    : rows;
+
   $("count").innerText = list.length + " حجز";
-  $("list").innerHTML = list.map(b => {
-    const wa = String(b.customer_phone || "").replace(/\D/g, "").replace(/^0/, "20");
-    return `<div class="card ${cls(b.status)}">
-      <h3>#${b.id} - ${esc(b.customer_name)}</h3>
-      <p>🏨 ${esc(hotels[b.hotel_id] || "-")} ${b.Series_Trips_id ? "(سيريال)" : ""}</p>
-      <p>📅 ${esc(b.check_in)} ← ${esc(b.check_out)}</p>
-      <p>👥 ${esc(b.adults ?? b.number_of_people)} كبار${b.children ? " + " + esc(b.children) + " أطفال" : ""} • 🛏 ${esc(b.number_of_rooms)} غرفة ${esc(b.room_type || "")}</p>
-      <p>🚌 ${b.bus_seats ? esc(b.bus_seats) + " كراسي" : "بدون انتقالات"}</p>
-      <div class="price">${Number(b.total_price || 0).toLocaleString()} جنيه</div>
-      ${b.customer_service_call ? `<div class="call">📞 يريد مكالمة (${esc(b.preferred_call_time)})</div>` : ""}
-      <p><a href="tel:${esc(b.customer_phone)}">اتصال</a><a href="https://wa.me/${wa}" target="_blank">واتساب</a> ${esc(b.customer_phone)}</p>
-      <select onchange="setStatus(${b.id}, this.value)">${ST.map(s => `<option ${s === b.status ? "selected" : ""}>${s}</option>`).join("")}</select>
-      <button class="editBtn"onclick="editBooking(${b.id})">تعديل الحجز </button>
-    </div>`;
-  }).join("") || '<p>لا توجد حجوزات</p>';
+
+  $("list").innerHTML =
+    list.map(b => {
+
+      const wa = String(b.customer_phone || "")
+        .replace(/\D/g,"")
+        .replace(/^0/,"20");
+
+      const hotelName =
+        hotels[String(b.hotel_id)] || "غير محدد";
+
+      const tripType =
+        b.Series_Trips_id
+          ? "Series"
+          : "Non-Series";
+
+      return `
+        <div class="card ${cls(b.status)}">
+
+          <h3>#${esc(b.id)} - ${esc(b.customer_name)}</h3>
+
+          <p>
+            🏨 ${esc(hotelName)}
+            • ${tripType}
+          </p>
+
+          <p>
+            📅 ${esc(b.check_in || "-")}
+            ←
+            ${esc(b.check_out || "-")}
+          </p>
+
+          <p>
+            👥 ${esc(b.adults ?? b.number_of_people ?? 0)} كبار
+            ${b.children ? " + " + esc(b.children) + " أطفال" : ""}
+            • 🛏 ${esc(b.number_of_rooms || 0)} غرفة
+            ${esc(b.room_type || "")}
+          </p>
+
+          <p>
+            🚌 ${
+              Number(b.bus_seats || 0) > 0
+                ? esc(b.bus_seats) + " كراسي"
+                : "بدون انتقالات"
+            }
+          </p>
+
+          <div class="price">
+            ${Number(b.total_price || 0).toLocaleString()} جنيه
+          </div>
+
+          ${
+            b.customer_service_call
+              ? `<div class="call">
+                   📞 يريد مكالمة (${esc(b.preferred_call_time || "")})
+                 </div>`
+              : ""
+          }
+
+          <p>
+            <a href="tel:${esc(b.customer_phone)}">اتصال</a>
+            <a href="https://wa.me/${wa}" target="_blank">واتساب</a>
+            ${esc(b.customer_phone)}
+          </p>
+
+          <select onchange="setStatus(${Number(b.id)}, this.value)">
+            ${ST.map(s =>
+              `<option value="${esc(s)}"
+                ${s === b.status ? "selected" : ""}>
+                ${esc(s)}
+              </option>`
+            ).join("")}
+          </select>
+
+          <button
+            type="button"
+            class="editBtn"
+            onclick="editBooking(${Number(b.id)})">
+            تعديل الحجز
+          </button>
+
+        </div>
+      `;
+
+    }).join("") || "<p>لا توجد حجوزات</p>";
 }
 
-async function setStatus(id, status) {
-  const r = await db.from("bookings").update({ status }).eq("id", id);
+async function setStatus(id,status){
 
-  if (r.error) {
+  const r = await db
+    .from("bookings")
+    .update({status})
+    .eq("id",id);
+
+  if(r.error){
     console.error(r.error);
     alert("تعذر تغيير الحالة");
     return;
   }
 
-  rows.find(x => x.id === id).status = status;
+  const booking = rows.find(x => x.id == id);
+
+  if(booking){
+    booking.status = status;
+  }
+
   render();
 }
 
-let editingId = null;
+/* =========================
+   EDIT BOOKING
+========================= */
 
-function editBooking(id) {
+function editBooking(id){
+
   const b = rows.find(x => x.id == id);
 
-  if (!b) {
+  if(!b){
     alert("الحجز غير موجود");
     return;
   }
@@ -299,86 +467,185 @@ function editBooking(id) {
 
   $("eName").value = b.customer_name || "";
   $("ePhone").value = b.customer_phone || "";
+
   $("eCheckIn").value = b.check_in || "";
   $("eCheckOut").value = b.check_out || "";
-  $("eAdults").value = b.adults || 1;
-  $("eChildren").value = b.children || 0;
-  $("eRooms").value = b.number_of_rooms || 1;
-  $("eRoomType").value = b.room_type || "Double";
-  $("eSeats").value = b.bus_seats || 0;
-  $("eTotal").value = b.total_price || 0;
 
+  $("eAdults").value = Number(b.adults ?? 1);
+  $("eChildren").value = Number(b.children ?? 0);
+
+  $("eRooms").value = Number(b.number_of_rooms ?? 1);
+
+  $("eRoomType").value =
+    b.room_type || "Double";
+
+  $("eSeats").value =
+    Number(b.bus_seats ?? 0);
+
+  $("eTotal").value =
+    Number(b.total_price ?? 0);
+
+  /* Fill hotel select */
   const hotelSelect = $("eHotel");
 
-hotelSelect.innerHTML = Object.entries(hotels)
-  .map(([id, name]) => `
-    <option value="${id}" ${String(id) === String(b.hotel_id) ? "selected" : ""}>
-      ${esc(name)}
-    </option>
-  `)
-  .join("");
+  const hotelOptions = Object.entries(hotels);
+
+  if(hotelOptions.length === 0){
+
+    hotelSelect.innerHTML =
+      `<option value="">لا توجد فنادق</option>`;
+
+  }else{
+
+    hotelSelect.innerHTML =
+      hotelOptions.map(([id,name]) => {
+
+        const selected =
+          String(id) === String(b.hotel_id)
+            ? "selected"
+            : "";
+
+        return `
+          <option value="${esc(id)}" ${selected}>
+            ${esc(name)}
+          </option>
+        `;
+
+      }).join("");
+
+  }
+
+  /* IMPORTANT: open the modal */
+  $("editModal").style.display = "flex";
 }
 
-function closeEdit() {
+function closeEdit(){
+
   editingId = null;
+
   $("editModal").style.display = "none";
 }
 
-async function saveEdit() {
+async function saveEdit(){
 
-  if (!editingId) return;
+  if(!editingId){
+    alert("لم يتم اختيار حجز");
+    return;
+  }
+
+  const name =
+    $("eName").value.trim();
+
+  const phone =
+    $("ePhone").value.trim();
+
+  const hotelId =
+    Number($("eHotel").value);
+
+  const adults =
+    Number($("eAdults").value) || 0;
+
+  const children =
+    Number($("eChildren").value) || 0;
+
+  const rooms =
+    Number($("eRooms").value) || 1;
+
+  const seats =
+    Number($("eSeats").value) || 0;
+
+  const total =
+    Number($("eTotal").value) || 0;
+
+  if(!name){
+    alert("اكتب اسم العميل");
+    return;
+  }
+
+  if(!phone){
+    alert("اكتب رقم الهاتف");
+    return;
+  }
+
+  if(!hotelId){
+    alert("اختر الفندق");
+    return;
+  }
+
+  if(adults < 1){
+    alert("عدد البالغين يجب أن يكون 1 على الأقل");
+    return;
+  }
 
   const updateData = {
-    customer_name: $("eName").value.trim(),
-    customer_phone: $("ePhone").value.trim(),
-    hotel_id: Number($("eHotel").value),
-    check_in: $("eCheckIn").value || null,
-    check_out: $("eCheckOut").value || null,
-    adults: Number($("eAdults").value) || 1,
-    children: Number($("eChildren").value) || 0,
+
+    customer_name: name,
+
+    customer_phone: phone,
+
+    hotel_id: hotelId,
+
+    check_in:
+      $("eCheckIn").value || null,
+
+    check_out:
+      $("eCheckOut").value || null,
+
+    adults: adults,
+
+    children: children,
+
     number_of_people:
-      (Number($("eAdults").value) || 0) +
-      (Number($("eChildren").value) || 0),
-    number_of_rooms: Number($("eRooms").value) || 1,
-    room_type: $("eRoomType").value,
-    bus_seats: Number($("eSeats").value) || 0,
-    total_price: Number($("eTotal").value) || 0
+      adults + children,
+
+    number_of_rooms:
+      rooms,
+
+    room_type:
+      $("eRoomType").value,
+
+    bus_seats:
+      seats,
+
+    total_price:
+      total
   };
 
   const { error } = await db
     .from("bookings")
     .update(updateData)
-    .eq("id", editingId);
+    .eq("id",editingId);
 
-  if (error) {
-    alert("حدث خطأ أثناء حفظ التعديل:\n" + error.message);
+  if(error){
+
+    console.error(error);
+
+    alert(
+      "حدث خطأ أثناء حفظ التعديل:\n" +
+      error.message
+    );
+
     return;
   }
 
   alert("تم تعديل الحجز بنجاح ✅");
 
   closeEdit();
+
   await loadAll();
 }
 
-async function updateBooking(id, data) {
-  const r = await db
-    .from("bookings")
-    .update(data)
-    .eq("id", id);
+/* Close modal by clicking outside */
+$("editModal").addEventListener("click",function(e){
 
-  if (r.error) {
-    console.error(r.error);
-    alert("تعذر تعديل الحجز");
-    return;
+  if(e.target === $("editModal")){
+    closeEdit();
   }
 
-  alert("تم تعديل الحجز بنجاح");
-  loadAll();
-}
+});
 
 start();
-start();
 </script>
+
 </body>
 </html>
