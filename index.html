@@ -95,7 +95,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <div class="chk" id="transRow"><input type="checkbox" id="transChk" onchange="toggleTrans()"><label style="margin:0">محتاج انتقالات؟</label></div>
 <div id="transBox">
 <label>نقطة التحرك</label><select id="dep" onchange="calc()"></select>
-<label>كراسي باص إضافية (بسعرها)</label><input type="number" id="extraSeats" min="0" value="0" oninput="calc()">
+<label>كراسي باص للأطفال (اختياري، بسعرها)</label><input type="number" id="extraSeats" min="0" value="0" oninput="calc()">
 <div class="info" id="seatInfo"></div>
 </div>
 
@@ -182,7 +182,7 @@ function showHotel(i) {
   $("nonBox").style.display = t ? "none" : "block";
   $("transRow").style.display = t ? "none" : "flex";
   $("transBox").style.display = t ? "block" : "none";
-  $("childAge").innerText = "(حتى " + (N((t && t.child_max_age) || h.child_max_age) || 12) + " سنة)";
+  $("childAge").innerText = "(حتى 10 سنوات مجانًا في الفندق، الأكبر يُحسب بالغًا)";
   $("mInfo").innerText = t ? `رحلة سيريال: ${t.start_date} ← ${t.end_date} (${t.nights} ليالي)، السعر شامل الانتقال` : "اختر تاريخ الدخول والخروج";
   if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
   calc();
@@ -194,14 +194,14 @@ function toggleTrans() { $("transBox").style.display = $("transChk").checked ? "
 function calc() {
   if (!sel) return;
   const h = sel.h, t = sel.t, a = N($("adults").value), c = N($("children").value), r = N($("rooms").value) || 1;
-  const x = N($("extraSeats").value), type = $("roomType").value;
-  const needT = !!t || $("transChk").checked, seats = a + c + x;
+  const x = Math.min(N($("extraSeats").value), c), type = $("roomType").value;
+  const needT = !!t || $("transChk").checked, seats = a + x;
   const d = deps.find(y => y.id == $("dep").value), dep = d ? N(d.extra_price) : 0;
-  $("seatInfo").innerText = needT ? `كراسي الباص: ${seats} (${a + c} أفراد + ${x} إضافي)` : "";
+  $("seatInfo").innerText = needT ? `كراسي الباص: ${seats} (${a} بالغين + ${x} أطفال)` : "";
   total = 0;
   if (t) {
     const rp = type === "Single" ? (N(t.price_single) || N(t.price_per_person)) : N(t.price_per_person);
-    total = rp * a + (N(t.price_per_child) || rp) * c + x * N(t.extra_seat_price) + dep * seats;
+    total = rp * a + x * N(t.extra_seat_price) + dep * seats;
   } else {
     const n = Math.round((new Date($("cout").value) - new Date($("cin").value)) / 86400000);
     const rp = N(h["price_" + type.toLowerCase()]) || N(h.price_per_night);
@@ -217,7 +217,7 @@ async function sendBooking() {
   const name = $("name").value.trim(), phone = $("phone").value.trim();
   if (!name || !phone) { alert("من فضلك اكتب الاسم ورقم الموبايل"); return; }
   if (!(total > 0)) { alert("اختر تاريخ الدخول والخروج"); return; }
-  const t = sel.t, a = N($("adults").value), c = N($("children").value), x = N($("extraSeats").value);
+  const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
@@ -226,7 +226,7 @@ async function sendBooking() {
     check_out: t ? t.end_date : $("cout").value,
     number_of_people: a + c, number_of_rooms: N($("rooms").value),
     departure_points_id: needT ? N($("dep").value) : null,
-    bus_seats: needT ? a + c + x : null,
+    bus_seats: needT ? a + x : null,
     total_price: total, status: "Pending Confirmation",
     customer_service_call: $("callMe").checked,
     preferred_call_time: $("callMe").checked ? $("callTime").value : null,
