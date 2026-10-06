@@ -235,8 +235,16 @@ async function login() {
 async function logout() { await db.auth.signOut(); start(); }
 
 async function loadAll() {
-  const h = await db.from("Hotels").select("id,Name");
-  (h.data || []).forEach(x => hotels[x.id] = x.Name);
+ const h = await db
+  .from("Hotels")
+  .select("id, Name")
+  .order("Name");
+
+hotels = {};
+
+(h.data || []).forEach(x => {
+  hotels[x.id] = x.Name;
+});
   const r = await db.from("bookings").select("*").order("created_at", { ascending: false });
   if (r.error) { console.error(r.error); alert("تعذر تحميل الحجوزات. تأكد من صلاحيات القراءة."); return; }
   rows = r.data || [];
