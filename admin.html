@@ -26,6 +26,90 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 .card a{color:#176b87;font-weight:bold;text-decoration:none;margin-left:10px}
 .s-Pending{border-color:#e0a800}.s-Confirmed{border-color:#17a2b8}.s-Paid{border-color:#28a745}.s-Cancelled{border-color:#dc3545}.s-Waiting{border-color:#fd7e14}
 #msg{color:#c00;margin-bottom:10px;font-size:14px}
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modalBox {
+  background: #fff;
+  width: 100%;
+  max-width: 850px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+  margin: 0;
+}
+
+.modalHeader button {
+  border: 0;
+  background: transparent;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.formGrid label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.formGrid input,
+.formGrid select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.modalActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.modalActions button {
+  padding: 12px 25px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.cancelBtn {
+  background: #ddd;
+}
+
+@media (max-width: 600px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -47,7 +131,82 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 </div>
 <div class="grid" id="list"></div>
 </div>
+<div id="editModal" class="modal">
+  <div class="modalBox">
+    <div class="modalHeader">
+      <h2>تعديل الحجز</h2>
+      <button onclick="closeEdit()">×</button>
+    </div>
 
+    <div class="formGrid">
+
+      <div>
+        <label>اسم العميل</label>
+        <input id="eName">
+      </div>
+
+      <div>
+        <label>رقم الهاتف</label>
+        <input id="ePhone">
+      </div>
+
+      <div>
+        <label>الفندق</label>
+        <select id="eHotel"></select>
+      </div>
+
+      <div>
+        <label>تاريخ الدخول</label>
+        <input type="date" id="eCheckIn">
+      </div>
+
+      <div>
+        <label>تاريخ الخروج</label>
+        <input type="date" id="eCheckOut">
+      </div>
+
+      <div>
+        <label>عدد البالغين</label>
+        <input type="number" id="eAdults" min="1">
+      </div>
+
+      <div>
+        <label>عدد الأطفال</label>
+        <input type="number" id="eChildren" min="0">
+      </div>
+
+      <div>
+        <label>عدد الغرف</label>
+        <input type="number" id="eRooms" min="1">
+      </div>
+
+      <div>
+        <label>نوع الغرفة</label>
+        <select id="eRoomType">
+          <option value="Double">Double - دبل</option>
+          <option value="Triple">Triple - تربل</option>
+          <option value="Single">Single - سنجل</option>
+        </select>
+      </div>
+
+      <div>
+        <label>عدد كراسي الباص</label>
+        <input type="number" id="eSeats" min="0">
+      </div>
+
+      <div>
+        <label>الإجمالي</label>
+        <input type="number" id="eTotal" min="0">
+      </div>
+
+    </div>
+
+    <div class="modalActions">
+      <button onclick="saveEdit()">حفظ التعديلات</button>
+      <button class="cancelBtn" onclick="closeEdit()">إلغاء</button>
+    </div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const db = window.supabase.createClient("https://saqgyyedcemfszzqbgtu.supabase.co", "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB");
@@ -118,24 +277,82 @@ async function setStatus(id, status) {
   render();
 }
 
+let editingId = null;
+
 function editBooking(id) {
-  const b = rows.find(x => x.id === id);
-  if (!b) return;
+  const b = rows.find(x => x.id == id);
 
-  const name = prompt("اسم العميل:", b.customer_name || "");
-  if (name === null) return;
+  if (!b) {
+    alert("الحجز غير موجود");
+    return;
+  }
 
-  const phone = prompt("رقم الموبايل:", b.customer_phone || "");
-  if (phone === null) return;
+  editingId = id;
 
-  const total = prompt("الإجمالي:", b.total_price || 0);
-  if (total === null) return;
+  $("eName").value = b.customer_name || "";
+  $("ePhone").value = b.customer_phone || "";
+  $("eCheckIn").value = b.check_in || "";
+  $("eCheckOut").value = b.check_out || "";
+  $("eAdults").value = b.adults || 1;
+  $("eChildren").value = b.children || 0;
+  $("eRooms").value = b.number_of_rooms || 1;
+  $("eRoomType").value = b.room_type || "Double";
+  $("eSeats").value = b.bus_seats || 0;
+  $("eTotal").value = b.total_price || 0;
 
-  updateBooking(id, {
-    customer_name: name,
-    customer_phone: phone,
-    total_price: Number(total) || 0
-  });
+  const hotelSelect = $("eHotel");
+
+  hotelSelect.innerHTML = Object.entries(hotels)
+    .map(([id, name]) =>
+      `<option value="${id}" ${String(id) === String(b.hotel_id) ? "selected" : ""}>
+        ${esc(name)}
+      </option>`
+    )
+    .join("");
+
+  $("editModal").style.display = "flex";
+}
+
+function closeEdit() {
+  editingId = null;
+  $("editModal").style.display = "none";
+}
+
+async function saveEdit() {
+
+  if (!editingId) return;
+
+  const updateData = {
+    customer_name: $("eName").value.trim(),
+    customer_phone: $("ePhone").value.trim(),
+    hotel_id: Number($("eHotel").value),
+    check_in: $("eCheckIn").value || null,
+    check_out: $("eCheckOut").value || null,
+    adults: Number($("eAdults").value) || 1,
+    children: Number($("eChildren").value) || 0,
+    number_of_people:
+      (Number($("eAdults").value) || 0) +
+      (Number($("eChildren").value) || 0),
+    number_of_rooms: Number($("eRooms").value) || 1,
+    room_type: $("eRoomType").value,
+    bus_seats: Number($("eSeats").value) || 0,
+    total_price: Number($("eTotal").value) || 0
+  };
+
+  const { error } = await db
+    .from("bookings")
+    .update(updateData)
+    .eq("id", editingId);
+
+  if (error) {
+    alert("حدث خطأ أثناء حفظ التعديل:\n" + error.message);
+    return;
+  }
+
+  alert("تم تعديل الحجز بنجاح ✅");
+
+  closeEdit();
+  await loadAll();
 }
 
 async function updateBooking(id, data) {
