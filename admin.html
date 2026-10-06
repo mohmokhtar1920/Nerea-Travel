@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Nerea Travel | لوحة التحكم</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f5f7fa;color:#172033}
+header{background:#0b1f3a;color:#fff;padding:16px 5%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:bold;color:#d9b45b}
+button{border:none;border-radius:8px;padding:10px 16px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer}
+input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
+#login{max-width:360px;margin:80px auto;background:#fff;padding:25px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.1)}
+#login input{margin-bottom:12px}
+#app{display:none;padding:20px 5%}
+.bar{display:flex;gap:10px;margin-bottom:18px;align-items:center}
+.bar select{max-width:260px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 3px 14px rgba(0,0,0,.07);border-right:5px solid #999}
+.card h3{margin-bottom:8px}
+.card p{font-size:14px;margin:4px 0;color:#444}
+.price{font-size:18px;font-weight:bold;color:#176b87;margin:8px 0}
+.call{background:#fff3cd;padding:6px 8px;border-radius:6px;font-size:13px;margin:6px 0}
+.card a{color:#176b87;font-weight:bold;text-decoration:none;margin-left:10px}
+.s-Pending{border-color:#e0a800}.s-Confirmed{border-color:#17a2b8}.s-Paid{border-color:#28a745}.s-Cancelled{border-color:#dc3545}.s-Waiting{border-color:#fd7e14}
+#msg{color:#c00;margin-bottom:10px;font-size:14px}
+</style>
+</head>
+<body>
+<header><div class="logo">Nerea Travel | لوحة التحكم</div><button id="outBtn" style="display:none" onclick="logout()">خروج</button></header>
+
+<div id="login">
+<h2 style="margin-bottom:15px">تسجيل الدخول</h2>
+<div id="msg"></div>
+<input type="email" id="email" placeholder="الإيميل">
+<input type="password" id="pass" placeholder="كلمة السر">
+<button style="width:100%" onclick="login()">دخول</button>
+</div>
+
+<div id="app">
+<div class="bar">
+<select id="filter" onchange="render()"><option value="">كل الحالات</option></select>
+<button onclick="loadAll()">تحديث</button>
+<span id="count"></span>
+</div>
+<div class="grid" id="list"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const db = window.supabase.createClient("https://saqgyyedcemfszzqbgtu.supabase.co", "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB");
+const $ = id => document.getElementById(id);
+const ST = ["Pending Confirmation","Waiting Confirmation","Confirmed","Waiting Payment","Paid","Cancelled"];
+let rows = [], hotels = {};
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const cls = s => "s-" + String(s || "").split(" ")[0];
+
+$("filter").innerHTML += ST.map(s => `<option>${s}</option>`).join("");
+
+async function start() {
+  const { data } = await db.auth.getSession();
+  const ok = !!data.session;
+  $("login").style.display = ok ? "none" : "block";
+  $("app").style.display = ok ? "block" : "none";
+  $("outBtn").style.display = ok ? "block" : "none";
+  if (ok) loadAll();
+}
+async function login() {
+  $("msg").innerText = "";
+  const { error } = await db.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pass").value });
+  if (error) { $("msg").innerText = "الإيميل أو كلمة السر غير صحيحة"; return; }
+  start();
+}
+async function logout() { await db.auth.signOut(); start(); }
+
+async function loadAll() {
+  const h = await db.from("Hotels").select("id,Name");
+  (h.data || []).forEach(x => hotels[x.id] = x.Name);
+  const r = await db.from("bookings").select("*").order("created_at", { ascending: false });
+  if (r.error) { console.error(r.error); alert("تعذر تحميل الحجوزات. تأكد من صلاحيات القراءة."); return; }
+  rows = r.data || [];
+  render();
+}
+
+function render() {
+  const f = $("filter").value;
+  const list = f ? rows.filter(x => x.status === f) : rows;
+  $("count").innerText = list.length + " حجز";
+  $("list").innerHTML = list.map(b => {
+    const wa = String(b.customer_phone || "").replace(/\D/g, "").replace(/^0/, "20");
+    return `<div class="card ${cls(b.status)}">
+      <h3>#${b.id} - ${esc(b.customer_name)}</h3>
+      <p>🏨 ${esc(hotels[b.hotel_id] || "-")} ${b.Series_Trips_id ? "(سيريال)" : ""}</p>
+      <p>📅 ${esc(b.check_in)} ← ${esc(b.check_out)}</p>
+      <p>👥 ${esc(b.adults ?? b.number_of_people)} كبار${b.children ? " + " + esc(b.children) + " أطفال" : ""} • 🛏 ${esc(b.number_of_rooms)} غرفة ${esc(b.room_type || "")}</p>
+      <p>🚌 ${b.bus_seats ? esc(b.bus_seats) + " كراسي" : "بدون انتقالات"}</p>
+      <div class="price">${Number(b.total_price || 0).toLocaleString()} جنيه</div>
+      ${b.customer_service_call ? `<div class="call">📞 يريد مكالمة (${esc(b.preferred_call_time)})</div>` : ""}
+      <p><a href="tel:${esc(b.customer_phone)}">اتصال</a><a href="https://wa.me/${wa}" target="_blank">واتساب</a> ${esc(b.customer_phone)}</p>
+      <select onchange="setStatus(${b.id}, this.value)">${ST.map(s => `<option ${s === b.status ? "selected" : ""}>${s}</option>`).join("")}</select>
+    </div>`;
+  }).join("") || '<p>لا توجد حجوزات</p>';
+}
+
+async function setStatus(id, status) {
+  const r = await db.from("bookings").update({ status }).eq("id", id);
+  if (r.error) { console.error(r.error); alert("تعذر تغيير الحالة"); return; }
+  rows.find(x => x.id === id).status = status;
+  render();
+}
+
+start();
+</script>
+</body>
+</html>
