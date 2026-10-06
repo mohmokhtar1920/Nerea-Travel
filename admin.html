@@ -107,8 +107,18 @@ function render() {
 
 async function setStatus(id, status) {
   const r = await db.from("bookings").update({ status }).eq("id", id);
-  if (r.error) { console.error(r.error); alert("تعذر تغيير الحالة"); return; }
-  function editBooking(id) {
+
+  if (r.error) {
+    console.error(r.error);
+    alert("تعذر تغيير الحالة");
+    return;
+  }
+
+  rows.find(x => x.id === id).status = status;
+  render();
+}
+
+function editBooking(id) {
   const b = rows.find(x => x.id === id);
   if (!b) return;
 
@@ -129,7 +139,10 @@ async function setStatus(id, status) {
 }
 
 async function updateBooking(id, data) {
-  const r = await db.from("bookings").update(data).eq("id", id);
+  const r = await db
+    .from("bookings")
+    .update(data)
+    .eq("id", id);
 
   if (r.error) {
     console.error(r.error);
@@ -140,10 +153,8 @@ async function updateBooking(id, data) {
   alert("تم تعديل الحجز بنجاح");
   loadAll();
 }
-  rows.find(x => x.id === id).status = status;
-  render();
-}
 
+start();
 start();
 </script>
 </body>
