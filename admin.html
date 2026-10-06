@@ -310,15 +310,13 @@ function editBooking(id) {
 
   const hotelSelect = $("eHotel");
 
-  hotelSelect.innerHTML = Object.entries(hotels)
-    .map(([id, name]) =>
-      `<option value="${id}" ${String(id) === String(b.hotel_id) ? "selected" : ""}>
-        ${esc(name)}
-      </option>`
-    )
-    .join("");
-
-  $("editModal").style.display = "flex";
+hotelSelect.innerHTML = Object.entries(hotels)
+  .map(([id, name]) => `
+    <option value="${id}" ${String(id) === String(b.hotel_id) ? "selected" : ""}>
+      ${esc(name)}
+    </option>
+  `)
+  .join("");
 }
 
 function closeEdit() {
