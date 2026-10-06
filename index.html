@@ -79,7 +79,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <div class="himg" id="mImg">🏨</div>
 <h2 id="mName"></h2>
 <p id="mDesc" style="margin:8px 0;color:#555"></p>
-<div class="info" id="mInfo"></div>
+<div class="info" id="mInfo" style="white-space:pre-line"></div>
 
 <div id="nonBox" style="display:none">
 <label>Check-in</label><input type="date" id="cin" onchange="calc()">
@@ -95,7 +95,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <div class="chk" id="transRow"><input type="checkbox" id="transChk" onchange="toggleTrans()"><label style="margin:0">محتاج انتقالات؟</label></div>
 <div id="transBox">
 <label>نقطة التحرك</label><select id="dep" onchange="calc()"></select>
-<label>كراسي باص للأطفال (اختياري، بسعرها)</label><input type="number" id="extraSeats" min="0" value="0" oninput="calc()">
+<label>كرسي إضافي (اختياري، بسعره)</label><input type="number" id="extraSeats" min="0" value="0" oninput="calc()">
 <div class="info" id="seatInfo"></div>
 </div>
 
@@ -158,7 +158,7 @@ async function searchTrips() {
     return `<div class="card">
       <div class="card-img" style="${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}">${img(o.h) ? '' : '🏨'}</div>
       <div class="card-content"><h3>${o.h.Name}</h3><p>${o.h.description || ''}</p>
-      ${o.t ? `<p>📅 ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي) • شامل الانتقال</p>` : ''}
+      ${o.t ? `<p>📅 ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p><p>✅ السعر شامل الإقامة بالغرف الدبل والتريبل والانتقالات</p>` : ''}
       <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + ' جنيه / للفرد' : (np ? np.toLocaleString() + ' جنيه / الليلة' : 'السعر غير محدد')}</div>
       <button onclick="showHotel(${i})">عرض التفاصيل</button></div></div>`;
   }).join("") : '<p class="note">لا توجد فنادق متاحة لهذا التاريخ</p>';
@@ -183,7 +183,7 @@ function showHotel(i) {
   $("transRow").style.display = t ? "none" : "flex";
   $("transBox").style.display = t ? "block" : "none";
   $("childAge").innerText = "(حتى 10 سنوات مجانًا في الفندق، الأكبر يُحسب بالغًا)";
-  $("mInfo").innerText = t ? `رحلة سيريال: ${t.start_date} ← ${t.end_date} (${t.nights} ليالي)، السعر شامل الانتقال` : "اختر تاريخ الدخول والخروج";
+  $("mInfo").innerText = t ? `رحلة سيريال: ${t.start_date} ← ${t.end_date} (${t.nights} ليالي)\nالسعر شامل الإقامة بالغرف الدبل والتريبل والانتقالات` : "اختر تاريخ الدخول والخروج";
   if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
   calc();
   $("hotelModal").style.display = "flex";
@@ -197,7 +197,7 @@ function calc() {
   const x = Math.min(N($("extraSeats").value), c), type = $("roomType").value;
   const needT = !!t || $("transChk").checked, seats = a + x;
   const d = deps.find(y => y.id == $("dep").value), dep = d ? N(d.extra_price) : 0;
-  $("seatInfo").innerText = needT ? `كراسي الباص: ${seats} (${a} بالغين + ${x} أطفال)` : "";
+  $("seatInfo").innerText = needT ? `كراسي الباص: ${seats} (${a} بالغين + ${x} كرسي إضافي)` : "";
   total = 0;
   if (t) {
     const rp = type === "Single" ? (N(t.price_single) || N(t.price_per_person)) : N(t.price_per_person);
