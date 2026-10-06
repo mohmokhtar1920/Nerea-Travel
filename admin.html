@@ -100,6 +100,7 @@ function render() {
       ${b.customer_service_call ? `<div class="call">📞 يريد مكالمة (${esc(b.preferred_call_time)})</div>` : ""}
       <p><a href="tel:${esc(b.customer_phone)}">اتصال</a><a href="https://wa.me/${wa}" target="_blank">واتساب</a> ${esc(b.customer_phone)}</p>
       <select onchange="setStatus(${b.id}, this.value)">${ST.map(s => `<option ${s === b.status ? "selected" : ""}>${s}</option>`).join("")}</select>
+      <button class="editBtn"onclick="editBooking(${b.id})">تعديل الحجز </button>
     </div>`;
   }).join("") || '<p>لا توجد حجوزات</p>';
 }
@@ -107,6 +108,38 @@ function render() {
 async function setStatus(id, status) {
   const r = await db.from("bookings").update({ status }).eq("id", id);
   if (r.error) { console.error(r.error); alert("تعذر تغيير الحالة"); return; }
+  function editBooking(id) {
+  const b = rows.find(x => x.id === id);
+  if (!b) return;
+
+  const name = prompt("اسم العميل:", b.customer_name || "");
+  if (name === null) return;
+
+  const phone = prompt("رقم الموبايل:", b.customer_phone || "");
+  if (phone === null) return;
+
+  const total = prompt("الإجمالي:", b.total_price || 0);
+  if (total === null) return;
+
+  updateBooking(id, {
+    customer_name: name,
+    customer_phone: phone,
+    total_price: Number(total) || 0
+  });
+}
+
+async function updateBooking(id, data) {
+  const r = await db.from("bookings").update(data).eq("id", id);
+
+  if (r.error) {
+    console.error(r.error);
+    alert("تعذر تعديل الحجز");
+    return;
+  }
+
+  alert("تم تعديل الحجز بنجاح");
+  loadAll();
+}
   rows.find(x => x.id === id).status = status;
   render();
 }
