@@ -41,6 +41,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .chk input{width:auto;margin:0}
 .total{font-size:20px;font-weight:bold;color:#176b87;margin:10px 0}
 .note{text-align:center;color:#777;grid-column:1/-1}
+.wa{display:block;text-align:center;background:#25d366;color:#fff;text-decoration:none;font-weight:bold;padding:14px;border-radius:8px;margin-top:15px}
 @media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}}
 </style>
 </head>
@@ -76,6 +77,15 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 
 <div class="modal" id="hotelModal"><div class="modal-box">
 <span class="close" onclick="closeModal()">×</span>
+
+<div id="doneBox" style="display:none;text-align:center;padding:20px 0">
+<div style="font-size:50px">✅</div>
+<h2 style="margin:10px 0">تم تسجيل طلب الحجز</h2>
+<p style="color:#555">لتسريع التأكيد، اضغط الزرار وأرسل الطلب لفريق المبيعات على واتساب.</p>
+<a id="waLink" class="wa" href="#" target="_blank">أكمل على واتساب</a>
+</div>
+
+<div id="formBox">
 <div class="himg" id="mImg">🏨</div>
 <h2 id="mName"></h2>
 <p id="mDesc" style="margin:8px 0;color:#555"></p>
@@ -106,6 +116,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <div class="chk"><input type="checkbox" id="callMe"><label style="margin:0">أريد مكالمة من خدمة العملاء</label></div>
 <select id="callTime"><option>في أي وقت</option><option>صباحًا</option><option>ظهرًا</option><option>مساءً</option></select>
 <button style="width:100%" onclick="sendBooking()">إرسال طلب الحجز</button>
+</div>
 </div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -114,7 +125,7 @@ const SUPABASE_URL = "https://saqgyyedcemfszzqbgtu.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let dests = [], deps = [], list = [], sel = null, total = 0;
+let dests = [], deps = [], list = [], sel = null, total = 0, salesPhone = "201012853009";
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
@@ -134,6 +145,8 @@ async function init() {
   const p = await db.from("departure_points").select("*").order("id");
   deps = p.data || [];
   $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
+  const s = await db.from("settings").select("value").eq("key", "sales_phone").maybeSingle();
+  if (s.data && s.data.value) salesPhone = String(s.data.value).replace(/\D/g, "");
 }
 
 function pickDest(id) {
@@ -145,84 +158,40 @@ function pickDest(id) {
 async function searchTrips() {
   const destId = $("destination").value, date = $("date").value;
   if (!destId || !date) { alert("اختر الوجهة والتاريخ"); return; }
-
-  // الفنادق يتم تحميلها بشكل مستقل، لذلك فنادق Non-Series تظهر
-  // حتى لو لم توجد رحلة Series في التاريخ المختار.
-  const h = await db.from("Hotels")
-    .select("*")
-    .eq("Destination_id", destId)
-    .order("Name", {ascending:true});
-
-  if (h.error) {
-    console.error("Hotels error:", h.error);
-    alert("تعذر تحميل الفنادق: " + h.error.message);
-    return;
-  }
-
+  const h = await db.from("Hotels").select("*").eq("Destination_id", destId).order("Name", {ascending: true});
+  if (h.error) { console.error("Hotels error:", h.error); alert("تعذر تحميل الفنادق: " + h.error.message); return; }
   const hotels = h.data || [];
-
-  const t = await db.from("Series_Trips")
-    .select("*")
-    .eq("start_date", date);
-
+  const t = await db.from("Series_Trips").select("*").eq("start_date", date);
   if (t.error) console.warn("Series_Trips error:", t.error);
-
   const trips = t.data || [];
-
-  const ser = hotels
-    .filter(x => x.is_series === true &&
-      trips.some(y => String(y.hotel_id) === String(x.id)))
-    .map(x => ({
-      h:x,
-      t:trips.find(y => String(y.hotel_id) === String(x.id))
-    }));
-
-  const non = hotels
-    .filter(x => x.is_series !== true)
-    .map(x => ({h:x,t:null}));
-
-  list = [...ser,...non];
-
+  const ser = hotels.filter(x => x.is_series === true && trips.some(y => String(y.hotel_id) === String(x.id)))
+    .map(x => ({h: x, t: trips.find(y => String(y.hotel_id) === String(x.id))}));
+  const non = hotels.filter(x => x.is_series !== true).map(x => ({h: x, t: null}));
+  list = [...ser, ...non];
   const dest = dests.find(x => String(x.id) === String(destId));
-  $("hotelsTitle").innerText =
-    "الفنادق والرحلات المتاحة في " + (dest ? dest.Name : "");
-
-  $("hotelList").innerHTML = list.length
-    ? list.map((o,i) => {
-        const np = N(o.h.price_per_night) ||
-                   N(o.h.price_double) ||
-                   N(o.h.price_triple);
-
-        return `<div class="card">
-          <div class="card-img"
-            style="${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}">
-            ${img(o.h) ? '' : '🏨'}
-          </div>
-          <div class="card-content">
-            <h3>${o.h.Name || "فندق بدون اسم"}</h3>
-            <p>${o.h.description || ""}</p>
-            ${o.t ? `
-              <p>📅 مغادرة الباص: ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p>
-              <p>🏨 دخول الفندق: اليوم التالي للمغادرة</p>
-              <p>✅ السعر شامل الإقامة والانتقالات</p>
-            ` : ""}
-            <div class="price">
-              ${o.t
-                ? N(o.t.price_per_person).toLocaleString()+" جنيه / للفرد"
-                : (np ? np.toLocaleString()+" جنيه / الليلة" : "السعر غير محدد")}
-            </div>
-            <button onclick="showHotel(${i})">عرض التفاصيل</button>
-          </div>
-        </div>`;
-      }).join("")
-    : '<p class="note">لا توجد فنادق متاحة لهذه الوجهة</p>';
-
+  $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + (dest ? dest.Name : "");
+  $("hotelList").innerHTML = list.length ? list.map((o, i) => {
+    const np = N(o.h.price_per_night) || N(o.h.price_double) || N(o.h.price_triple);
+    return `<div class="card">
+      <div class="card-img" style="${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}">${img(o.h) ? '' : '🏨'}</div>
+      <div class="card-content">
+        <h3>${o.h.Name || "فندق بدون اسم"}</h3>
+        <p>${o.h.description || ""}</p>
+        ${o.t ? `<p>📅 مغادرة الباص: ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p>
+        <p>🏨 دخول الفندق: اليوم التالي للمغادرة</p>
+        <p>✅ السعر شامل الإقامة والانتقالات</p>` : ""}
+        <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + " جنيه / للفرد" : (np ? np.toLocaleString() + " جنيه / الليلة" : "السعر غير محدد")}</div>
+        <button onclick="showHotel(${i})">عرض التفاصيل</button>
+      </div></div>`;
+  }).join("") : '<p class="note">لا توجد فنادق متاحة لهذه الوجهة</p>';
   $("hotels").style.display = "block";
-  $("hotels").scrollIntoView({behavior:"smooth"});
+  $("hotels").scrollIntoView({behavior: "smooth"});
 }
+
 function showHotel(i) {
   sel = list[i];
   const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
+  $("formBox").style.display = "block"; $("doneBox").style.display = "none";
   $("mName").innerText = h.Name;
   $("mDesc").innerText = h.description || "";
   $("mImg").style.backgroundImage = img(h) ? `url('${img(h)}')` : "";
@@ -276,7 +245,7 @@ async function sendBooking() {
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
     Series_Trips_id: t ? t.id : null,
-    check_in: t ? new Date(new Date(t.start_date + "T00:00:00").getTime() + 86400000).toISOString().slice(0,10) : $("cin").value,
+    check_in: t ? new Date(new Date(t.start_date + "T00:00:00").getTime() + 86400000).toISOString().slice(0, 10) : $("cin").value,
     check_out: t ? t.end_date : $("cout").value,
     number_of_people: a + c, number_of_rooms: N($("rooms").value),
     departure_points_id: needT ? N($("dep").value) : null,
@@ -292,8 +261,14 @@ async function sendBooking() {
     r = await db.from("bookings").insert(min);
   }
   if (r.error) { console.error(r.error); alert("تعذر إرسال الطلب، حاول مرة أخرى"); return; }
-  alert("تم إرسال طلب الحجز! سيتواصل معك فريق المبيعات للتأكيد.");
-  closeModal();
+  const msg = ["طلب حجز جديد", "الاسم: " + name, "الموبايل: " + phone, "الفندق: " + sel.h.Name,
+    "النوع: " + (t ? "سيريال" : "عادي"), "التاريخ: " + row.check_in + " ← " + row.check_out,
+    "البالغين: " + a + " | الأطفال: " + c, "الغرف: " + row.number_of_rooms + " (" + row.room_type + ")",
+    "الانتقالات: " + (needT ? "نعم (" + row.bus_seats + " كراسي)" : "لا"),
+    "الإجمالي: " + total.toLocaleString() + " جنيه"].join("\n");
+  $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
+  $("formBox").style.display = "none";
+  $("doneBox").style.display = "block";
 }
 
 init();
