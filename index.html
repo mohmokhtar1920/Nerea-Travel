@@ -128,6 +128,9 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let dests = [], deps = [], list = [], sel = null, total = 0, salesPhone = "201012853009";
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
+const RULES = {4: {days: 4, nights: 3, inOff: 1, outOff: 4}, 0: {days: 5, nights: 4, inOff: 1, outOff: 5}}; // 4=الخميس 0=الأحد
+const addDays = (d, n) => { const [y, m, dd] = d.split("-").map(Number); return new Date(Date.UTC(y, m - 1, dd + n)).toISOString().slice(0, 10); };
+const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); return /thu|خميس/.test(s) ? 4 : /sun|أحد|احد/.test(s) ? 0 : -1; };
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 
 async function init() {
@@ -158,12 +161,14 @@ function pickDest(id) {
 async function searchTrips() {
   const destId = $("destination").value, date = $("date").value;
   if (!destId || !date) { alert("اختر الوجهة والتاريخ"); return; }
+  if (date < new Date().toISOString().slice(0, 10)) { alert("اختر تاريخًا من اليوم فصاعدًا"); return; }
   const h = await db.from("Hotels").select("*").eq("Destination_id", destId).order("Name", {ascending: true});
   if (h.error) { console.error("Hotels error:", h.error); alert("تعذر تحميل الفنادق: " + h.error.message); return; }
   const hotels = h.data || [];
-  const t = await db.from("Series_Trips").select("*").eq("start_date", date);
+  const t = await db.from("Series_Trips").select("*");
   if (t.error) console.warn("Series_Trips error:", t.error);
-  const trips = t.data || [];
+  const wd = new Date(date + "T00:00:00").getDay(), rule = RULES[wd];
+  const trips = rule ? (t.data || []).filter(y => dayKey(y) === wd).map(y => ({...y, start_date: date, hotelIn: addDays(date, rule.inOff), end_date: addDays(date, rule.outOff), days: rule.days, nights: rule.nights})) : [];
   const hasTrip = x => trips.some(y => String(y.hotel_id) === String(x.id));
   const ser = hotels.filter(hasTrip)
     .map(x => ({h: x, t: trips.find(y => String(y.hotel_id) === String(x.id))}));
@@ -178,8 +183,9 @@ async function searchTrips() {
       <div class="card-content">
         <h3>${o.h.Name || "فندق بدون اسم"}</h3>
         <p>${o.h.description || ""}</p>
-        ${o.t ? `<p>📅 مغادرة الباص: ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p>
-        <p>🏨 دخول الفندق: اليوم التالي للمغادرة</p>
+        ${o.t ? `<p>📅 ${o.t.days} أيام / ${o.t.nights} ليالي</p>
+        <p>🚌 المغادرة: ${o.t.start_date} • 🏨 دخول الفندق: ${o.t.hotelIn}</p>
+        <p>↩️ الرجوع: ${o.t.end_date}</p>
         <p>✅ السعر شامل الإقامة والانتقالات</p>` : ""}
         <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + " جنيه / للفرد" : (np ? np.toLocaleString() + " جنيه / الليلة" : "السعر غير محدد")}</div>
         <button onclick="showHotel(${i})">عرض التفاصيل</button>
@@ -207,7 +213,7 @@ function showHotel(i) {
   $("transRow").style.display = t ? "none" : "flex";
   $("transBox").style.display = t ? "block" : "none";
   $("childAge").innerText = "(حتى 10 سنوات مجانًا في الفندق، الأكبر يُحسب بالغًا)";
-  $("mInfo").innerText = t ? `رحلة سيريال: ${t.start_date} ← ${t.end_date} (${t.nights} ليالي)\nالسعر شامل الإقامة بالغرف الدبل والتريبل والانتقالات` : "اختر تاريخ الدخول والخروج";
+  $("mInfo").innerText = t ? `رحلة سيريال ${t.days} أيام / ${t.nights} ليالي\nالمغادرة: ${t.start_date} • دخول الفندق: ${t.hotelIn} • الرجوع: ${t.end_date}\nالسعر شامل الإقامة بالغرف الدبل والتريبل والانتقالات` : "اختر تاريخ الدخول والخروج";
   if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
   calc();
   $("hotelModal").style.display = "flex";
@@ -246,7 +252,7 @@ async function sendBooking() {
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
     Series_Trips_id: t ? t.id : null,
-    check_in: t ? new Date(new Date(t.start_date + "T00:00:00").getTime() + 86400000).toISOString().slice(0, 10) : $("cin").value,
+    check_in: t ? t.hotelIn : $("cin").value,
     check_out: t ? t.end_date : $("cout").value,
     number_of_people: a + c, number_of_rooms: N($("rooms").value),
     departure_points_id: needT ? N($("dep").value) : null,
