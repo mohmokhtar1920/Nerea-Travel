@@ -117,7 +117,7 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let dests = [], deps = [], list = [], sel = null, total = 0;
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
-const img = x => x.Image_url || x["Image_-url"] || x.image_url || "";
+const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 
 async function init() {
   const d = await db.from("destinations").select("*").order("id");
@@ -145,27 +145,81 @@ function pickDest(id) {
 async function searchTrips() {
   const destId = $("destination").value, date = $("date").value;
   if (!destId || !date) { alert("اختر الوجهة والتاريخ"); return; }
-  const t = await db.from("Series_Trips").select("*").eq("start_date", date);
-  const h = await db.from("Hotels").select("*").eq("Destination_id", destId);
-  if (t.error || h.error) { console.error(t.error, h.error); alert("حدث خطأ في التحميل"); return; }
-  const trips = t.data || [], hotels = h.data || [];
-  const ser = hotels.filter(x => x.is_series && trips.some(y => y.hotel_id == x.id)).map(x => ({h: x, t: trips.find(y => y.hotel_id == x.id)}));
-  const non = hotels.filter(x => !x.is_series).map(x => ({h: x, t: null}));
-  list = [...ser, ...non];
-  $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + dests.find(x => x.id == destId).Name;
-  $("hotelList").innerHTML = list.length ? list.map((o, i) => {
-    const np = N(o.h.price_double) || N(o.h.price_per_night);
-    return `<div class="card">
-      <div class="card-img" style="${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}">${img(o.h) ? '' : '🏨'}</div>
-      <div class="card-content"><h3>${o.h.Name}</h3><p>${o.h.description || ''}</p>
-      ${o.t ? `<p>📅 ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p><p>✅ السعر شامل الإقامة بالغرف الدبل والتريبل والانتقالات</p>` : ''}
-      <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + ' جنيه / للفرد' : (np ? np.toLocaleString() + ' جنيه / الليلة' : 'السعر غير محدد')}</div>
-      <button onclick="showHotel(${i})">عرض التفاصيل</button></div></div>`;
-  }).join("") : '<p class="note">لا توجد فنادق متاحة لهذا التاريخ</p>';
-  $("hotels").style.display = "block";
-  $("hotels").scrollIntoView({behavior: "smooth"});
-}
 
+  // الفنادق يتم تحميلها بشكل مستقل، لذلك فنادق Non-Series تظهر
+  // حتى لو لم توجد رحلة Series في التاريخ المختار.
+  const h = await db.from("Hotels")
+    .select("*")
+    .eq("Destination_id", destId)
+    .order("Name", {ascending:true});
+
+  if (h.error) {
+    console.error("Hotels error:", h.error);
+    alert("تعذر تحميل الفنادق: " + h.error.message);
+    return;
+  }
+
+  const hotels = h.data || [];
+
+  const t = await db.from("Series_Trips")
+    .select("*")
+    .eq("start_date", date);
+
+  if (t.error) console.warn("Series_Trips error:", t.error);
+
+  const trips = t.data || [];
+
+  const ser = hotels
+    .filter(x => x.is_series === true &&
+      trips.some(y => String(y.hotel_id) === String(x.id)))
+    .map(x => ({
+      h:x,
+      t:trips.find(y => String(y.hotel_id) === String(x.id))
+    }));
+
+  const non = hotels
+    .filter(x => x.is_series !== true)
+    .map(x => ({h:x,t:null}));
+
+  list = [...ser,...non];
+
+  const dest = dests.find(x => String(x.id) === String(destId));
+  $("hotelsTitle").innerText =
+    "الفنادق والرحلات المتاحة في " + (dest ? dest.Name : "");
+
+  $("hotelList").innerHTML = list.length
+    ? list.map((o,i) => {
+        const np = N(o.h.price_per_night) ||
+                   N(o.h.price_double) ||
+                   N(o.h.price_triple);
+
+        return `<div class="card">
+          <div class="card-img"
+            style="${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}">
+            ${img(o.h) ? '' : '🏨'}
+          </div>
+          <div class="card-content">
+            <h3>${o.h.Name || "فندق بدون اسم"}</h3>
+            <p>${o.h.description || ""}</p>
+            ${o.t ? `
+              <p>📅 مغادرة الباص: ${o.t.start_date} ← ${o.t.end_date} (${o.t.nights} ليالي)</p>
+              <p>🏨 دخول الفندق: اليوم التالي للمغادرة</p>
+              <p>✅ السعر شامل الإقامة والانتقالات</p>
+            ` : ""}
+            <div class="price">
+              ${o.t
+                ? N(o.t.price_per_person).toLocaleString()+" جنيه / للفرد"
+                : (np ? np.toLocaleString()+" جنيه / الليلة" : "السعر غير محدد")}
+            </div>
+            <button onclick="showHotel(${i})">عرض التفاصيل</button>
+          </div>
+        </div>`;
+      }).join("")
+    : '<p class="note">لا توجد فنادق متاحة لهذه الوجهة</p>';
+
+  $("hotels").style.display = "block";
+  $("hotels").scrollIntoView({behavior:"smooth"});
+}
 function showHotel(i) {
   sel = list[i];
   const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
@@ -222,11 +276,11 @@ async function sendBooking() {
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
     Series_Trips_id: t ? t.id : null,
-    check_in: t ? t.start_date : $("cin").value,
+    check_in: t ? new Date(new Date(t.start_date + "T00:00:00").getTime() + 86400000).toISOString().slice(0,10) : $("cin").value,
     check_out: t ? t.end_date : $("cout").value,
     number_of_people: a + c, number_of_rooms: N($("rooms").value),
     departure_points_id: needT ? N($("dep").value) : null,
-    bus_seats: needT ? a + x : null,
+    bus_seats: needT ? a + x : 0,
     total_price: total, status: "Pending Confirmation",
     customer_service_call: $("callMe").checked,
     preferred_call_time: $("callMe").checked ? $("callTime").value : null,
