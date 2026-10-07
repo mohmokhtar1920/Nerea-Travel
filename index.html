@@ -164,9 +164,10 @@ async function searchTrips() {
   const t = await db.from("Series_Trips").select("*").eq("start_date", date);
   if (t.error) console.warn("Series_Trips error:", t.error);
   const trips = t.data || [];
-  const ser = hotels.filter(x => x.is_series === true && trips.some(y => String(y.hotel_id) === String(x.id)))
+  const hasTrip = x => trips.some(y => String(y.hotel_id) === String(x.id));
+  const ser = hotels.filter(hasTrip)
     .map(x => ({h: x, t: trips.find(y => String(y.hotel_id) === String(x.id))}));
-  const non = hotels.filter(x => x.is_series !== true).map(x => ({h: x, t: null}));
+  const non = hotels.filter(x => x.is_series !== true && !hasTrip(x)).map(x => ({h: x, t: null}));
   list = [...ser, ...non];
   const dest = dests.find(x => String(x.id) === String(destId));
   $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + (dest ? dest.Name : "");
