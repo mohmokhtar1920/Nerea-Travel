@@ -249,10 +249,16 @@ async function sendBooking() {
   if (!(total > 0)) { alert("اختر تاريخ الدخول والخروج"); return; }
   const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
-  const row = {
-    customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
-    Series_Trips_id: t ? t.id : null,
-    check_in: t ? t.hotelIn : $("cin").value,
+ const row = {
+  customer_name: name,
+  customer_phone: phone,
+  hotel_id: sel.h.id,
+  Series_Trips_id: t ? t.id : null,
+
+  // تاريخ التحرك
+  departure_date: t ? t.start_date : $("cin").value,
+
+  check_in: t ? t.hotelIn : $("cin").value,
     check_out: t ? t.end_date : $("cout").value,
     number_of_people: a + c, number_of_rooms: N($("rooms").value),
     departure_points_id: needT ? N($("dep").value) : null,
@@ -269,7 +275,10 @@ async function sendBooking() {
   }
   if (r.error) { console.error(r.error); alert("تعذر إرسال الطلب، حاول مرة أخرى"); return; }
   const msg = ["طلب حجز جديد", "الاسم: " + name, "الموبايل: " + phone, "الفندق: " + sel.h.Name,
-    "النوع: " + (t ? "سيريال" : "عادي"), "التاريخ: " + row.check_in + " ← " + row.check_out,
+  "النوع: " + (t ? "سيريال" : "عادي"),
+"تاريخ التحرك: " + (row.departure_date || "-"),
+"دخول الفندق: " + row.check_in,
+"مغادرة الفندق: " + row.check_out,
     "البالغين: " + a + " | الأطفال: " + c, "الغرف: " + row.number_of_rooms + " (" + row.room_type + ")",
     "الانتقالات: " + (needT ? "نعم (" + row.bus_seats + " كراسي)" : "لا"),
     "مكان التحرك: " + (needT ? ((deps.find(y => y.id == row.departure_points_id) || {}).name || "-") : "-"),
