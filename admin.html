@@ -104,6 +104,7 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 }
 .adminPanel{display:none;background:#fff;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 3px 14px rgba(0,0,0,.07)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.tabs button{background:#eee;color:#172033}.tabs button.active{background:#0b1f3a;color:#fff}.adminForm{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:15px 0}.adminForm .full{grid-column:1/-1}.tableWrap{overflow:auto}.simpleTable{width:100%;border-collapse:collapse}.simpleTable th,.simpleTable td{padding:9px;border-bottom:1px solid #eee;text-align:right;white-space:nowrap}.danger{background:#dc3545;color:#fff}.secondary{background:#ddd;color:#172033}.roleBadge{background:#d9b45b;color:#0b1f3a;padding:5px 9px;border-radius:15px;font-size:12px}@media(max-width:600px){.adminForm{grid-template-columns:1fr}}
 .follow{margin-top:10px;padding-top:10px;border-top:1px dashed #ccc}.follow select,.follow textarea{width:100%;margin:6px 0;padding:9px;border:1px solid #ddd;border-radius:8px;font-family:inherit}.follow small{color:#777;display:block;margin-top:6px}
+.photoGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin:15px 0}.ph img{width:100%;height:100px;object-fit:cover;border-radius:8px}.ph button{width:100%;margin-top:4px;padding:6px}
 </style>
 </head>
 
@@ -218,6 +219,13 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 
   </div>
 </div>
+
+<div id="photoModal" class="modal"><div class="modalBox">
+<div class="modalHeader"><h2 id="photoTitle"></h2><button type="button" onclick="closePhotos()">×</button></div>
+<div id="photoGrid" class="photoGrid"></div>
+<input type="file" id="photoFiles" accept="image/*" multiple>
+<div class="modalActions"><button id="upBtn" type="button" onclick="uploadPhotos()">رفع الصور</button></div>
+</div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -614,7 +622,7 @@ async function saveEdit(){
 
 
 function showTab(t,b){["hotels","trips","destinations","points"].forEach(x=>$("tab-"+x).style.display=x===t?"block":"none");document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");}
-async function loadAdminData(){if(role!=="admin")return;const [h,d,t,p]=await Promise.all([db.from("Hotels").select("*").order("Name"),db.from("destinations").select("*").order("Name"),db.from("Series_Trips").select("*").order("start_date",{ascending:false}),db.from("departure_points").select("*").order("name")]);if(h.error||d.error||t.error||p.error){alert("تعذر تحميل بيانات الإدارة");return;}adminHotels=h.data||[];destinations=d.data||[];trips=t.data||[];departurePoints=p.data||[];$("aHotelDest").innerHTML=destinations.map(x=>`<option value="${x.id}">${esc(x.Name)}</option>`).join("");$("aTripHotel").innerHTML=adminHotels.map(x=>`<option value="${x.id}">${esc(x.Name)}</option>`).join("");$("hotelRows").innerHTML=adminHotels.map(x=>`<tr><td>${esc(x.Name)}</td><td>${esc((destinations.find(d=>d.id==x.Destination_id)||{}).Name||"-")}</td><td>${x.is_series?"Series":"Non-Series"}</td><td><button onclick="editHotel(${x.id})">تعديل</button> <button class="danger" onclick="delHotel(${x.id})">حذف</button></td></tr>`).join("");$("tripRows").innerHTML=trips.map(x=>`<tr><td>${esc((adminHotels.find(h=>h.id==x.hotel_id)||{}).Name||"-")}</td><td>${esc(x.departure_day||"")}</td><td>${esc(x.start_date||"")}</td><td>${Number(x.price_per_person||0).toLocaleString()}</td><td><button onclick="editTrip(${x.id})">تعديل</button> <button class="danger" onclick="delTrip(${x.id})">حذف</button></td></tr>`).join("");$("destRows").innerHTML=destinations.map(x=>`<tr><td>${esc(x.Name)}</td><td><button onclick="editDest(${x.id})">تعديل</button> <button class="danger" onclick="delDest(${x.id})">حذف</button></td></tr>`).join("");$("pointRows").innerHTML=departurePoints.map(x=>`<tr><td>${esc(x.name)}</td><td>${Number(x.extra_price||0).toLocaleString()}</td><td><button onclick="editPoint(${x.id})">تعديل</button> <button class="danger" onclick="delPoint(${x.id})">حذف</button></td></tr>`).join("");}
+async function loadAdminData(){if(role!=="admin")return;const [h,d,t,p]=await Promise.all([db.from("Hotels").select("*").order("Name"),db.from("destinations").select("*").order("Name"),db.from("Series_Trips").select("*").order("start_date",{ascending:false}),db.from("departure_points").select("*").order("name")]);if(h.error||d.error||t.error||p.error){alert("تعذر تحميل بيانات الإدارة");return;}adminHotels=h.data||[];destinations=d.data||[];trips=t.data||[];departurePoints=p.data||[];$("aHotelDest").innerHTML=destinations.map(x=>`<option value="${x.id}">${esc(x.Name)}</option>`).join("");$("aTripHotel").innerHTML=adminHotels.map(x=>`<option value="${x.id}">${esc(x.Name)}</option>`).join("");$("hotelRows").innerHTML=adminHotels.map(x=>`<tr><td>${esc(x.Name)}</td><td>${esc((destinations.find(d=>d.id==x.Destination_id)||{}).Name||"-")}</td><td>${x.is_series?"Series":"Non-Series"}</td><td><button onclick="openPhotos(${x.id})">📷 صور</button> <button onclick="editHotel(${x.id})">تعديل</button> <button class="danger" onclick="delHotel(${x.id})">حذف</button></td></tr>`).join("");$("tripRows").innerHTML=trips.map(x=>`<tr><td>${esc((adminHotels.find(h=>h.id==x.hotel_id)||{}).Name||"-")}</td><td>${esc(x.departure_day||"")}</td><td>${esc(x.start_date||"")}</td><td>${Number(x.price_per_person||0).toLocaleString()}</td><td><button onclick="editTrip(${x.id})">تعديل</button> <button class="danger" onclick="delTrip(${x.id})">حذف</button></td></tr>`).join("");$("destRows").innerHTML=destinations.map(x=>`<tr><td>${esc(x.Name)}</td><td><button onclick="editDest(${x.id})">تعديل</button> <button class="danger" onclick="delDest(${x.id})">حذف</button></td></tr>`).join("");$("pointRows").innerHTML=departurePoints.map(x=>`<tr><td>${esc(x.name)}</td><td>${Number(x.extra_price||0).toLocaleString()}</td><td><button onclick="editPoint(${x.id})">تعديل</button> <button class="danger" onclick="delPoint(${x.id})">حذف</button></td></tr>`).join("");}
 function newHotel(){$("hotelForm").style.display="grid";$("aHotelId").value="";["aHotelName","aSingle","aDouble","aTriple","aNight","aImage","aDesc"].forEach(i=>$(i).value="");$("aHotelSeries").value="false";$("aChildAge").value=10;$("aSeatPrice").value=0;}function cancelHotel(){$("hotelForm").style.display="none";}function editHotel(id){let x=adminHotels.find(h=>h.id==id);if(!x)return;newHotel();$("aHotelId").value=x.id;$("aHotelName").value=x.Name||"";$("aHotelDest").value=x.Destination_id;$("aHotelSeries").value=String(!!x.is_series);$("aSingle").value=x.price_single??"";$("aDouble").value=x.price_double??"";$("aTriple").value=x.price_triple??"";$("aNight").value=x.price_per_night??"";$("aChildAge").value=x.child_max_age??10;$("aSeatPrice").value=x.extra_seat_price??0;$("aImage").value=x.image_url||"";$("aDesc").value=x.description||"";}async function saveHotel(){let d={Name:$("aHotelName").value.trim(),Destination_id:+$("aHotelDest").value,is_series:$("aHotelSeries").value==='true',price_single:+$("aSingle").value||0,price_double:+$("aDouble").value||0,price_triple:+$("aTriple").value||0,price_per_night:+$("aNight").value||0,child_max_age:+$("aChildAge").value||10,extra_seat_price:+$("aSeatPrice").value||0,image_url:$("aImage").value.trim(),description:$("aDesc").value.trim()};let q=$("aHotelId").value?db.from("Hotels").update(d).eq("id",+$("aHotelId").value):db.from("Hotels").insert(d);let r=await q;if(r.error){alert(r.error.message);return;}cancelHotel();await loadAdminData();}async function delHotel(id){if(confirm("حذف الفندق؟")){let r=await db.from("Hotels").delete().eq("id",id);if(r.error)alert(r.error.message);else await loadAdminData();}}
 function newTrip(){$("tripForm").style.display="grid";$('aTripId').value="";}function cancelTrip(){$("tripForm").style.display="none";}function editTrip(id){let x=trips.find(t=>t.id==id);if(!x)return;newTrip();$("aTripId").value=x.id;$("aTripHotel").value=x.hotel_id;$("aTripDay").value=x.departure_day||"Thursday";$("aTripStart").value=x.start_date||"";$("aTripEnd").value=x.end_date||"";$("aTripNights").value=x.nights??"";$("aTripPrice").value=x.price_per_person??"";$("aTripSingle").value=x.price_single??"";$("aTripChild").value=x.price_per_child??0;$("aTripChildAge").value=x.child_max_age??10;$("aTripSeat").value=x.extra_seat_price??0;$("aTripRooms").value=x.available_rooms??0;$("aTripSeats").value=x.available_seats??0;}async function saveTrip(){let d={hotel_id:+$("aTripHotel").value,departure_day:$("aTripDay").value,start_date:$("aTripStart").value,end_date:$("aTripEnd").value,nights:+$("aTripNights").value||0,price_per_person:+$("aTripPrice").value||0,price_single:+$("aTripSingle").value||0,price_per_child:+$("aTripChild").value||0,child_max_age:+$("aTripChildAge").value||10,extra_seat_price:+$("aTripSeat").value||0,available_rooms:+$("aTripRooms").value||0,available_seats:+$("aTripSeats").value||0};let r=$("aTripId").value?await db.from("Series_Trips").update(d).eq("id",+$("aTripId").value):await db.from("Series_Trips").insert(d);if(r.error)alert(r.error.message);else{cancelTrip();await loadAdminData();}}async function delTrip(id){if(confirm("حذف الرحلة؟")){let r=await db.from("Series_Trips").delete().eq("id",id);if(r.error)alert(r.error.message);else await loadAdminData();}}
 function newDest(){$("destForm").style.display="grid";$('aDestId').value="";$('aDestName').value="";$('aDestImage').value="";$('aDestDesc').value="";}function cancelDest(){$("destForm").style.display="none";}function editDest(id){let x=destinations.find(d=>d.id==id);if(!x)return;newDest();$("aDestId").value=x.id;$("aDestName").value=x.Name||"";$("aDestImage").value=x["Image_-url"]||"";$("aDestDesc").value=x.Description||"";}async function saveDest(){let d={Name:$("aDestName").value.trim(),"Image_-url":$("aDestImage").value.trim(),Description:$("aDestDesc").value.trim()};let r=$("aDestId").value?await db.from("destinations").update(d).eq("id",+$("aDestId").value):await db.from("destinations").insert(d);if(r.error)alert(r.error.message);else{cancelDest();await loadAdminData();}}async function delDest(id){if(confirm("حذف الوجهة؟")){let r=await db.from("destinations").delete().eq("id",id);if(r.error)alert(r.error.message);else await loadAdminData();}}
@@ -623,7 +631,6 @@ function newPoint(){$("pointForm").style.display="grid";$('aPointId').value="";$
 
 const CS=["Not Contacted","Contacted","No Answer","Follow Up","Done"];
 function actionsHtml(b){
-  if(role!=="admin") return `<p>الحالة: <b>${esc(b.status)}</b></p><button type="button" class="editBtn" onclick="editBooking(${Number(b.id)})">تعديل الحجز</button>`;
   return `<select onchange="setStatus(${Number(b.id)}, this.value)">${ST.map(s=>`<option value="${esc(s)}" ${s===b.status?"selected":""}>${esc(s)}</option>`).join("")}</select><button type="button" class="editBtn" onclick="editBooking(${Number(b.id)})">تعديل الحجز</button>`;
 }
 function followHtml(b){
@@ -636,6 +643,40 @@ async function saveFollow(id){
   if(r.error){alert("تعذر حفظ المتابعة: "+r.error.message);return;}
   Object.assign(rows.find(x=>x.id==id)||{},d);
   alert("تم حفظ المتابعة ✅");render();
+}
+
+
+let photoHotel=null;
+async function openPhotos(id){photoHotel=id;const h=adminHotels.find(x=>x.id==id);$("photoTitle").innerText="صور: "+(h?h.Name:"");$("photoModal").style.display="flex";await renderPhotos();}
+function closePhotos(){$("photoModal").style.display="none";photoHotel=null;loadAdminData();}
+async function renderPhotos(){const r=await db.from("hotel_images").select("*").eq("hotel_id",photoHotel).order("id");if(r.error){alert(r.error.message);return;}$("photoGrid").innerHTML=(r.data||[]).map(p=>`<div class="ph"><img src="${esc(p.url)}"><button class="danger" onclick="delPhoto(${p.id})">حذف</button></div>`).join("")||"<p>لا توجد صور</p>";}
+function resizeImg(file){return new Promise(res=>{const img=new Image();img.onload=()=>{const k=Math.min(1,1600/Math.max(img.width,img.height));const c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);c.toBlob(b=>res(b||file),"image/jpeg",0.85);URL.revokeObjectURL(img.src);};img.onerror=()=>res(file);img.src=URL.createObjectURL(file);});}
+async function uploadPhotos(){
+  const files=[...$("photoFiles").files];if(!files.length){alert("اختر صور أولاً");return;}
+  $("upBtn").disabled=true;$("upBtn").innerText="جاري الرفع...";
+  for(const f of files){
+    const blob=await resizeImg(f);
+    const path=photoHotel+"/"+Date.now()+"-"+Math.random().toString(36).slice(2,8)+".jpg";
+    const up=await db.storage.from("hotel-images").upload(path,blob,{contentType:"image/jpeg"});
+    if(up.error){alert("تعذر رفع صورة: "+up.error.message);continue;}
+    const url=db.storage.from("hotel-images").getPublicUrl(path).data.publicUrl;
+    const ins=await db.from("hotel_images").insert({hotel_id:photoHotel,url,path});
+    if(ins.error){alert(ins.error.message);continue;}
+    const h=adminHotels.find(x=>x.id==photoHotel);
+    if(h&&!h.image_url){await db.from("Hotels").update({image_url:url}).eq("id",photoHotel);h.image_url=url;}
+  }
+  $("photoFiles").value="";$("upBtn").disabled=false;$("upBtn").innerText="رفع الصور";await renderPhotos();
+}
+async function delPhoto(id){
+  if(!confirm("حذف الصورة؟"))return;
+  const r=await db.from("hotel_images").select("*").eq("id",id).maybeSingle();
+  if(r.data){
+    if(r.data.path)await db.storage.from("hotel-images").remove([r.data.path]);
+    await db.from("hotel_images").delete().eq("id",id);
+    const h=adminHotels.find(x=>x.id==photoHotel);
+    if(h&&h.image_url===r.data.url){const n=await db.from("hotel_images").select("url").eq("hotel_id",photoHotel).order("id").limit(1);const nu=(n.data&&n.data[0])?n.data[0].url:"";await db.from("Hotels").update({image_url:nu}).eq("id",photoHotel);h.image_url=nu;}
+  }
+  await renderPhotos();
 }
 
 /* Close modal by clicking outside */
