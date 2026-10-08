@@ -333,7 +333,15 @@ async function loadAll(){
 
   render();
 }
+function nightsBetween(checkIn, checkOut) {
+  if (!checkIn || !checkOut) return 0;
 
+  const start = new Date(checkIn + "T00:00:00");
+  const end = new Date(checkOut + "T00:00:00");
+
+  const nights = Math.round((end - start) / 86400000);
+  return nights > 0 ? nights : 0;
+}
 function render(){
 
   const f = $("filter").value;
@@ -375,12 +383,13 @@ function render(){
             ${esc(b.check_out || "-")}
           </p>
 
-          <p>
-            👥 ${esc(b.adults ?? b.number_of_people ?? 0)} كبار
-            ${b.children ? " + " + esc(b.children) + " أطفال" : ""}
-            • 🛏 ${esc(b.number_of_rooms || 0)} غرفة
-            ${esc(b.room_type || "")}
-          </p>
+         <p>
+  👥 ${esc(b.adults ?? b.number_of_people ?? 0)} كبار
+  ${b.children ? " + " + esc(b.children) + " أطفال" : ""}
+  • 🛏 ${esc(b.number_of_rooms || 0)} غرفة
+  ${esc(b.room_type || "")}
+  • 🌙 ${nightsBetween(b.check_in, b.check_out)} ليالي
+</p>
 
           <p>📍 مكان التحرك: <b>${esc((departurePoints.find(x=>String(x.id)===String(b.departure_points_id))||{}).name||"—")}</b></p>
           <p>📅 تاريخ التحرك: ${b.departure_date || "—"}</p>
