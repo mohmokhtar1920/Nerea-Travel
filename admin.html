@@ -383,6 +383,7 @@ function render(){
           </p>
 
           <p>📍 مكان التحرك: <b>${esc((departurePoints.find(x=>String(x.id)===String(b.departure_points_id))||{}).name||"—")}</b></p>
+          <p>📅 تاريخ التحرك: ${b.departure_date || "—"}</p>
           <p>🚌 ${Number(b.bus_seats||0)>0?esc(b.bus_seats)+" كراسي":"بدون انتقالات"}</p>
 
           <div class="price">
