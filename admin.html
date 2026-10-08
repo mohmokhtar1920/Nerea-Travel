@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <title>Nerea Travel | لوحة التحكم</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#f5f7fa;color:#172033}
 header{background:#0b1f3a;color:#fff;padding:16px 5%;display:flex;justify-content:space-between;align-items:center}
 .logo{font-size:22px;font-weight:bold;color:#d9b45b}
 button{border:none;border-radius:8px;padding:10px 16px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer}
+button:hover{opacity:.9}
 input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 #login{max-width:360px;margin:80px auto;background:#fff;padding:25px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.1)}
 #login input{margin-bottom:12px}
@@ -24,94 +26,629 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 .price{font-size:18px;font-weight:bold;color:#176b87;margin:8px 0}
 .call{background:#fff3cd;padding:6px 8px;border-radius:6px;font-size:13px;margin:6px 0}
 .card a{color:#176b87;font-weight:bold;text-decoration:none;margin-left:10px}
-.s-Pending{border-color:#e0a800}.s-Confirmed{border-color:#17a2b8}.s-Paid{border-color:#28a745}.s-Cancelled{border-color:#dc3545}.s-Waiting{border-color:#fd7e14}
+.editBtn{width:100%;margin-top:10px;background:#0b1f3a;color:#fff}
+.s-Pending{border-color:#e0a800}
+.s-Confirmed{border-color:#17a2b8}
+.s-Paid{border-color:#28a745}
+.s-Cancelled{border-color:#dc3545}
+.s-Waiting{border-color:#fd7e14}
 #msg{color:#c00;margin-bottom:10px;font-size:14px}
+
+/* Edit modal */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modalBox{
+  background:#fff;
+  width:100%;
+  max-width:850px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+.modalHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.modalHeader h2{margin:0}
+.modalHeader button{
+  border:0;
+  background:transparent;
+  color:#172033;
+  font-size:30px;
+  cursor:pointer;
+  padding:0 8px;
+}
+.formGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+.formGrid label{
+  display:block;
+  margin-bottom:6px;
+  font-weight:bold;
+}
+.formGrid input,
+.formGrid select{
+  width:100%;
+  padding:11px;
+  border:1px solid #ddd;
+  border-radius:10px;
+}
+.modalActions{
+  display:flex;
+  gap:10px;
+  margin-top:25px;
+}
+.modalActions button{
+  padding:12px 25px;
+}
+.cancelBtn{background:#ddd;color:#172033}
+
+@media(max-width:600px){
+  .formGrid{grid-template-columns:1fr}
+  .bar{flex-wrap:wrap}
+  .bar select{max-width:none}
+}
+.adminPanel{display:none;background:#fff;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 3px 14px rgba(0,0,0,.07)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.tabs button{background:#eee;color:#172033}.tabs button.active{background:#0b1f3a;color:#fff}.adminForm{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:15px 0}.adminForm .full{grid-column:1/-1}.tableWrap{overflow:auto}.simpleTable{width:100%;border-collapse:collapse}.simpleTable th,.simpleTable td{padding:9px;border-bottom:1px solid #eee;text-align:right;white-space:nowrap}.danger{background:#dc3545;color:#fff}.secondary{background:#ddd;color:#172033}.roleBadge{background:#d9b45b;color:#0b1f3a;padding:5px 9px;border-radius:15px;font-size:12px}@media(max-width:600px){.adminForm{grid-template-columns:1fr}}
+.follow{margin-top:10px;padding-top:10px;border-top:1px dashed #ccc}.follow select,.follow textarea{width:100%;margin:6px 0;padding:9px;border:1px solid #ddd;border-radius:8px;font-family:inherit}.follow small{color:#777;display:block;margin-top:6px}
 </style>
 </head>
+
 <body>
-<header><div class="logo">Nerea Travel | لوحة التحكم</div><button id="outBtn" style="display:none" onclick="logout()">خروج</button></header>
+
+<header>
+  <div class="logo">Nerea Travel | لوحة التحكم <span id="roleBadge" class="roleBadge" style="display:none"></span></div>
+  <button id="outBtn" style="display:none" onclick="logout()">خروج</button>
+</header>
 
 <div id="login">
-<h2 style="margin-bottom:15px">تسجيل الدخول</h2>
-<div id="msg"></div>
-<input type="email" id="email" placeholder="الإيميل">
-<input type="password" id="pass" placeholder="كلمة السر">
-<button style="width:100%" onclick="login()">دخول</button>
+  <h2 style="margin-bottom:15px">تسجيل الدخول</h2>
+  <div id="msg"></div>
+  <input type="email" id="email" placeholder="الإيميل">
+  <input type="password" id="pass" placeholder="كلمة السر">
+  <button style="width:100%" onclick="login()">دخول</button>
 </div>
 
+<div id="adminPanel" class="adminPanel"><h2>⚙️ إدارة الموقع — Admin فقط</h2><div class="tabs"><button class="active" onclick="showTab('hotels',this)">الفنادق</button><button onclick="showTab('trips',this)">الرحلات</button><button onclick="showTab('destinations',this)">الوجهات</button><button onclick="showTab('points',this)">نقاط التحرك</button></div><div id="tab-hotels"><button onclick="newHotel()">➕ إضافة فندق</button><div id="hotelForm" class="adminForm" style="display:none"><input type="hidden" id="aHotelId"><input id="aHotelName" placeholder="اسم الفندق"><select id="aHotelDest"></select><select id="aHotelSeries"><option value="false">Non-Series</option><option value="true">Series</option></select><input id="aSingle" type="number" placeholder="Single"><input id="aDouble" type="number" placeholder="Double"><input id="aTriple" type="number" placeholder="Triple"><input id="aNight" type="number" placeholder="سعر الليلة"><input id="aChildAge" type="number" placeholder="سن الطفل"><input id="aSeatPrice" type="number" placeholder="سعر الكرسي"><input class="full" id="aImage" placeholder="رابط الصورة"><input class="full" id="aDesc" placeholder="الوصف"><button onclick="saveHotel()">حفظ</button><button class="secondary" onclick="cancelHotel()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الفندق</th><th>الوجهة</th><th>النوع</th><th>إجراء</th></tr></thead><tbody id="hotelRows"></tbody></table></div></div><div id="tab-trips" style="display:none"><button onclick="newTrip()">➕ إضافة رحلة</button><div id="tripForm" class="adminForm" style="display:none"><input type="hidden" id="aTripId"><select id="aTripHotel"></select><select id="aTripDay"><option>Thursday</option><option>Sunday</option></select><input type="date" id="aTripStart"><input type="date" id="aTripEnd"><input type="number" id="aTripNights" placeholder="الليالي"><input type="number" id="aTripPrice" placeholder="سعر الفرد"><input type="number" id="aTripSingle" placeholder="Single"><input type="number" id="aTripChild" placeholder="سعر الطفل"><input type="number" id="aTripChildAge" value="10" placeholder="سن الطفل"><input type="number" id="aTripSeat" placeholder="سعر الكرسي"><input type="number" id="aTripRooms" placeholder="الغرف"><input type="number" id="aTripSeats" placeholder="المقاعد"><button onclick="saveTrip()">حفظ</button><button class="secondary" onclick="cancelTrip()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الفندق</th><th>اليوم</th><th>التاريخ</th><th>السعر</th><th>إجراء</th></tr></thead><tbody id="tripRows"></tbody></table></div></div><div id="tab-destinations" style="display:none"><button onclick="newDest()">➕ إضافة وجهة</button><div id="destForm" class="adminForm" style="display:none"><input type="hidden" id="aDestId"><input id="aDestName" placeholder="اسم الوجهة"><input id="aDestImage" placeholder="رابط الصورة"><input class="full" id="aDestDesc" placeholder="الوصف"><button onclick="saveDest()">حفظ</button><button class="secondary" onclick="cancelDest()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><tbody id="destRows"></tbody></table></div></div><div id="tab-points" style="display:none"><button onclick="newPoint()">➕ إضافة نقطة تحرك</button><div id="pointForm" class="adminForm" style="display:none"><input type="hidden" id="aPointId"><input id="aPointName" placeholder="اسم نقطة التحرك"><input type="number" id="aPointPrice" placeholder="السعر الإضافي"><button onclick="savePoint()">حفظ</button><button class="secondary" onclick="cancelPoint()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><tbody id="pointRows"></tbody></table></div></div></div>
 <div id="app">
-<div class="bar">
-<select id="filter" onchange="render()"><option value="">كل الحالات</option></select>
-<button onclick="loadAll()">تحديث</button>
-<span id="count"></span>
+  <div class="bar">
+    <select id="filter" onchange="render()">
+      <option value="">كل الحالات</option>
+    </select>
+    <button onclick="loadAll()">تحديث</button>
+    <span id="count"></span>
+  </div>
+
+  <div class="grid" id="list"></div>
 </div>
-<div class="grid" id="list"></div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+  <div class="modalBox">
+
+    <div class="modalHeader">
+      <h2>تعديل الحجز</h2>
+      <button type="button" onclick="closeEdit()">×</button>
+    </div>
+
+    <div class="formGrid">
+
+      <div>
+        <label>اسم العميل</label>
+        <input id="eName">
+      </div>
+
+      <div>
+        <label>رقم الهاتف</label>
+        <input id="ePhone">
+      </div>
+
+      <div>
+        <label>الفندق</label>
+        <select id="eHotel"></select>
+      </div>
+
+      <div>
+        <label>تاريخ الدخول</label>
+        <input type="date" id="eCheckIn">
+      </div>
+
+      <div>
+        <label>تاريخ الخروج</label>
+        <input type="date" id="eCheckOut">
+      </div>
+
+      <div>
+        <label>عدد البالغين</label>
+        <input type="number" id="eAdults" min="1">
+      </div>
+
+      <div>
+        <label>عدد الأطفال</label>
+        <input type="number" id="eChildren" min="0">
+      </div>
+
+      <div>
+        <label>عدد الغرف</label>
+        <input type="number" id="eRooms" min="1">
+      </div>
+
+      <div>
+        <label>نوع الغرفة</label>
+        <select id="eRoomType">
+          <option value="Double">Double - دبل</option>
+          <option value="Triple">Triple - تربل</option>
+          <option value="Single">Single - سنجل</option>
+        </select>
+      </div>
+
+      <div>
+        <label>نقطة التحرك</label><select id="eDeparture"></select>
+      </div>
+
+      <div>
+        <label>عدد كراسي الباص</label>
+        <input type="number" id="eSeats" min="0">
+      </div>
+
+      <div>
+        <label>الإجمالي</label>
+        <input type="number" id="eTotal" min="0">
+      </div>
+
+    </div>
+
+    <div class="modalActions">
+      <button type="button" onclick="saveEdit()">حفظ التعديلات</button>
+      <button type="button" class="cancelBtn" onclick="closeEdit()">إلغاء</button>
+    </div>
+
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const db = window.supabase.createClient("https://saqgyyedcemfszzqbgtu.supabase.co", "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB");
+const SUPABASE_URL = "https://saqgyyedcemfszzqbgtu.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
 const $ = id => document.getElementById(id);
-const ST = ["Pending Confirmation","Waiting Confirmation","Confirmed","Waiting Payment","Paid","Cancelled"];
-let rows = [], hotels = {};
-const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const ST = [
+  "Pending Confirmation",
+  "Waiting Confirmation",
+  "Confirmed",
+  "Waiting Payment",
+  "Paid",
+  "Cancelled"
+];
+
+let rows = [];
+let hotels = {};
+let editingId = null;
+let role=null,userEmail="",destinations=[],adminHotels=[],trips=[],departurePoints=[];
+
+const esc = v =>
+  String(v ?? "").replace(
+    /[&<>"']/g,
+    c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c])
+  );
+
 const cls = s => "s-" + String(s || "").split(" ")[0];
 
-$("filter").innerHTML += ST.map(s => `<option>${s}</option>`).join("");
+$("filter").innerHTML += ST
+  .map(s => `<option value="${esc(s)}">${esc(s)}</option>`)
+  .join("");
 
-async function start() {
-  const { data } = await db.auth.getSession();
-  const ok = !!data.session;
-  $("login").style.display = ok ? "none" : "block";
-  $("app").style.display = ok ? "block" : "none";
-  $("outBtn").style.display = ok ? "block" : "none";
-  if (ok) loadAll();
-}
-async function login() {
+async function start(){const {data,error}=await db.auth.getSession();if(error)console.error(error);const ok=!!data.session;$('login').style.display=ok?'none':'block';$('app').style.display=ok?'block':'none';$('outBtn').style.display=ok?'block':'none';if(!ok)return;const uid=data.session.user.id;const p=await db.from("staff_profiles").select("role").eq("user_id",uid).maybeSingle();if(p.error||!p.data){alert("هذا الحساب غير مسجل كموظف");await db.auth.signOut();return;}role=p.data.role;userEmail=data.session.user.email||"";$('roleBadge').style.display='inline-block';$('roleBadge').innerText=role==='admin'?'Admin':'خدمة العملاء';$('adminPanel').style.display=role==='admin'?'block':'none';await loadAll();if(role==='admin')await loadAdminData();}
+
+async function login(){
   $("msg").innerText = "";
-  const { error } = await db.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pass").value });
-  if (error) { $("msg").innerText = "الإيميل أو كلمة السر غير صحيحة"; return; }
-  start();
-}
-async function logout() { await db.auth.signOut(); start(); }
 
-async function loadAll() {
-  const h = await db.from("Hotels").select("id,Name");
-  (h.data || []).forEach(x => hotels[x.id] = x.Name);
-  const r = await db.from("bookings").select("*").order("created_at", { ascending: false });
-  if (r.error) { console.error(r.error); alert("تعذر تحميل الحجوزات. تأكد من صلاحيات القراءة."); return; }
+  const { error } = await db.auth.signInWithPassword({
+    email: $("email").value.trim(),
+    password: $("pass").value
+  });
+
+  if(error){
+    $("msg").innerText = "الإيميل أو كلمة السر غير صحيحة";
+    return;
+  }
+
+  await start();
+}
+
+async function logout(){
+  await db.auth.signOut();
+  await start();
+}
+
+async function loadAll(){
+
+  /* Load all hotels with their real names */
+  const h = await db
+    .from("Hotels")
+    .select("id, Name")
+    .order("Name", { ascending:true });
+
+  if(h.error){
+    console.error(h.error);
+    alert("تعذر تحميل أسماء الفنادق: " + h.error.message);
+    return;
+  }
+
+  hotels = {};
+
+  (h.data || []).forEach(x => {
+    hotels[String(x.id)] = x.Name || "بدون اسم";
+  });
+
+  const dp=await db.from("departure_points").select("*").order("name"); if(dp.error){alert(dp.error.message);return;} departurePoints=dp.data||[];
+
+  /* Load bookings */
+  const r = await db
+    .from("bookings")
+    .select("*")
+    .order("created_at", { ascending:false });
+
+  if(r.error){
+    console.error(r.error);
+    alert("تعذر تحميل الحجوزات. تأكد من صلاحيات القراءة.");
+    return;
+  }
+
   rows = r.data || [];
+
   render();
 }
 
-function render() {
+function render(){
+
   const f = $("filter").value;
-  const list = f ? rows.filter(x => x.status === f) : rows;
+
+  const list = f
+    ? rows.filter(x => x.status === f)
+    : rows;
+
   $("count").innerText = list.length + " حجز";
-  $("list").innerHTML = list.map(b => {
-    const wa = String(b.customer_phone || "").replace(/\D/g, "").replace(/^0/, "20");
-    return `<div class="card ${cls(b.status)}">
-      <h3>#${b.id} - ${esc(b.customer_name)}</h3>
-      <p>🏨 ${esc(hotels[b.hotel_id] || "-")} ${b.Series_Trips_id ? "(سيريال)" : ""}</p>
-      <p>📅 ${esc(b.check_in)} ← ${esc(b.check_out)}</p>
-      <p>👥 ${esc(b.adults ?? b.number_of_people)} كبار${b.children ? " + " + esc(b.children) + " أطفال" : ""} • 🛏 ${esc(b.number_of_rooms)} غرفة ${esc(b.room_type || "")}</p>
-      <p>🚌 ${b.bus_seats ? esc(b.bus_seats) + " كراسي" : "بدون انتقالات"}</p>
-      <div class="price">${Number(b.total_price || 0).toLocaleString()} جنيه</div>
-      ${b.customer_service_call ? `<div class="call">📞 يريد مكالمة (${esc(b.preferred_call_time)})</div>` : ""}
-      <p><a href="tel:${esc(b.customer_phone)}">اتصال</a><a href="https://wa.me/${wa}" target="_blank">واتساب</a> ${esc(b.customer_phone)}</p>
-      <select onchange="setStatus(${b.id}, this.value)">${ST.map(s => `<option ${s === b.status ? "selected" : ""}>${s}</option>`).join("")}</select>
-    </div>`;
-  }).join("") || '<p>لا توجد حجوزات</p>';
+
+  $("list").innerHTML =
+    list.map(b => {
+
+      const wa = String(b.customer_phone || "")
+        .replace(/\D/g,"")
+        .replace(/^0/,"20");
+
+      const hotelName =
+        hotels[String(b.hotel_id)] || "غير محدد";
+
+      const tripType =
+        b.Series_Trips_id
+          ? "Series"
+          : "Non-Series";
+
+      return `
+        <div class="card ${cls(b.status)}">
+
+          <h3>#${esc(b.id)} - ${esc(b.customer_name)}</h3>
+
+          <p>
+            🏨 ${esc(hotelName)}
+            • ${tripType}
+          </p>
+
+          <p>
+            📅 ${esc(b.check_in || "-")}
+            ←
+            ${esc(b.check_out || "-")}
+          </p>
+
+          <p>
+            👥 ${esc(b.adults ?? b.number_of_people ?? 0)} كبار
+            ${b.children ? " + " + esc(b.children) + " أطفال" : ""}
+            • 🛏 ${esc(b.number_of_rooms || 0)} غرفة
+            ${esc(b.room_type || "")}
+          </p>
+
+          <p>🚌 ${esc((departurePoints.find(x=>String(x.id)===String(b.departure_points_id))||{}).name||"بدون انتقالات")} ${Number(b.bus_seats||0)>0?"• "+esc(b.bus_seats)+" كراسي":""}</p>
+
+          <div class="price">
+            ${Number(b.total_price || 0).toLocaleString()} جنيه
+          </div>
+
+          ${
+            b.customer_service_call
+              ? `<div class="call">
+                   📞 يريد مكالمة (${esc(b.preferred_call_time || "")})
+                 </div>`
+              : ""
+          }
+
+          <p>
+            <a href="tel:${esc(b.customer_phone)}">اتصال</a>
+            <a href="https://wa.me/${wa}" target="_blank">واتساب</a>
+            ${esc(b.customer_phone)}
+          </p>
+
+          ${actionsHtml(b)}${followHtml(b)}
+
+        </div>
+      `;
+
+    }).join("") || "<p>لا توجد حجوزات</p>";
 }
 
-async function setStatus(id, status) {
-  const r = await db.from("bookings").update({ status }).eq("id", id);
-  if (r.error) { console.error(r.error); alert("تعذر تغيير الحالة"); return; }
-  rows.find(x => x.id === id).status = status;
+async function setStatus(id,status){
+
+  const r = await db
+    .from("bookings")
+    .update({status})
+    .eq("id",id);
+
+  if(r.error){
+    console.error(r.error);
+    alert("تعذر تغيير الحالة");
+    return;
+  }
+
+  const booking = rows.find(x => x.id == id);
+
+  if(booking){
+    booking.status = status;
+  }
+
   render();
 }
+
+/* =========================
+   EDIT BOOKING
+========================= */
+
+function editBooking(id){
+
+  const b = rows.find(x => x.id == id);
+
+  if(!b){
+    alert("الحجز غير موجود");
+    return;
+  }
+
+  editingId = id;
+
+  $("eName").value = b.customer_name || "";
+  $("ePhone").value = b.customer_phone || "";
+
+  $("eCheckIn").value = b.check_in || "";
+  $("eCheckOut").value = b.check_out || "";
+
+  $("eAdults").value = Number(b.adults ?? 1);
+  $("eChildren").value = Number(b.children ?? 0);
+
+  $("eRooms").value = Number(b.number_of_rooms ?? 1);
+
+  $("eRoomType").value =
+    b.room_type || "Double";
+
+  $("eSeats").value =
+    Number(b.bus_seats ?? 0);
+
+  $("eTotal").value =
+    Number(b.total_price ?? 0);
+
+  $("eDeparture").innerHTML=`<option value="">بدون انتقالات</option>`+departurePoints.map(x=>`<option value="${esc(x.id)}" ${String(x.id)===String(b.departure_points_id)?"selected":""}>${esc(x.name)} (+${Number(x.extra_price||0).toLocaleString()} جنيه)</option>`).join("");
+
+  /* Fill hotel select */
+  const hotelSelect = $("eHotel");
+
+  const hotelOptions = Object.entries(hotels);
+
+  if(hotelOptions.length === 0){
+
+    hotelSelect.innerHTML =
+      `<option value="">لا توجد فنادق</option>`;
+
+  }else{
+
+    hotelSelect.innerHTML =
+      hotelOptions.map(([id,name]) => {
+
+        const selected =
+          String(id) === String(b.hotel_id)
+            ? "selected"
+            : "";
+
+        return `
+          <option value="${esc(id)}" ${selected}>
+            ${esc(name)}
+          </option>
+        `;
+
+      }).join("");
+
+  }
+
+  /* IMPORTANT: open the modal */
+  $("editModal").style.display = "flex";
+}
+
+function closeEdit(){
+
+  editingId = null;
+
+  $("editModal").style.display = "none";
+}
+
+async function saveEdit(){
+
+  if(!editingId){
+    alert("لم يتم اختيار حجز");
+    return;
+  }
+
+  const name =
+    $("eName").value.trim();
+
+  const phone =
+    $("ePhone").value.trim();
+
+  const hotelId =
+    Number($("eHotel").value);
+
+  const adults =
+    Number($("eAdults").value) || 0;
+
+  const children =
+    Number($("eChildren").value) || 0;
+
+  const rooms =
+    Number($("eRooms").value) || 1;
+
+  const seats =
+    Number($("eSeats").value) || 0;
+
+  const total =
+    Number($("eTotal").value) || 0;
+
+  if(!name){
+    alert("اكتب اسم العميل");
+    return;
+  }
+
+  if(!phone){
+    alert("اكتب رقم الهاتف");
+    return;
+  }
+
+  if(!hotelId){
+    alert("اختر الفندق");
+    return;
+  }
+
+  if(adults < 1){
+    alert("عدد البالغين يجب أن يكون 1 على الأقل");
+    return;
+  }
+
+  const updateData = {
+
+    customer_name: name,
+
+    customer_phone: phone,
+
+    hotel_id: hotelId,
+    departure_points_id: $("eDeparture").value ? Number($("eDeparture").value) : null,
+
+    check_in:
+      $("eCheckIn").value || null,
+
+    check_out:
+      $("eCheckOut").value || null,
+
+    adults: adults,
+
+    children: children,
+
+    number_of_people:
+      adults + children,
+
+    number_of_rooms:
+      rooms,
+
+    room_type:
+      $("eRoomType").value,
+
+    bus_seats:
+      seats,
+
+    total_price:
+      total
+  };
+
+  const { error } = await db
+    .from("bookings")
+    .update(updateData)
+    .eq("id",editingId);
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      "حدث خطأ أثناء حفظ التعديل:\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("تم تعديل الحجز بنجاح ✅");
+
+  closeEdit();
+
+  await loadAll();
+}
+
+
+function showTab(t,b){["hotels","trips","destinations","points"].forEach(x=>$("tab-"+x).style.display=x===t?"block":"none");document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");}
+async function loadAdminData(){if(role!=="admin")return;const [h,d,t,p]=await Promise.all([db.from("Hotels").select("*").order("Name"),db.from("destinations").select("*").order("Name"),db.from("Series_Trips").select("*").order("start_date",{ascending:false}),db.from("departure_points").select("*").order("name")]);if(h.error||d.error||t.error||p.error){alert("تعذر تحميل بيانات الإدارة");return;}adminHotels=h.data||[];destinations=d.data||[];trips=t.data||[];departurePoints=p.data||[];$("aHotelDest").innerHTML=destinations.map(x=>`<option value="${x.id}">${esc(x.Name)}</option>`).join("");$("aTripHotel").innerHTML=adminHotels.map(x=>`<option value="${x.id}">${esc(x.Name)}</option>`).join("");$("hotelRows").innerHTML=adminHotels.map(x=>`<tr><td>${esc(x.Name)}</td><td>${esc((destinations.find(d=>d.id==x.Destination_id)||{}).Name||"-")}</td><td>${x.is_series?"Series":"Non-Series"}</td><td><button onclick="editHotel(${x.id})">تعديل</button> <button class="danger" onclick="delHotel(${x.id})">حذف</button></td></tr>`).join("");$("tripRows").innerHTML=trips.map(x=>`<tr><td>${esc((adminHotels.find(h=>h.id==x.hotel_id)||{}).Name||"-")}</td><td>${esc(x.departure_day||"")}</td><td>${esc(x.start_date||"")}</td><td>${Number(x.price_per_person||0).toLocaleString()}</td><td><button onclick="editTrip(${x.id})">تعديل</button> <button class="danger" onclick="delTrip(${x.id})">حذف</button></td></tr>`).join("");$("destRows").innerHTML=destinations.map(x=>`<tr><td>${esc(x.Name)}</td><td><button onclick="editDest(${x.id})">تعديل</button> <button class="danger" onclick="delDest(${x.id})">حذف</button></td></tr>`).join("");$("pointRows").innerHTML=departurePoints.map(x=>`<tr><td>${esc(x.name)}</td><td>${Number(x.extra_price||0).toLocaleString()}</td><td><button onclick="editPoint(${x.id})">تعديل</button> <button class="danger" onclick="delPoint(${x.id})">حذف</button></td></tr>`).join("");}
+function newHotel(){$("hotelForm").style.display="grid";$("aHotelId").value="";["aHotelName","aSingle","aDouble","aTriple","aNight","aImage","aDesc"].forEach(i=>$(i).value="");$("aHotelSeries").value="false";$("aChildAge").value=10;$("aSeatPrice").value=0;}function cancelHotel(){$("hotelForm").style.display="none";}function editHotel(id){let x=adminHotels.find(h=>h.id==id);if(!x)return;newHotel();$("aHotelId").value=x.id;$("aHotelName").value=x.Name||"";$("aHotelDest").value=x.Destination_id;$("aHotelSeries").value=String(!!x.is_series);$("aSingle").value=x.price_single??"";$("aDouble").value=x.price_double??"";$("aTriple").value=x.price_triple??"";$("aNight").value=x.price_per_night??"";$("aChildAge").value=x.child_max_age??10;$("aSeatPrice").value=x.extra_seat_price??0;$("aImage").value=x.image_url||"";$("aDesc").value=x.description||"";}async function saveHotel(){let d={Name:$("aHotelName").value.trim(),Destination_id:+$("aHotelDest").value,is_series:$("aHotelSeries").value==='true',price_single:+$("aSingle").value||0,price_double:+$("aDouble").value||0,price_triple:+$("aTriple").value||0,price_per_night:+$("aNight").value||0,child_max_age:+$("aChildAge").value||10,extra_seat_price:+$("aSeatPrice").value||0,image_url:$("aImage").value.trim(),description:$("aDesc").value.trim()};let q=$("aHotelId").value?db.from("Hotels").update(d).eq("id",+$("aHotelId").value):db.from("Hotels").insert(d);let r=await q;if(r.error){alert(r.error.message);return;}cancelHotel();await loadAdminData();}async function delHotel(id){if(confirm("حذف الفندق؟")){let r=await db.from("Hotels").delete().eq("id",id);if(r.error)alert(r.error.message);else await loadAdminData();}}
+function newTrip(){$("tripForm").style.display="grid";$('aTripId').value="";}function cancelTrip(){$("tripForm").style.display="none";}function editTrip(id){let x=trips.find(t=>t.id==id);if(!x)return;newTrip();$("aTripId").value=x.id;$("aTripHotel").value=x.hotel_id;$("aTripDay").value=x.departure_day||"Thursday";$("aTripStart").value=x.start_date||"";$("aTripEnd").value=x.end_date||"";$("aTripNights").value=x.nights??"";$("aTripPrice").value=x.price_per_person??"";$("aTripSingle").value=x.price_single??"";$("aTripChild").value=x.price_per_child??0;$("aTripChildAge").value=x.child_max_age??10;$("aTripSeat").value=x.extra_seat_price??0;$("aTripRooms").value=x.available_rooms??0;$("aTripSeats").value=x.available_seats??0;}async function saveTrip(){let d={hotel_id:+$("aTripHotel").value,departure_day:$("aTripDay").value,start_date:$("aTripStart").value,end_date:$("aTripEnd").value,nights:+$("aTripNights").value||0,price_per_person:+$("aTripPrice").value||0,price_single:+$("aTripSingle").value||0,price_per_child:+$("aTripChild").value||0,child_max_age:+$("aTripChildAge").value||10,extra_seat_price:+$("aTripSeat").value||0,available_rooms:+$("aTripRooms").value||0,available_seats:+$("aTripSeats").value||0};let r=$("aTripId").value?await db.from("Series_Trips").update(d).eq("id",+$("aTripId").value):await db.from("Series_Trips").insert(d);if(r.error)alert(r.error.message);else{cancelTrip();await loadAdminData();}}async function delTrip(id){if(confirm("حذف الرحلة؟")){let r=await db.from("Series_Trips").delete().eq("id",id);if(r.error)alert(r.error.message);else await loadAdminData();}}
+function newDest(){$("destForm").style.display="grid";$('aDestId').value="";$('aDestName').value="";$('aDestImage').value="";$('aDestDesc').value="";}function cancelDest(){$("destForm").style.display="none";}function editDest(id){let x=destinations.find(d=>d.id==id);if(!x)return;newDest();$("aDestId").value=x.id;$("aDestName").value=x.Name||"";$("aDestImage").value=x["Image_-url"]||"";$("aDestDesc").value=x.Description||"";}async function saveDest(){let d={Name:$("aDestName").value.trim(),"Image_-url":$("aDestImage").value.trim(),Description:$("aDestDesc").value.trim()};let r=$("aDestId").value?await db.from("destinations").update(d).eq("id",+$("aDestId").value):await db.from("destinations").insert(d);if(r.error)alert(r.error.message);else{cancelDest();await loadAdminData();}}async function delDest(id){if(confirm("حذف الوجهة؟")){let r=await db.from("destinations").delete().eq("id",id);if(r.error)alert(r.error.message);else await loadAdminData();}}
+function newPoint(){$("pointForm").style.display="grid";$('aPointId').value="";$('aPointName').value="";$('aPointPrice').value=0;}function cancelPoint(){$("pointForm").style.display="none";}function editPoint(id){let x=departurePoints.find(p=>p.id==id);if(!x)return;newPoint();$("aPointId").value=x.id;$("aPointName").value=x.name||"";$("aPointPrice").value=x.extra_price||0;}async function savePoint(){let d={name:$("aPointName").value.trim(),extra_price:+$("aPointPrice").value||0};let r=$("aPointId").value?await db.from("departure_points").update(d).eq("id",+$("aPointId").value):await db.from("departure_points").insert(d);if(r.error)alert(r.error.message);else{cancelPoint();await loadAdminData();}}async function delPoint(id){if(confirm("حذف نقطة التحرك؟")){let r=await db.from("departure_points").delete().eq("id",id);if(r.error)alert(r.error.message);else await loadAdminData();}}
+
+
+const CS=["Not Contacted","Contacted","No Answer","Follow Up","Done"];
+function actionsHtml(b){
+  if(role!=="admin") return `<p>الحالة: <b>${esc(b.status)}</b></p><button type="button" class="editBtn" onclick="editBooking(${Number(b.id)})">تعديل الحجز</button>`;
+  return `<select onchange="setStatus(${Number(b.id)}, this.value)">${ST.map(s=>`<option value="${esc(s)}" ${s===b.status?"selected":""}>${esc(s)}</option>`).join("")}</select><button type="button" class="editBtn" onclick="editBooking(${Number(b.id)})">تعديل الحجز</button>`;
+}
+function followHtml(b){
+  const cur=b.cs_status||"Not Contacted";
+  return `<div class="follow"><b>📞 متابعة خدمة العملاء</b><select id="cs_${b.id}">${CS.map(c=>`<option value="${c}" ${c===cur?"selected":""}>${c}</option>`).join("")}</select><textarea id="csn_${b.id}" rows="2" placeholder="ملاحظات المتابعة">${esc(b.cs_notes||"")}</textarea><button type="button" onclick="saveFollow(${Number(b.id)})">حفظ المتابعة</button>${b.cs_updated_by?`<small>آخر تحديث: ${esc(b.cs_updated_by)}</small>`:""}</div>`;
+}
+async function saveFollow(id){
+  const d={cs_status:$("cs_"+id).value,cs_notes:$("csn_"+id).value.trim(),cs_updated_by:userEmail,cs_updated_at:new Date().toISOString()};
+  const r=await db.from("bookings").update(d).eq("id",id);
+  if(r.error){alert("تعذر حفظ المتابعة: "+r.error.message);return;}
+  Object.assign(rows.find(x=>x.id==id)||{},d);
+  alert("تم حفظ المتابعة ✅");render();
+}
+
+/* Close modal by clicking outside */
+$("editModal").addEventListener("click",function(e){
+
+  if(e.target === $("editModal")){
+    closeEdit();
+  }
+
+});
 
 start();
 </script>
+
 </body>
 </html>
