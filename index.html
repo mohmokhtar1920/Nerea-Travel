@@ -82,8 +82,8 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <div id="doneBox" style="display:none;text-align:center;padding:20px 0">
 <div style="font-size:50px">✅</div>
 <h2 style="margin:10px 0">تم تسجيل طلب الحجز</h2>
-<p style="color:#555">لتسريع التأكيد، اضغط الزرار وأرسل الطلب لفريق المبيعات على واتساب.</p>
-<a id="waLink" class="wa" href="#" target="_blank">أكمل على واتساب</a>
+<div class="info" id="payInfo" style="text-align:right;white-space:pre-line;margin:12px 0"></div>
+<a id="waLink" class="wa" href="#" target="_blank">إرسال الحجز وصورة التحويل على واتساب</a>
 </div>
 
 <div id="formBox">
@@ -131,7 +131,7 @@ const SUPABASE_URL = "https://saqgyyedcemfszzqbgtu.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let imgs = {}, galImgs = [], galIdx = 0, dests = [], deps = [], list = [], sel = null, total = 0, salesPhone = "201012853009";
+let imgs = {}, galImgs = [], galIdx = 0, dests = [], deps = [], list = [], sel = null, total = 0, salesPhone = "201012853009", pay = {insta: "mohamed.mokhtar99@instapay", voda: "01012853009", pct: 25};
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
 const RULES = {4: {days: 4, nights: 3, inOff: 1, outOff: 4}, 0: {days: 5, nights: 4, inOff: 1, outOff: 5}}; // 4=الخميس 0=الأحد
@@ -154,8 +154,13 @@ async function init() {
   const p = await db.from("departure_points").select("*").order("id");
   deps = p.data || [];
   $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
-  const s = await db.from("settings").select("value").eq("key", "sales_phone").maybeSingle();
-  if (s.data && s.data.value) salesPhone = String(s.data.value).replace(/\D/g, "");
+  const s = await db.from("settings").select("key,value");
+  (s.data || []).forEach(r => {
+    if (r.key === "sales_phone") salesPhone = String(r.value).replace(/\D/g, "");
+    if (r.key === "instapay_address") pay.insta = r.value;
+    if (r.key === "vodafone_cash") pay.voda = r.value;
+    if (r.key === "deposit_percent") pay.pct = N(r.value) || 25;
+  });
 }
 
 function pickDest(id) {
@@ -274,6 +279,7 @@ async function sendBooking() {
   if (!(total > 0)) { alert("اختر تاريخ الدخول والخروج"); return; }
   const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
+  const dep = Math.round(total * pay.pct / 100), ref = "NT-" + Math.random().toString(36).slice(2, 8).toUpperCase();
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
     Series_Trips_id: t ? t.id : null,
@@ -282,25 +288,26 @@ async function sendBooking() {
     number_of_people: a + c, number_of_rooms: N($("rooms").value),
     departure_points_id: needT ? N($("dep").value) : null,
     bus_seats: needT ? a + x : 0,
-    total_price: total, status: "Pending Confirmation",
+    total_price: total, status: "Pending Confirmation", booking_ref: ref, deposit_amount: dep,
     customer_service_call: $("callMe").checked,
     preferred_call_time: $("callMe").checked ? $("callTime").value : null,
     adults: a, children: c, room_type: $("roomType").value, needs_transport: needT, extra_seats: x
   };
   let r = await db.from("bookings").insert(row);
   if (r.error && r.error.code === "42703") {
-    const {adults, children, room_type, needs_transport, extra_seats, ...min} = row;
+    const {adults, children, room_type, needs_transport, extra_seats, booking_ref, ...min} = row;
     r = await db.from("bookings").insert(min);
   }
   if (r.error) { console.error(r.error); alert("تعذر إرسال الطلب، حاول مرة أخرى"); return; }
-  const msg = ["طلب حجز جديد", "الاسم: " + name, "الموبايل: " + phone, "الفندق: " + sel.h.Name,
+  const msg = ["طلب حجز جديد", "رقم الحجز: " + ref, "الاسم: " + name, "الموبايل: " + phone, "الفندق: " + sel.h.Name,
     "النوع: " + (t ? "سيريال" : "عادي"), "التاريخ: " + row.check_in + " ← " + row.check_out,
     "عدد الليالي: " + Math.round((new Date(row.check_out) - new Date(row.check_in)) / 86400000),
     "تاريخ التحرك: " + (t ? t.start_date : (needT ? row.check_in : "-")),
     "البالغين: " + a + " | الأطفال: " + c, "الغرف: " + row.number_of_rooms + " (" + row.room_type + ")",
     "الانتقالات: " + (needT ? "نعم (" + row.bus_seats + " كراسي)" : "لا"),
     "مكان التحرك: " + (needT ? ((deps.find(y => y.id == row.departure_points_id) || {}).name || "-") : "-"),
-    "الإجمالي: " + total.toLocaleString() + " جنيه"].join("\n");
+    "الإجمالي: " + total.toLocaleString() + " جنيه", "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه"].join("\n");
+  $("payInfo").innerText = "رقم حجزك: " + ref + "\nالعربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه\n\nحوّل المبلغ على:\n• إنستاباي: " + pay.insta + "\n• فودافون كاش: " + pay.voda + "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب.";
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
