@@ -194,7 +194,62 @@ async function searchTrips() {
   $("hotels").style.display = "block";
   $("hotels").scrollIntoView({behavior: "smooth"});
 }
+let hotelGallery = [];
+let galleryIndex = 0;
 
+async function loadHotelGallery(hotelId) {
+  const { data, error } = await supabase
+    .from("hotel_images")
+    .select("id, url, path")
+    .eq("hotel_id", hotelId)
+    .order("id", { ascending: true });
+
+  if (error) {
+    console.error("Error loading hotel gallery:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
+function openGallery() {
+  const mainImage = sel?.h ? img(sel.h) : "";
+
+  if (!hotelGallery.length && mainImage) {
+    hotelGallery = [{ url: mainImage }];
+  }
+
+  if (!hotelGallery.length) {
+    alert("مفيش صور متاحة للفندق ده حاليًا");
+    return;
+  }
+
+  galleryIndex = 0;
+  renderGalleryImage();
+  $("galleryModal").style.display = "flex";
+}
+
+function closeGallery() {
+  $("galleryModal").style.display = "none";
+}
+
+function changeGallery(step) {
+  if (!hotelGallery.length) return;
+
+  galleryIndex =
+    (galleryIndex + step + hotelGallery.length) % hotelGallery.length;
+
+  renderGalleryImage();
+}
+
+function renderGalleryImage() {
+  const photo = hotelGallery[galleryIndex];
+
+  $("galleryImage").src = photo.url;
+  $("galleryCounter").innerText =
+    `${galleryIndex + 1} / ${hotelGallery.length}`;
+}
+  
 function showHotel(i) {
   sel = list[i];
   const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
@@ -202,7 +257,23 @@ function showHotel(i) {
   $("mName").innerText = h.Name;
   $("mDesc").innerText = h.description || "";
   $("mImg").style.backgroundImage = img(h) ? `url('${img(h)}')` : "";
+  hotelGallery = [];
+loadHotelGallery(h.id).then(images => {
+  if (sel && String(sel.h.id) === String(h.id)) {
+    hotelGallery = images.length
+      ? images
+      : (img(h) ? [{ url: img(h) }] : []);
+  }
+});
   $("mImg").innerText = img(h) ? "" : "🏨";
+  $("mImg").style.cursor = img(h) ? "pointer" : "default";
+$("mImg").onclick = () => {
+  if (hotelGallery.length) {
+    openGallery();
+  } else {
+    alert("جاري تحميل صور الفندق، جرّب مرة تانية");
+  }
+};
   $("adults").value = a;
   $("children").value = $("sChildren").value;
   $("rooms").value = Math.ceil(a / 2);
@@ -290,5 +361,18 @@ async function sendBooking() {
 
 init();
 </script>
+  
+<div id="galleryModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:99999;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
+  <button onclick="closeGallery()" style="position:absolute;top:15px;right:20px;font-size:30px;color:white;background:none;border:0;cursor:pointer">×</button>
+
+  <button onclick="changeGallery(-1)" style="font-size:35px;color:white;background:none;border:0;cursor:pointer">‹</button>
+
+  <div style="text-align:center;max-width:850px;width:100%">
+    <img id="galleryImage" src="" alt="صور الفندق" style="max-width:100%;max-height:75vh;object-fit:contain;border-radius:10px">
+    <p id="galleryCounter" style="color:white"></p>
+  </div>
+
+  <button onclick="changeGallery(1)" style="font-size:35px;color:white;background:none;border:0;cursor:pointer">›</button>
+</div>
 </body>
 </html>
