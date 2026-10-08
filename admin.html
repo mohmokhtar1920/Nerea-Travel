@@ -405,7 +405,7 @@ function render(){
             ${esc(b.customer_phone)}
           </p>
 
-          ${actionsHtml(b)}${followHtml(b)}
+          ${paymentHtml(b)}${actionsHtml(b)}${followHtml(b)}
 
         </div>
       `;
@@ -705,6 +705,34 @@ async function loadStaff(){
     return `<tr><td>${esc(v.email||x.name||"—")}</td><td>${x.role==="admin"?"Admin":"خدمة العملاء"}</td><td>${esc(fmt(v.last_login))}</td><td>${esc(fmt(v.last_seen))}</td><td>${on?"🟢 نشط الآن":"⚫ غير نشط"}</td></tr>`;
   }).join("");
   $("loginRows").innerHTML=(l.data||[]).map(x=>`<tr><td>${esc(x.email)}</td><td>${x.role==="admin"?"Admin":"خدمة العملاء"}</td><td>${esc(fmt(x.logged_at))}</td></tr>`).join("")||"<tr><td>لا يوجد</td></tr>";
+}
+
+
+function paymentHtml(b){
+  const paid=b.payment_status==="Paid";
+  return `<div class="call" style="background:${paid?"#d4edda":"#e8f1ff"}">🆔 ${esc(b.booking_ref||"—")} • العربون: ${Number(b.deposit_amount||0).toLocaleString()} جنيه • ${paid?"✅ مدفوع":"⏳ لم يُدفع"}</div>`
+  +(role==="admin"&&!paid?`<button type="button" class="editBtn" style="background:#28a745" onclick="markPaid(${Number(b.id)})">💰 تم استلام العربون</button>`:"")
+  +(b.invoice_number?`<button type="button" class="editBtn" onclick="showInvoice(${Number(b.id)})">🧾 الفاتورة</button>`:"");
+}
+async function markPaid(id){
+  const b=rows.find(x=>x.id==id);if(!b)return;
+  const a=prompt("المبلغ المستلم (جنيه):",b.deposit_amount||"");if(a===null)return;
+  const amt=Number(a);if(!(amt>0)){alert("اكتب مبلغًا صحيحًا");return;}
+  const ref=prompt("رقم أو ملاحظة التحويل (اختياري):","")||"";
+  const d={payment_status:"Paid",status:"Paid",deposit_amount:amt,payment_reference:ref,invoice_number:b.invoice_number||("INV-"+new Date().getFullYear()+"-"+String(id).padStart(5,"0")),paid_at:new Date().toISOString(),paid_by:userEmail};
+  const r=await db.from("bookings").update(d).eq("id",id);
+  if(r.error){alert("تعذر التسجيل: "+r.error.message);return;}
+  Object.assign(b,d);render();alert("تم تسجيل العربون ✅");
+}
+function showInvoice(id){
+  const b=rows.find(x=>x.id==id);if(!b||!b.invoice_number){alert("لا توجد فاتورة");return;}
+  const paid=Number(b.deposit_amount||0),tot=Number(b.total_price||0);
+  const dp=(departurePoints.find(x=>String(x.id)===String(b.departure_points_id))||{}).name||"بدون انتقالات";
+  const tr=(l,v)=>`<tr><td>${l}</td><td>${esc(v)}</td></tr>`;
+  const rowsHtml=[tr("العميل",b.customer_name),tr("الموبايل",b.customer_phone),tr("رقم الحجز",b.booking_ref||b.id),tr("الفندق",hotels[String(b.hotel_id)]||"-"),tr("الدخول",b.check_in||"-"),tr("الخروج",b.check_out||"-"),tr("عدد الليالي",nightsBetween(b.check_in,b.check_out)),tr("الأفراد",(b.adults??b.number_of_people)+" كبار"+(b.children?" + "+b.children+" أطفال":"")),tr("الغرف",(b.number_of_rooms||0)+" "+(b.room_type||"")),tr("مكان التحرك",dp),tr("إجمالي الحجز",tot.toLocaleString()+" جنيه"),tr("المدفوع (عربون)",paid.toLocaleString()+" جنيه"),tr("المتبقي",Math.max(tot-paid,0).toLocaleString()+" جنيه")].join("");
+  const w=window.open("","_blank");
+  w.document.write(`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>${esc(b.invoice_number)}</title><style>body{font-family:Arial;max-width:700px;margin:30px auto;padding:20px;color:#172033}h1{color:#0b1f3a}table{width:100%;border-collapse:collapse;margin:15px 0}td{padding:9px;border-bottom:1px solid #ddd}td:first-child{color:#666;width:38%}.hd{display:flex;justify-content:space-between;border-bottom:3px solid #d9b45b;padding-bottom:10px}button{padding:10px 20px}@media print{button{display:none}}</style></head><body><div class="hd"><h1>Nerea Travel</h1><div><b>فاتورة ${esc(b.invoice_number)}</b><br>${esc(new Date(b.paid_at||b.created_at).toLocaleDateString("ar-EG"))}</div></div><table>${rowsHtml}</table><button onclick="window.print()">🖨 طباعة</button></body></html>`);
+  w.document.close();
 }
 
 /* Close modal by clicking outside */
