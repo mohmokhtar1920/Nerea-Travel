@@ -272,6 +272,7 @@ async function sendBooking() {
     "النوع: " + (t ? "سيريال" : "عادي"), "التاريخ: " + row.check_in + " ← " + row.check_out,
     "البالغين: " + a + " | الأطفال: " + c, "الغرف: " + row.number_of_rooms + " (" + row.room_type + ")",
     "الانتقالات: " + (needT ? "نعم (" + row.bus_seats + " كراسي)" : "لا"),
+    "مكان التحرك: " + (needT ? ((deps.find(y => y.id == row.departure_points_id) || {}).name || "-") : "-"),
     "الإجمالي: " + total.toLocaleString() + " جنيه"].join("\n");
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
   $("formBox").style.display = "none";
