@@ -362,26 +362,6 @@ async function sendBooking() {
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
 }
-  let r = await db.from("bookings").insert(row);
-  if (r.error && r.error.code === "42703") {
-    const {adults, children, room_type, needs_transport, extra_seats, booking_ref, ...min} = row;
-    r = await db.from("bookings").insert(min);
-  }
-  if (r.error) { console.error(r.error); alert("تعذر إرسال الطلب، حاول مرة أخرى"); return; }
-  const msg = ["طلب حجز جديد", "رقم الحجز: " + ref, "الاسم: " + name, "الموبايل: " + phone, "الفندق: " + sel.h.Name,
-    "النوع: " + (t ? "سيريال" : "عادي"), "التاريخ: " + row.check_in + " ← " + row.check_out,
-    "عدد الليالي: " + Math.round((new Date(row.check_out) - new Date(row.check_in)) / 86400000),
-    "تاريخ التحرك: " + (t ? t.start_date : (needT ? row.check_in : "-")),
-    "البالغين: " + a + " | الأطفال: " + c, "الغرف: " + row.number_of_rooms + " (" + row.room_type + ")",
-    "الانتقالات: " + (needT ? "نعم (" + row.bus_seats + " كراسي)" : "لا"),
-    "مكان التحرك: " + (needT ? ((deps.find(y => y.id == row.departure_points_id) || {}).name || "-") : "-"),
-    "الإجمالي: " + total.toLocaleString() + " جنيه", "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه"].join("\n");
-  $("payInfo").innerText = "رقم حجزك: " + ref + "\nالعربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه\n\nحوّل المبلغ على:\n• إنستاباي: " + pay.insta + "\n• فودافون كاش: " + pay.voda + "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب.";
-  $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
-  track("booking", {hotel: sel.h.Name, total: total});
-  $("formBox").style.display = "none";
-  $("doneBox").style.display = "block";
-}
 
 init();
 track("page_view");
