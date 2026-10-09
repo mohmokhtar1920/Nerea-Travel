@@ -283,22 +283,85 @@ async function sendBooking() {
   const name = $("name").value.trim(), phone = $("phone").value.trim();
   if (!name || !phone) { alert("من فضلك اكتب الاسم ورقم الموبايل"); return; }
   if (!(total > 0)) { alert("اختر تاريخ الدخول والخروج"); return; }
+  if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) {
+    alert("رقم الموبايل غير صحيح — اكتبه بالشكل 01xxxxxxxxx");
+    return;
+  }
+
   const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
-  const dep = Math.round(total * pay.pct / 100), ref = "NT-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+
   const row = {
-    customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
+    customer_name: name,
+    customer_phone: phone,
+    hotel_id: sel.h.id,
     Series_Trips_id: t ? t.id : null,
     check_in: t ? t.hotelIn : $("cin").value,
     check_out: t ? t.end_date : $("cout").value,
-    number_of_people: a + c, number_of_rooms: N($("rooms").value),
+    number_of_people: a + c,
+    number_of_rooms: N($("rooms").value),
     departure_points_id: needT ? N($("dep").value) : null,
     bus_seats: needT ? a + x : 0,
-    total_price: total, status: "Pending Confirmation", booking_ref: ref, deposit_amount: dep,
+    status: "Pending Confirmation",
     customer_service_call: $("callMe").checked,
     preferred_call_time: $("callMe").checked ? $("callTime").value : null,
-    adults: a, children: c, room_type: $("roomType").value, needs_transport: needT, extra_seats: x
+    adults: a,
+    children: c,
+    room_type: $("roomType").value,
+    needs_transport: needT,
+    extra_seats: x
   };
+
+  // الـ DB هيحسب السعر والعربون ورقم الحجز تلقائيًا
+  const r = await db.from("bookings").insert(row).select().single();
+
+  if (r.error) {
+    console.error(r.error);
+    alert("تعذر إرسال الطلب، حاول مرة أخرى");
+    return;
+  }
+
+  const saved = r.data;                // ← القيم الحقيقية من الداتابيز
+  const finalTotal = N(saved.total_price);
+  const dep        = N(saved.deposit_amount);
+  const ref        = saved.booking_ref;
+
+  const depName = needT
+    ? ((deps.find(y => y.id == saved.departure_points_id) || {}).name || "-")
+    : "-";
+  const nights = Math.round((new Date(saved.check_out) - new Date(saved.check_in)) / 86400000);
+
+  const msg = [
+    "طلب حجز جديد",
+    "رقم الحجز: " + ref,
+    "الاسم: " + name,
+    "الموبايل: " + phone,
+    "الفندق: " + sel.h.Name,
+    "النوع: " + (t ? "سيريال" : "عادي"),
+    "التاريخ: " + saved.check_in + " ← " + saved.check_out,
+    "عدد الليالي: " + nights,
+    "تاريخ التحرك: " + (t ? t.start_date : (needT ? saved.check_in : "-")),
+    "البالغين: " + a + " | الأطفال: " + c,
+    "الغرف: " + saved.number_of_rooms + " (" + saved.room_type + ")",
+    "الانتقالات: " + (needT ? "نعم (" + saved.bus_seats + " كراسي)" : "لا"),
+    "مكان التحرك: " + depName,
+    "الإجمالي: " + finalTotal.toLocaleString() + " جنيه",
+    "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه"
+  ].join("\n");
+
+  $("payInfo").innerText =
+    "رقم حجزك: " + ref +
+    "\nالعربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه" +
+    "\n\nحوّل المبلغ على:\n• إنستاباي: " + pay.insta +
+    "\n• فودافون كاش: " + pay.voda +
+    "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب.";
+
+  $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
+
+  track("booking", {hotel: sel.h.Name, total: finalTotal});
+  $("formBox").style.display = "none";
+  $("doneBox").style.display = "block";
+}
   let r = await db.from("bookings").insert(row);
   if (r.error && r.error.code === "42703") {
     const {adults, children, room_type, needs_transport, extra_seats, booking_ref, ...min} = row;
