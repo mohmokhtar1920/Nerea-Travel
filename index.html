@@ -83,7 +83,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 <div style="font-size:50px">✅</div>
 <h2 style="margin:10px 0">تم تسجيل طلب الحجز</h2>
 <div class="info" id="payInfo" style="text-align:right;white-space:pre-line;margin:12px 0"></div>
-<a id="waLink" class="wa" href="#" target="_blank">إرسال الحجز وصورة التحويل على واتساب</a>
+<a id="waLink" class="wa" href="#" target="_blank" onclick="track('whatsapp_click')">إرسال الحجز وصورة التحويل على واتساب</a>
 </div>
 
 <div id="formBox">
@@ -134,6 +134,9 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let imgs = {}, galImgs = [], galIdx = 0, dests = [], deps = [], list = [], sel = null, total = 0, salesPhone = "201012853009", pay = {insta: "mohamed.mokhtar99@instapay", voda: "01012853009", pct: 25};
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
+const vid = (() => { try { let v = localStorage.getItem("nt_vid"); if (!v) { v = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)); localStorage.setItem("nt_vid", v); } return v; } catch (e) { return "anon"; } })();
+const sid = Math.random().toString(36).slice(2);
+function track(ev, meta) { try { db.from("site_events").insert({visitor_id: vid, session_id: sid, event: ev, meta: meta || null}).then(() => {}, () => {}); } catch (e) {} }
 const RULES = {4: {days: 4, nights: 3, inOff: 1, outOff: 4}, 0: {days: 5, nights: 4, inOff: 1, outOff: 5}}; // 4=الخميس 0=الأحد
 const addDays = (d, n) => { const [y, m, dd] = d.split("-").map(Number); return new Date(Date.UTC(y, m - 1, dd + n)).toISOString().slice(0, 10); };
 const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); return /thu|خميس/.test(s) ? 4 : /sun|أحد|احد/.test(s) ? 0 : -1; };
@@ -207,12 +210,14 @@ async function searchTrips() {
         <button onclick="showHotel(${i})">عرض التفاصيل</button>
       </div></div>`;
   }).join("") : '<p class="note">لا توجد فنادق متاحة لهذه الوجهة</p>';
+  track("search", {destination: dest ? dest.Name : "", results: list.length});
   $("hotels").style.display = "block";
   $("hotels").scrollIntoView({behavior: "smooth"});
 }
 
 function showHotel(i) {
   sel = list[i];
+  track("hotel_view", {hotel: list[i].h.Name});
   const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
   $("formBox").style.display = "block"; $("doneBox").style.display = "none";
   $("mName").innerText = h.Name;
@@ -236,6 +241,7 @@ function showHotel(i) {
 }
 function openGallery(id) {
   const h = list.map(o => o.h).find(x => x.id == id);
+  track("gallery_open", {hotel: h ? h.Name : ""});
   let a = imgs[id] || [];
   if (!a.length && h && img(h)) a = [img(h)];
   if (!a.length) return;
@@ -309,11 +315,13 @@ async function sendBooking() {
     "الإجمالي: " + total.toLocaleString() + " جنيه", "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه"].join("\n");
   $("payInfo").innerText = "رقم حجزك: " + ref + "\nالعربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه\n\nحوّل المبلغ على:\n• إنستاباي: " + pay.insta + "\n• فودافون كاش: " + pay.voda + "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب.";
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
+  track("booking", {hotel: sel.h.Name, total: total});
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
 }
 
 init();
+track("page_view");
 </script>
 </body>
 </html>
