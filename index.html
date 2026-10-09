@@ -315,9 +315,9 @@ async function sendBooking() {
   // الـ DB هيحسب السعر والعربون ورقم الحجز تلقائيًا
   const r = await db.from("bookings").insert(row).select().single();
 
-  if (r.error) {
+   if (r.error) {
     console.error(r.error);
-    alert("تعذر إرسال الطلب، حاول مرة أخرى");
+    alert("خطأ:\n" + r.error.message + "\n\nالكود: " + r.error.code + "\nالتفاصيل: " + (r.error.details || "-") + "\nHint: " + (r.error.hint || "-"));
     return;
   }
 
