@@ -313,8 +313,7 @@ async function sendBooking() {
   };
 
   // الـ DB هيحسب السعر والعربون ورقم الحجز تلقائيًا
-  const r = await db.from("bookings").insert(row).select().single();
-
+const r = await db.rpc("create_booking", { payload: row });
    if (r.error) {
     console.error(r.error);
     alert("خطأ:\n" + r.error.message + "\n\nالكود: " + r.error.code + "\nالتفاصيل: " + (r.error.details || "-") + "\nHint: " + (r.error.hint || "-"));
