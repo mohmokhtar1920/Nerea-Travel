@@ -44,6 +44,12 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .wa{display:block;text-align:center;background:#25d366;color:#fff;text-decoration:none;font-weight:bold;padding:14px;border-radius:8px;margin-top:15px}
 @media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}}
 .gal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:3000;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:15px}#galMain{max-width:100%;max-height:68vh;border-radius:10px}.gthumbs{display:flex;gap:6px;overflow:auto;max-width:100%}.gthumbs img{height:56px;border-radius:6px;opacity:.55;cursor:pointer}.gthumbs img.on{opacity:1;outline:2px solid #d9b45b}.gnav{display:flex;gap:14px;align-items:center;color:#fff}.gx{position:absolute;top:12px;left:18px;color:#fff;font-size:34px;cursor:pointer}
+.fab{position:fixed;bottom:22px;left:22px;background:#0b1f3a;color:#fff;border:none;border-radius:30px;padding:14px 22px;font-weight:bold;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:500;font-size:15px;font-family:inherit}
+.fab:hover{background:#176b87}
+.stBox{background:#f0f6fa;padding:14px;border-radius:10px;margin-bottom:12px;white-space:pre-line;font-size:14px;line-height:1.7}
+.stBadge{display:inline-block;padding:6px 14px;border-radius:20px;color:#fff;font-weight:bold;font-size:14px}
+.payBox{background:#fff3cd;padding:15px;border-radius:10px;margin-top:12px;border-right:4px solid #e0a800}
+.payBox p{margin:6px 0;font-size:14px}
 </style>
 </head>
 <body>
@@ -75,6 +81,29 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 </section>
 
 <footer id="contact"><h3>Nerea Travel</h3><p>رحلتك تبدأ من هنا ✈️</p><p>© 2026 Nerea Travel</p></footer>
+
+<!-- زر متابعة الحجز -->
+<button class="fab" onclick="openTrack()">📋 متابعة الحجز</button>
+
+<!-- مودال متابعة الحجز -->
+<div class="modal" id="trackModal">
+  <div class="modal-box">
+    <span class="close" onclick="closeTrack()">×</span>
+
+    <div id="trackForm">
+      <h2 style="margin-bottom:15px">متابعة الحجز</h2>
+      <p style="color:#666;margin-bottom:15px;font-size:14px">اكتب رقم الحجز ورقم الموبايل اللي حجزت بيه</p>
+      <label>رقم الحجز</label>
+      <input type="text" id="tRef" placeholder="NT-00001">
+      <label>رقم الموبايل</label>
+      <input type="tel" id="tPhone" placeholder="01xxxxxxxxx">
+      <button style="width:100%" onclick="checkBooking(this)">عرض حالة الحجز</button>
+      <div id="tError" style="color:#c00;margin-top:10px;font-size:14px;text-align:center"></div>
+    </div>
+
+    <div id="trackResult" style="display:none"></div>
+  </div>
+</div>
 
 <div class="modal" id="hotelModal"><div class="modal-box">
 <span class="close" onclick="closeModal()">×</span>
@@ -313,8 +342,8 @@ async function sendBooking() {
   };
 
   // الـ DB هيحسب السعر والعربون ورقم الحجز تلقائيًا
-const r = await db.rpc("create_booking", { payload: row });
-   if (r.error) {
+  const r = await db.rpc("create_booking", { payload: row });
+  if (r.error) {
     console.error(r.error);
     alert("خطأ:\n" + r.error.message + "\n\nالكود: " + r.error.code + "\nالتفاصيل: " + (r.error.details || "-") + "\nHint: " + (r.error.hint || "-"));
     return;
@@ -361,6 +390,100 @@ const r = await db.rpc("create_booking", { payload: row });
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
 }
+
+/* ============ متابعة الحجز ============ */
+const ST_LABELS = {
+  "Pending Confirmation":  {label:"قيد التأكيد",        color:"#e0a800", icon:"⏳"},
+  "Waiting Confirmation":  {label:"في انتظار التأكيد",   color:"#e0a800", icon:"⏳"},
+  "Confirmed":             {label:"تم التأكيد",          color:"#17a2b8", icon:"✅"},
+  "Waiting Payment":       {label:"في انتظار الدفع",     color:"#fd7e14", icon:"💳"},
+  "Paid":                  {label:"تم الدفع",            color:"#28a745", icon:"💰"},
+  "Cancelled":             {label:"ملغي",                color:"#dc3545", icon:"❌"}
+};
+
+function openTrack() {
+  $("trackForm").style.display = "block";
+  $("trackResult").style.display = "none";
+  $("tError").innerText = "";
+  $("tRef").value = "";
+  $("tPhone").value = "";
+  $("trackModal").style.display = "flex";
+  track("track_open");
+}
+
+function closeTrack() { $("trackModal").style.display = "none"; }
+
+async function checkBooking(btn) {
+  const ref = $("tRef").value.trim(), phone = $("tPhone").value.trim();
+  $("tError").innerText = "";
+  if (!ref || !phone) { $("tError").innerText = "اكتب رقم الحجز ورقم الموبايل"; return; }
+
+  btn.disabled = true; btn.innerText = "جاري البحث...";
+  const r = await db.rpc("track_booking", { p_ref: ref, p_phone: phone });
+  btn.disabled = false; btn.innerText = "عرض حالة الحجز";
+
+  if (r.error) {
+    $("tError").innerText = "حصل خطأ، حاول تاني";
+    console.error(r.error);
+    return;
+  }
+  const d = r.data;
+  if (!d || !d.found) {
+    $("tError").innerText = "مفيش حجز بالبيانات دي. اتأكد من رقم الحجز والموبايل";
+    return;
+  }
+  showBookingResult(d);
+  track("track_view", {ref:d.booking_ref, status:d.status});
+}
+
+function showBookingResult(d) {
+  $("trackForm").style.display = "none";
+  $("trackResult").style.display = "block";
+
+  const st = ST_LABELS[d.status] || {label:d.status, color:"#999", icon:"📋"};
+  const nights = (d.check_in && d.check_out)
+    ? Math.round((new Date(d.check_out) - new Date(d.check_in)) / 86400000) : 0;
+
+  let html = `
+    <div style="text-align:center;margin-bottom:18px">
+      <div style="font-size:50px">${st.icon}</div>
+      <h2 style="margin:10px 0 6px">${st.label}</h2>
+      <span class="stBadge" style="background:${st.color}">${d.booking_ref}</span>
+    </div>
+    <div class="stBox">
+الفندق: ${d.hotel_name}
+التاريخ: ${d.check_in} ← ${d.check_out}
+عدد الليالي: ${nights}
+الأفراد: ${d.adults||0} كبار${d.children?" + "+d.children+" أطفال":""}
+الغرف: ${d.number_of_rooms} (${d.room_type})
+الإجمالي: ${Number(d.total_price||0).toLocaleString()} جنيه
+العربون: ${Number(d.deposit_amount||0).toLocaleString()} جنيه
+    </div>`;
+
+  if (d.status === "Waiting Payment") {
+    const s = d.settings || {};
+    const remaining = Math.max(Number(d.total_price||0) - Number(d.deposit_amount||0), 0);
+    const waHref = "https://wa.me/" + String(s.sales_phone||"").replace(/\D/g,"") +
+      "?text=" + encodeURIComponent("تحويل عربون حجز " + d.booking_ref);
+    html += `
+      <div class="payBox">
+        <h3 style="margin-bottom:10px">💳 يرجى إتمام الدفع</h3>
+        <p>حوّل العربون <b>${Number(d.deposit_amount||0).toLocaleString()} جنيه</b> على:</p>
+        <p>• إنستاباي: <b>${s.instapay_address||"-"}</b></p>
+        <p>• فودافون كاش: <b>${s.vodafone_cash||"-"}</b></p>
+        <p style="margin-top:10px;color:#666;font-size:13px">المبلغ المتبقي: ${remaining.toLocaleString()} جنيه</p>
+      </div>
+      <a class="wa" href="${waHref}" target="_blank" onclick="track('whatsapp_click')">إرسال صورة التحويل على واتساب</a>`;
+  }
+
+  html += `<button style="width:100%;margin-top:15px;background:#ddd;color:#172033" onclick="closeTrack()">إغلاق</button>`;
+  $("trackResult").innerHTML = html;
+}
+
+document.addEventListener("click", e => {
+  const tm = $("trackModal");
+  if (tm && e.target === tm) closeTrack();
+});
 
 init();
 track("page_view");
