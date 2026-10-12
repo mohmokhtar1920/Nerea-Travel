@@ -14,8 +14,90 @@ header{background:#0b1f3a;color:#fff;padding:16px 5%;display:flex;justify-conten
 button{border:none;border-radius:8px;padding:10px 16px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer}
 button:hover{opacity:.9}
 input,select,textarea{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%;font-family:inherit}
-#login{max-width:360px;margin:80px auto;background:#fff;padding:25px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.1)}
-#login input{margin-bottom:12px}
+
+/* ===== Login Page Modern Design ===== */
+#login{
+  position:fixed;inset:0;background:#f5f7fa;z-index:999;display:flex;align-items:stretch;overflow:hidden;
+  max-width:none;margin:0;padding:0;border-radius:0;box-shadow:none;
+}
+#login.hide{opacity:0;pointer-events:none;transition:opacity .4s ease}
+.loginLeft{
+  flex:1;background:linear-gradient(135deg,#0b1f3a 0%,#176b87 50%,#0b1f3a 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;
+  position:relative;overflow:hidden;
+}
+.loginLeft::before{
+  content:"";position:absolute;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(217,180,91,.15) 0%,transparent 70%);
+  top:-100px;right:-100px;animation:floatSlow 8s ease-in-out infinite;
+}
+.loginLeft::after{
+  content:"";position:absolute;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(101,199,247,.15) 0%,transparent 70%);
+  bottom:-100px;left:-100px;animation:floatSlow 10s ease-in-out infinite reverse;
+}
+.loginLeft img{
+  width:180px;height:auto;margin-bottom:20px;animation:fadeDown .8s ease;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.3));position:relative;z-index:2;
+}
+.loginLeft h1{color:#fff;font-size:32px;margin-bottom:10px;animation:fadeDown .9s ease;position:relative;z-index:2}
+.loginLeft h1 span{color:#d9b45b}
+.loginLeft p{color:rgba(255,255,255,.7);font-size:15px;text-align:center;animation:fadeDown 1s ease;position:relative;z-index:2}
+.loginRight{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:#fff;position:relative}
+.loginBox{width:100%;max-width:400px;animation:fadeUp .8s ease .2s backwards}
+.loginBox h2{font-size:28px;color:#0b1f3a;margin-bottom:8px;text-align:center}
+.loginBox .subTitle{text-align:center;color:#888;font-size:14px;margin-bottom:30px}
+.field{position:relative;margin-bottom:22px}
+.field input{
+  width:100%;padding:20px 16px 8px 16px;border:2px solid #e5e9f0;border-radius:12px;
+  font-size:15px;background:#fff;color:#172033;transition:all .25s ease;font-family:inherit;
+}
+.field input:focus{border-color:#176b87;box-shadow:0 0 0 4px rgba(23,107,135,.1);outline:none}
+.field label{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#999;font-size:15px;
+  pointer-events:none;transition:all .2s ease;background:#fff;padding:0 6px;font-weight:normal;margin:0;
+}
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label{
+  top:0;font-size:12px;color:#176b87;font-weight:bold;
+}
+.field .togglePw{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  background:transparent;border:none;cursor:pointer;font-size:18px;padding:4px;color:#999;z-index:3;
+}
+.field .togglePw:hover{color:#176b87}
+.loginBtn{
+  width:100%;padding:16px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;font-size:16px;font-weight:bold;
+  cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;font-family:inherit;
+}
+.loginBtn:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(11,31,58,.3)}
+.loginBtn:active{transform:translateY(0)}
+.loginBtn:disabled{opacity:.8;cursor:wait;transform:none}
+.loginBtn::before{
+  content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+  transition:left .5s ease;
+}
+.loginBtn:hover::before{left:100%}
+#msg{
+  background:#f8d7da;color:#721c24;padding:10px 14px;border-radius:10px;font-size:13px;
+  margin-bottom:16px;text-align:center;display:none;animation:fadeUp .3s ease;
+}
+#msg:not(:empty){display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes floatSlow{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,-20px) scale(1.1)}}
+@media(max-width:800px){
+  #login{flex-direction:column}
+  .loginLeft{padding:30px 20px;min-height:200px}
+  .loginLeft img{width:120px;margin-bottom:10px}
+  .loginLeft h1{font-size:22px}
+  .loginLeft p{font-size:13px}
+  .loginRight{padding:24px 20px;flex:1}
+  .loginBox h2{font-size:22px}
+}
+
 #app{display:none;padding:20px 5%}
 .bar{display:flex;gap:10px;margin-bottom:18px;align-items:center}
 .bar select{max-width:260px}
@@ -100,11 +182,28 @@ body.dark .proofBox{background:#1e293b;border-color:#334155}
 </header>
 
 <div id="login">
-  <h2 style="margin-bottom:15px">تسجيل الدخول</h2>
-  <div id="msg"></div>
-  <input type="email" id="email" placeholder="الإيميل">
-  <input type="password" id="pass" placeholder="كلمة السر">
-  <button style="width:100%" onclick="login()">دخول</button>
+  <div class="loginLeft">
+    <img src="logo.png?v=2" alt="Nerea Travel">
+    <h1>Nerea <span>Travel</span></h1>
+    <p>لوحة التحكم — إدارة الحجوزات والعملاء</p>
+  </div>
+  <div class="loginRight">
+    <div class="loginBox">
+      <h2>تسجيل الدخول</h2>
+      <p class="subTitle">أهلاً بك، سجّل دخولك للمتابعة</p>
+      <div id="msg"></div>
+      <div class="field">
+        <input type="email" id="email" placeholder=" " autocomplete="email">
+        <label for="email">البريد الإلكتروني</label>
+      </div>
+      <div class="field">
+        <input type="password" id="pass" placeholder=" " autocomplete="current-password">
+        <label for="pass">كلمة السر</label>
+        <button type="button" class="togglePw" onclick="togglePw()" title="إظهار كلمة السر">👁️</button>
+      </div>
+      <button class="loginBtn" id="loginBtn" onclick="login()">دخول</button>
+    </div>
+  </div>
 </div>
 
 <div id="adminPanel" class="adminPanel"><h2>⚙️ إدارة الموقع — Admin فقط</h2><div class="tabs"><button class="active" onclick="showTab('hotels',this)">الفنادق</button><button onclick="showTab('trips',this)">الرحلات</button><button onclick="showTab('destinations',this)">الوجهات</button><button onclick="showTab('points',this)">نقاط التحرك</button><button onclick="showTab('coupons',this);loadCoupons()">🎟️ الكوبونات</button><button onclick="showTab('reviews',this);loadReviews()">⭐ التقييمات</button><button onclick="showTab('reports',this);loadReports()">💰 التقارير المالية</button><button onclick="showTab('staff',this);loadStaff()">👥 الموظفون</button><button onclick="showTab('stats',this);loadStats()">📊 الإحصائيات</button></div><div id="tab-hotels"><button onclick="newHotel()">➕ إضافة فندق</button><div id="hotelForm" class="adminForm" style="display:none"><input type="hidden" id="aHotelId"><input id="aHotelName" placeholder="اسم الفندق"><select id="aHotelDest"></select><select id="aHotelSeries"><option value="false">Non-Series</option><option value="true">Series</option></select><input id="aSingle" type="number" placeholder="Single"><input id="aDouble" type="number" placeholder="Double"><input id="aTriple" type="number" placeholder="Triple"><input id="aNight" type="number" placeholder="سعر الليلة"><input id="aChildAge" type="number" placeholder="سن الطفل"><input id="aSeatPrice" type="number" placeholder="سعر الكرسي"><input id="aLat" type="number" step="any" placeholder="خط العرض (lat)"><input id="aLong" type="number" step="any" placeholder="خط الطول (lng)"><input class="full" id="aMaps" placeholder="رابط خرائط جوجل (مثال: https://maps.app.goo.gl/...)"><input class="full" id="aImage" placeholder="رابط الصورة"><input class="full" id="aDesc" placeholder="الوصف"><button onclick="saveHotel()">حفظ</button><button class="secondary" onclick="cancelHotel()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الفندق</th><th>الوجهة</th><th>النوع</th><th>الموقع</th><th>إجراء</th></tr></thead><tbody id="hotelRows"></tbody></table></div></div><div id="tab-trips" style="display:none"><button onclick="newTrip()">➕ إضافة رحلة</button><div id="tripForm" class="adminForm" style="display:none"><input type="hidden" id="aTripId"><select id="aTripHotel"></select><select id="aTripDay"><option>Thursday</option><option>Sunday</option></select><input type="date" id="aTripStart"><input type="date" id="aTripEnd"><input type="number" id="aTripNights" placeholder="الليالي"><input type="number" id="aTripPrice" placeholder="سعر الفرد"><input type="number" id="aTripSingle" placeholder="Single"><input type="number" id="aTripChild" placeholder="سعر الطفل"><input type="number" id="aTripChildAge" value="10" placeholder="سن الطفل"><input type="number" id="aTripSeat" placeholder="سعر الكرسي"><input type="number" id="aTripRooms" placeholder="الغرف"><input type="number" id="aTripSeats" placeholder="المقاعد"><button onclick="saveTrip()">حفظ</button><button class="secondary" onclick="cancelTrip()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الفندق</th><th>اليوم</th><th>التاريخ</th><th>السعر</th><th>إجراء</th></tr></thead><tbody id="tripRows"></tbody></table></div></div><div id="tab-destinations" style="display:none"><button onclick="newDest()">➕ إضافة وجهة</button><div id="destForm" class="adminForm" style="display:none"><input type="hidden" id="aDestId"><input id="aDestName" placeholder="اسم الوجهة"><input id="aDestImage" placeholder="رابط الصورة"><input class="full" id="aDestDesc" placeholder="الوصف"><button onclick="saveDest()">حفظ</button><button class="secondary" onclick="cancelDest()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><tbody id="destRows"></tbody></table></div></div><div id="tab-points" style="display:none"><button onclick="newPoint()">➕ إضافة نقطة تحرك</button><div id="pointForm" class="adminForm" style="display:none"><input type="hidden" id="aPointId"><input id="aPointName" placeholder="اسم نقطة التحرك"><input type="number" id="aPointPrice" placeholder="السعر الإضافي"><button onclick="savePoint()">حفظ</button><button class="secondary" onclick="cancelPoint()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><tbody id="pointRows"></tbody></table></div></div><div id="tab-coupons" style="display:none"><button onclick="newCoupon()">➕ إضافة كوبون</button><div id="couponForm" class="adminForm" style="display:none"><input type="hidden" id="aCouponId"><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الكود</label><input id="aCouponCode" placeholder="WELCOME10" style="text-transform:uppercase"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">النوع</label><select id="aCouponType"><option value="percent">نسبة %</option><option value="fixed">مبلغ ثابت</option></select></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">القيمة (10 = 10% أو 200 جنيه)</label><input type="number" id="aCouponValue" min="0" step="1"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الحد الأدنى للحجز</label><input type="number" id="aCouponMin" min="0" value="0"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">أقصى عدد استخدامات</label><input type="number" id="aCouponMaxUses" min="1" placeholder="اتركه فاضي = غير محدود"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">تاريخ الانتهاء</label><input type="date" id="aCouponExpires"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الحالة</label><select id="aCouponActive"><option value="true">مفعّل</option><option value="false">موقوف</option></select></div><div style="grid-column:1/-1;display:flex;gap:10px"><button onclick="saveCoupon()">حفظ</button><button class="secondary" onclick="cancelCoupon()">إلغاء</button></div></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الكود</th><th>النوع</th><th>القيمة</th><th>الحد الأدنى</th><th>الاستخدام</th><th>الانتهاء</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="couponRows"></tbody></table></div></div><div id="tab-reviews" style="display:none"><button onclick="loadReviews()">🔄 تحديث</button><div class="tableWrap" style="margin-top:12px"><table class="simpleTable"><thead><tr><th>الفندق</th><th>العميل</th><th>التقييم</th><th>التعليق</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="reviewRows"></tbody></table></div></div><div id="tab-reports" style="display:none"><div class="rangeTabs"><button class="active" data-range="30" onclick="setReportRange(30,this)">آخر 30 يوم</button><button data-range="90" onclick="setReportRange(90,this)">آخر 90 يوم</button><button data-range="365" onclick="setReportRange(365,this)">آخر سنة</button><button data-range="all" onclick="setReportRange('all',this)">كل الفترات</button><button class="exportBtn" style="margin-right:auto" onclick="exportBookingsCSV()">⬇️ تصدير CSV</button></div><div class="reportGrid" id="reportCards"></div><div class="chartBox"><h3>📅 الإيرادات شهريًا</h3><div id="monthlyChart"></div></div><div class="chartBox"><h3>🏨 أكثر الفنادق حجزًا</h3><div id="topHotelsChart"></div></div><div class="chartBox"><h3>📍 نقاط التحرك الأكثر استخدامًا</h3><div id="topPointsChart"></div></div><div class="chartBox"><h3>📋 الحجوزات حسب الحالة</h3><div id="statusChart"></div></div></div><div id="tab-staff" style="display:none"><button onclick="loadStaff()">تحديث</button><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الموظف</th><th>الدور</th><th>آخر دخول</th><th>آخر نشاط</th><th>الحالة</th></tr></thead><tbody id="staffRows"></tbody></table></div><h3 style="margin:15px 0 8px">سجل الدخول (آخر 50)</h3><div class="tableWrap"><table class="simpleTable"><tbody id="loginRows"></tbody></table></div></div><div id="tab-stats" style="display:none"><select id="statDays" onchange="loadStats()" style="max-width:200px;margin-bottom:12px"><option value="1">اليوم</option><option value="7" selected>آخر 7 أيام</option><option value="30">آخر 30 يوم</option></select><div class="grid" id="statCards"></div><div class="adminForm"><div class="full" id="statRates" style="background:#f0f6fa;padding:12px;border-radius:10px"></div><div><b>أكثر الوجهات بحثًا</b><table class="simpleTable"><tbody id="statDest"></tbody></table></div><div><b>أكثر الفنادق مشاهدة</b><table class="simpleTable"><tbody id="statHotels"></tbody></table></div><div class="full"><b>الزوار يوميًا</b><table class="simpleTable"><tbody id="statDays2"></tbody></table></div></div></div></div>
@@ -174,11 +273,46 @@ const fmtNum = n => Number(n||0).toLocaleString("en-EG");
 
 $("filter").innerHTML += ST.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
 
-async function start(){const {data,error}=await db.auth.getSession();if(error)console.error(error);const ok=!!data.session;$('login').style.display=ok?'none':'block';$('app').style.display=ok?'block':'none';$('outBtn').style.display=ok?'block':'none';if(!ok)return;const uid=data.session.user.id;const p=await db.from("staff_profiles").select("role").eq("user_id",uid).maybeSingle();if(p.error||!p.data){alert("هذا الحساب غير مسجل كموظف");await db.auth.signOut();return;}role=p.data.role;await ping(window.justLogged);window.justLogged=false;clearInterval(hb);hb=setInterval(()=>ping(false),60000);userEmail=data.session.user.email||"";$('roleBadge').style.display='inline-block';$('roleBadge').innerText=role==='admin'?'Admin':'خدمة العملاء';$('adminPanel').style.display=role==='admin'?'block':'none';await loadAll();if(role==='admin')await loadAdminData();}
+async function start(){
+  const {data,error}=await db.auth.getSession();
+  if(error)console.error(error);
+  const ok=!!data.session;
+  if(ok){ $('login').style.display='none'; }
+  else{ $('login').style.display='flex'; $('login').classList.remove('hide'); }
+  $('app').style.display=ok?'block':'none';
+  $('outBtn').style.display=ok?'block':'none';
+  if(!ok)return;
+  const uid=data.session.user.id;
+  const p=await db.from("staff_profiles").select("role").eq("user_id",uid).maybeSingle();
+  if(p.error||!p.data){ alert("هذا الحساب غير مسجل كموظف"); await db.auth.signOut(); return; }
+  role=p.data.role;
+  await ping(window.justLogged);
+  window.justLogged=false;
+  clearInterval(hb);
+  hb=setInterval(()=>ping(false),60000);
+  userEmail=data.session.user.email||"";
+  $('roleBadge').style.display='inline-block';
+  $('roleBadge').innerText=role==='admin'?'Admin':'خدمة العملاء';
+  $('adminPanel').style.display=role==='admin'?'block':'none';
+  await loadAll();
+  if(role==='admin')await loadAdminData();
+}
+
+function togglePw(){
+  const p = $("pass");
+  const btn = document.querySelector(".togglePw");
+  if(p.type === "password"){ p.type = "text"; btn.innerText = "🙈"; }
+  else{ p.type = "password"; btn.innerText = "👁️"; }
+}
 
 async function login(){
   $("msg").innerText = "";
+  const btn = $("loginBtn");
+  btn.disabled = true;
+  btn.innerText = "⏳ جاري التحقق...";
   const { error } = await db.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pass").value });
+  btn.disabled = false;
+  btn.innerText = "دخول";
   if(error){ $("msg").innerText = "الإيميل أو كلمة السر غير صحيحة"; return; }
   window.justLogged = true;
   await start();
@@ -189,6 +323,8 @@ async function logout(){
   const u=(await db.auth.getUser()).data.user;
   if(u) await db.from("staff_activity").update({last_seen:null}).eq("user_id",u.id);
   await db.auth.signOut();
+  $('login').style.display='flex';
+  $('login').classList.remove('hide');
   await start();
 }
 
@@ -357,7 +493,6 @@ function loadReports() {
   if (role !== "admin") return;
   const data = getReportData();
 
-  // حساب الإحصائيات الأساسية
   const paid = data.filter(b => b.payment_status === "Paid" || b.status === "Paid");
   const confirmed = data.filter(b => b.status === "Confirmed");
   const pending = data.filter(b => b.status === "Pending Confirmation" || b.status === "Waiting Confirmation" || b.status === "Waiting Payment");
@@ -371,7 +506,6 @@ function loadReports() {
   const avgBooking = data.length ? data.reduce((s,b) => s + Number(b.total_price||0), 0) / data.length : 0;
   const convRate = data.length ? Math.round(paid.length * 100 / data.length) : 0;
 
-  // بطاقات
   $("reportCards").innerHTML = `
     <div class="reportCard green">
       <div class="label">💰 إجمالي الإيرادات المحصلة</div>
@@ -405,18 +539,11 @@ function loadReports() {
     </div>
   `;
 
-  // رسم الإيرادات الشهرية
   renderMonthlyChart(data);
-
-  // أكثر الفنادق حجزًا
   renderTopChart(data, "hotel_id", hotels, "topHotelsChart", "حجز", "gold");
-
-  // نقاط التحرك
   const pointsMap = {};
   departurePoints.forEach(p => pointsMap[p.id] = p.name);
   renderTopChart(data, "departure_points_id", pointsMap, "topPointsChart", "حجز", "green");
-
-  // الحالة
   renderStatusChart(data);
 }
 
@@ -513,7 +640,6 @@ function exportBookingsCSV() {
   const headers = ["رقم الحجز","العميل","الموبايل","الفندق","الدخول","الخروج","عدد الأفراد","الغرف","نوع الغرفة","الإجمالي","العربون","حالة الدفع","الحالة","كود الخصم","قيمة الخصم","تاريخ الإنشاء"];
   const lines = data.map(b => {
     const hotelName = hotels[String(b.hotel_id)] || "";
-    const pointName = (departurePoints.find(x=>String(x.id)===String(b.departure_points_id))||{}).name || "";
     return [
       b.booking_ref || b.id, b.customer_name || "", b.customer_phone || "",
       hotelName, b.check_in || "", b.check_out || "",
@@ -527,7 +653,6 @@ function exportBookingsCSV() {
       return /[,"\n]/.test(s) ? '"' + s + '"' : s;
     }).join(",");
   });
-  // BOM for Excel UTF-8
   const csv = "\uFEFF" + headers.join(",") + "\n" + lines.join("\n");
   const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
   const url = URL.createObjectURL(blob);
