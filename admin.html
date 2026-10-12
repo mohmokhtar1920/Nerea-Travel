@@ -49,12 +49,13 @@ input,select,textarea{padding:11px;border:1px solid #ddd;border-radius:8px;width
 .loginBox .subTitle{text-align:center;color:#888;font-size:14px;margin-bottom:30px}
 .field{position:relative;margin-bottom:22px}
 .field input{
-  width:100%;padding:20px 16px 8px 16px;border:2px solid #e5e9f0;border-radius:12px;
+  width:100%;padding:22px 16px 8px 16px;border:2px solid #e5e9f0;border-radius:12px;
   font-size:15px;background:#fff;color:#172033;transition:all .25s ease;font-family:inherit;
+  text-align:right;
 }
 .field input:focus{border-color:#176b87;box-shadow:0 0 0 4px rgba(23,107,135,.1);outline:none}
 .field label{
-  position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#999;font-size:15px;
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#999;font-size:15px;
   pointer-events:none;transition:all .2s ease;background:#fff;padding:0 6px;font-weight:normal;margin:0;
 }
 .field input:focus + label,
@@ -64,6 +65,7 @@ input,select,textarea{padding:11px;border:1px solid #ddd;border-radius:8px;width
 .field .togglePw{
   position:absolute;left:16px;top:50%;transform:translateY(-50%);
   background:transparent;border:none;cursor:pointer;font-size:18px;padding:4px;color:#999;z-index:3;
+  width:auto;
 }
 .field .togglePw:hover{color:#176b87}
 .loginBtn{
@@ -114,7 +116,6 @@ input,select,textarea{padding:11px;border:1px solid #ddd;border-radius:8px;width
 .s-Paid{border-color:#28a745}
 .s-Cancelled{border-color:#dc3545}
 .s-Waiting{border-color:#fd7e14}
-#msg{color:#c00;margin-bottom:10px;font-size:14px}
 
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;padding:20px}
 .modalBox{background:#fff;width:100%;max-width:850px;max-height:90vh;overflow-y:auto;border-radius:18px;padding:25px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
@@ -495,8 +496,6 @@ function loadReports() {
 
   const paid = data.filter(b => b.payment_status === "Paid" || b.status === "Paid");
   const confirmed = data.filter(b => b.status === "Confirmed");
-  const pending = data.filter(b => b.status === "Pending Confirmation" || b.status === "Waiting Confirmation" || b.status === "Waiting Payment");
-  const cancelled = data.filter(b => b.status === "Cancelled");
 
   const totalRevenue = paid.reduce((s,b) => s + Number(b.total_price||0), 0);
   const totalDeposits = paid.reduce((s,b) => s + Number(b.deposit_amount||0), 0);
