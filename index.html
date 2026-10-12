@@ -58,18 +58,14 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .stBadge{display:inline-block;padding:6px 14px;border-radius:20px;color:#fff;font-weight:bold;font-size:14px}
 .payBox{background:#fff3cd;padding:15px;border-radius:10px;margin-top:12px;border-right:4px solid #e0a800}
 .payBox p{margin:6px 0;font-size:14px}
-  .uploadBox{background:#e8f1ff;padding:18px;border-radius:12px;margin-top:15px;border-right:4px solid #176b87;text-align:center}
-.uploadBox h3{margin-bottom:8px;color:#0b1f3a}
-.uploadBox p{font-size:13px;color:#555;margin-bottom:12px}
-.uploadBox input[type=file]{display:none}
-.uploadBtn{display:inline-block;background:#176b87;color:#fff;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:14px;border:none}
-.uploadBtn:hover{background:#0b1f3a}
-.uploadBtn:disabled{opacity:.6;cursor:not-allowed}
-.uploadPreview{max-width:100%;max-height:200px;border-radius:10px;margin-top:12px;display:block;margin-left:auto;margin-right:auto}
-.uploadedBadge{background:#d4edda;color:#155724;padding:10px 14px;border-radius:8px;font-weight:bold;font-size:14px;margin-top:10px;display:inline-block}
-body.dark .uploadBox{background:#1e293b;border-color:#5eb8d6}
-body.dark .uploadBox h3{color:#e2e8f0}
-body.dark .uploadBox p{color:#94a3b8}
+
+/* Upload proof */
+.uploadBtn{display:block;text-align:center;background:#25d366;color:#fff;font-weight:bold;padding:14px;border-radius:8px;cursor:pointer;user-select:none;margin-top:12px;transition:background .2s}
+.uploadBtn:hover{background:#1ea855}
+.uploadBtn.loading{background:#ffc107;color:#333;cursor:wait}
+.uploadBtn.done{background:#28a745;cursor:default}
+.proofPreview{margin-top:12px;text-align:center;animation:fadeUp .4s ease}
+.proofPreview img{max-width:100%;max-height:250px;border-radius:10px;border:2px solid #28a745;background:#fff}
 
 /* Toast */
 #toastBox{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:90%}
@@ -93,6 +89,8 @@ body.dark .close{color:#e2e8f0}
 body.dark .toast{background:#1e293b;color:#e2e8f0;border-right-color:#5eb8d6}
 body.dark .toast.ok{background:#14532d;color:#bbf7d0}
 body.dark .toast.err{background:#4c1d24;color:#fecaca}
+body.dark .uploadBtn{background:#1e8a45}
+body.dark .uploadBtn:hover{background:#166534}
 
 /* Animations */
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -159,14 +157,11 @@ body.dark .toast.err{background:#4c1d24;color:#fecaca}
 <h2 style="margin:10px 0">تم تسجيل طلب الحجز</h2>
 <div class="info" id="payInfo" style="text-align:right;white-space:pre-line;margin:12px 0"></div>
 <a id="waLink" class="wa" href="#" target="_blank" onclick="track('whatsapp_click')">إرسال الحجز وصورة التحويل على واتساب</a>
-
-<div class="uploadBox" id="uploadProofBox">
-  <h3>📷 ارفع صورة التحويل</h3>
-  <p>اختار صورة التحويل من موبايلك (أو صورة الشاشة)</p>
-  <input type="file" id="proofFile" accept="image/*" onchange="previewProof(event)">
-  <label for="proofFile" class="uploadBtn" id="proofLabel">اختار صورة</label>
-  <div id="proofPreviewWrap"></div>
-  <button class="uploadBtn" id="proofSubmit" style="display:none;margin-top:12px" onclick="uploadProof()">رفع الصورة</button>
+<div id="uploadArea">
+  <p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">أو ارفع صورة التحويل مباشرة هنا:</p>
+  <label class="uploadBtn" id="uploadBtn">📷 ارفع صورة التحويل
+    <input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)">
+  </label>
 </div>
 </div>
 
@@ -216,6 +211,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let imgs = {}, galImgs = [], galIdx = 0, dests = [], deps = [], list = [], sel = null, total = 0, salesPhone = "201012853009", pay = {insta: "mohamed.mokhtar99@instapay", voda: "01012853009", pct: 25};
+let lastBooking = { ref: "", phone: "" };
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
 const vid = (() => { try { let v = localStorage.getItem("nt_vid"); if (!v) { v = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)); localStorage.setItem("nt_vid", v); } return v; } catch (e) { return "anon"; } })();
@@ -225,8 +221,7 @@ const RULES = {4: {days: 4, nights: 3, inOff: 1, outOff: 4}, 0: {days: 5, nights
 const addDays = (d, n) => { const [y, m, dd] = d.split("-").map(Number); return new Date(Date.UTC(y, m - 1, dd + n)).toISOString().slice(0, 10); };
 const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); return /thu|خميس/.test(s) ? 4 : /sun|أحد|احد/.test(s) ? 0 : -1; };
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
-let currentProofRef = "", currentProofPhone = "";
-  
+
 /* ============ Toast Notifications ============ */
 function toast(msg, type, dur) {
   type = type || "info"; dur = dur || 3000;
@@ -268,6 +263,97 @@ function fillCustomer() {
     if (n && !$("name").value) $("name").value = n;
     if (p && !$("phone").value) $("phone").value = p;
   } catch (e) {}
+}
+
+/* ============ Upload Payment Proof ============ */
+function resizeImage(file, maxSize) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const k = Math.min(1, maxSize / Math.max(img.width, img.height));
+      canvas.width = Math.round(img.width * k);
+      canvas.height = Math.round(img.height * k);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(b => { URL.revokeObjectURL(img.src); resolve(b || file); }, "image/jpeg", 0.85);
+    };
+    img.onerror = () => reject(new Error("فشل تحميل الصورة"));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+function onProofSelected(el) {
+  const file = el.files[0];
+  if (!file) return;
+  uploadPaymentProof(lastBooking.ref, lastBooking.phone, el, file);
+}
+
+async function uploadPaymentProof(ref, phone, inputEl, file) {
+  if (!ref || !phone) { toast("مش قادرين نحدد الحجز", "err"); return; }
+  if (!file.type.startsWith("image/")) { toast("اختار صورة من فضلك", "err"); return; }
+  if (file.size > 10 * 1024 * 1024) { toast("الصورة كبيرة (أقصى 10 ميجا)", "err"); return; }
+
+  const btn = inputEl.closest("label") || $("uploadBtn");
+  const origText = btn ? btn.innerHTML : "";
+
+  if (btn) { btn.classList.add("loading"); btn.innerText = "⏳ جاري رفع الصورة..."; }
+
+  try {
+    const blob = await resizeImage(file, 1400);
+    const path = `${ref}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+    const up = await db.storage.from("payment-proofs").upload(path, blob, { contentType: "image/jpeg", upsert: false });
+
+    if (up.error) {
+      console.error(up.error);
+      toast("تعذر رفع الصورة: " + up.error.message, "err", 5000);
+      if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
+      inputEl.value = "";
+      return;
+    }
+
+    const url = db.storage.from("payment-proofs").getPublicUrl(path).data.publicUrl;
+    const r = await db.rpc("attach_payment_proof", { p_ref: ref, p_phone: phone, p_url: url });
+
+    if (r.error || !r.data || !r.data.ok) {
+      console.error(r.error, r.data);
+      toast("تعذر تثبيت الصورة على الحجز", "err", 5000);
+      if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
+      inputEl.value = "";
+      return;
+    }
+
+    toast("✅ تم رفع صورة التحويل بنجاح", "ok", 4000);
+    track("payment_proof_uploaded", {ref: ref});
+    markUploadDone(url);
+
+  } catch (err) {
+    console.error(err);
+    toast("حصل خطأ أثناء الرفع", "err");
+    if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
+    inputEl.value = "";
+  }
+}
+
+function markUploadDone(url) {
+  // في doneBox
+  const area = $("uploadArea");
+  if (area) {
+    area.outerHTML = `
+      <div class="proofPreview">
+        <p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p>
+        <img src="${url}" alt="صورة التحويل">
+      </div>`;
+    return;
+  }
+  // في trackResult (متابعة الحجز)
+  const box = $("trackUploadArea");
+  if (box) {
+    box.outerHTML = `
+      <div class="proofPreview">
+        <p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p>
+        <img src="${url}" alt="صورة التحويل">
+      </div>`;
+  }
 }
 
 async function init() {
@@ -350,6 +436,20 @@ function showHotel(i) {
   track("hotel_view", {hotel: list[i].h.Name});
   const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
   $("formBox").style.display = "block"; $("doneBox").style.display = "none";
+  // إعادة تعيين زر الرفع لو كان اتغير
+  const oldPreview = document.querySelector("#doneBox .proofPreview");
+  if (oldPreview) oldPreview.remove();
+  const oldArea = document.querySelector("#doneBox #uploadArea");
+  if (!oldArea) {
+    const newArea = document.createElement("div");
+    newArea.id = "uploadArea";
+    newArea.innerHTML = `
+      <p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">أو ارفع صورة التحويل مباشرة هنا:</p>
+      <label class="uploadBtn" id="uploadBtn">📷 ارفع صورة التحويل
+        <input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)">
+      </label>`;
+    $("doneBox").appendChild(newArea);
+  }
   $("mName").innerText = h.Name;
   $("mDesc").innerText = h.description || "";
   $("mImg").style.backgroundImage = img(h) ? `url('${img(h)}')` : "";
@@ -409,55 +509,7 @@ function calc() {
   }
   $("total").innerText = total > 0 ? "الإجمالي: " + total.toLocaleString() + " جنيه" : "الإجمالي: اختر البيانات المطلوبة";
 }
-/* ============ Payment Proof Upload ============ */
-function previewProof(e) {
-  const f = e.target.files[0];
-  if (!f) return;
-  if (f.size > 5 * 1024 * 1024) { toast("الصورة كبيرة — الحد الأقصى 5 ميجا", "err"); e.target.value = ""; return; }
-  const reader = new FileReader();
-  reader.onload = ev => {
-    $("proofPreviewWrap").innerHTML = `<img class="uploadPreview" src="${ev.target.result}" alt="preview">`;
-    $("proofSubmit").style.display = "inline-block";
-  };
-  reader.readAsDataURL(f);
-}
 
-async function uploadProof() {
-  const f = $("proofFile").files[0];
-  if (!f) { toast("اختار صورة الأول", "info"); return; }
-  const btn = $("proofSubmit");
-  btn.disabled = true; btn.innerText = "جاري الرفع...";
-
-  const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
-  const path = currentProofRef + "-" + Date.now() + "." + ext;
-
-  const up = await db.storage.from("payment-proofs").upload(path, f, { contentType: f.type, upsert: false });
-  if (up.error) {
-    console.error(up.error);
-    toast("تعذر رفع الصورة: " + up.error.message, "err", 5000);
-    btn.disabled = false; btn.innerText = "رفع الصورة";
-    return;
-  }
-
-  const url = db.storage.from("payment-proofs").getPublicUrl(path).data.publicUrl;
-
-  const r = await db.rpc("attach_payment_proof", { p_ref: currentProofRef, p_phone: currentProofPhone, p_url: url });
-  if (r.error || !r.data || !r.data.ok) {
-    console.error(r.error || r.data);
-    toast("تعذر حفظ الصورة، حاول تاني", "err");
-    btn.disabled = false; btn.innerText = "رفع الصورة";
-    return;
-  }
-
-  track("payment_proof_uploaded", { ref: currentProofRef });
-  $("uploadProofBox").innerHTML = `
-    <h3>✅ تم رفع صورة التحويل</h3>
-    <p style="margin-top:8px">فريق خدمة العملاء هيراجع الصورة ويتواصل معاك قريبًا</p>
-    <img class="uploadPreview" src="${url}" alt="payment proof">
-    <div class="uploadedBadge">تم الاستلام بنجاح</div>`;
-  toast("✅ تم رفع صورة التحويل", "ok", 4000);
-}
-  
 async function sendBooking() {
   const name = $("name").value.trim(), phone = $("phone").value.trim();
   if (!name || !phone) { toast("اكتب الاسم ورقم الموبايل", "info"); return; }
@@ -496,6 +548,7 @@ async function sendBooking() {
   const dep        = N(saved.deposit_amount);
   const ref        = saved.booking_ref;
 
+  lastBooking = { ref: ref, phone: phone };
   saveCustomer(name, phone);
 
   const depName = needT
@@ -530,27 +583,10 @@ async function sendBooking() {
 
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
 
-   track("booking", {hotel: sel.h.Name, total: finalTotal});
+  track("booking", {hotel: sel.h.Name, total: finalTotal});
   toast("✅ تم تسجيل حجزك: " + ref, "ok", 4000);
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
-
-  // إعادة تهيئة منطقة الرفع
-  currentProofRef = ref;
-  currentProofPhone = phone;
-  $("proofFile").value = "";
-  $("proofPreviewWrap").innerHTML = "";
-  $("proofSubmit").style.display = "none";
-  $("proofSubmit").disabled = false;
-  $("proofSubmit").innerText = "رفع الصورة";
-  $("uploadProofBox").style.display = "block";
-  $("uploadProofBox").innerHTML = `
-    <h3>📷 ارفع صورة التحويل</h3>
-    <p>اختار صورة التحويل من موبايلك (أو صورة الشاشة)</p>
-    <input type="file" id="proofFile" accept="image/*" onchange="previewProof(event)">
-    <label for="proofFile" class="uploadBtn" id="proofLabel">اختار صورة</label>
-    <div id="proofPreviewWrap"></div>
-    <button class="uploadBtn" id="proofSubmit" style="display:none;margin-top:12px" onclick="uploadProof()">رفع الصورة</button>`;
 }
 
 /* ============ متابعة الحجز ============ */
@@ -594,6 +630,7 @@ async function checkBooking(btn) {
     $("tError").innerText = "مفيش حجز بالبيانات دي. اتأكد من رقم الحجز والموبايل";
     return;
   }
+  lastBooking = { ref: d.booking_ref, phone: phone };
   showBookingResult(d);
   track("track_view", {ref:d.booking_ref, status:d.status});
 }
@@ -634,16 +671,25 @@ function showBookingResult(d) {
         <p>• إنستاباي: <b>${s.instapay_address||"-"}</b></p>
         <p>• فودافون كاش: <b>${s.vodafone_cash||"-"}</b></p>
         <p style="margin-top:10px;color:#666;font-size:13px">المبلغ المتبقي: ${remaining.toLocaleString()} جنيه</p>
-      </div>
-      <a class="wa" href="${waHref}" target="_blank" onclick="track('whatsapp_click')">إرسال صورة التحويل على واتساب</a>`;
-  }
-
-   if (d.payment_proof_url) {
-    html += `
-      <div style="margin-top:12px;text-align:center">
-        <p style="font-size:13px;color:#666;margin-bottom:6px">📷 صورة التحويل المرفوعة</p>
-        <img src="${d.payment_proof_url}" class="uploadPreview" alt="payment proof">
       </div>`;
+
+    if (d.payment_proof_url) {
+      html += `
+        <div class="proofPreview">
+          <p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p>
+          <img src="${d.payment_proof_url}" alt="صورة التحويل">
+        </div>`;
+    } else {
+      html += `
+        <div id="trackUploadArea">
+          <p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">ارفع صورة التحويل:</p>
+          <label class="uploadBtn">📷 ارفع صورة التحويل
+            <input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)">
+          </label>
+        </div>`;
+    }
+
+    html += `<a class="wa" href="${waHref}" target="_blank" onclick="track('whatsapp_click')">إرسال صورة التحويل على واتساب</a>`;
   }
 
   html += `<button style="width:100%;margin-top:15px;background:#ddd;color:#172033" onclick="closeTrack()">إغلاق</button>`;
