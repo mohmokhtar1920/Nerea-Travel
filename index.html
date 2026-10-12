@@ -58,6 +58,18 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .stBadge{display:inline-block;padding:6px 14px;border-radius:20px;color:#fff;font-weight:bold;font-size:14px}
 .payBox{background:#fff3cd;padding:15px;border-radius:10px;margin-top:12px;border-right:4px solid #e0a800}
 .payBox p{margin:6px 0;font-size:14px}
+  .uploadBox{background:#e8f1ff;padding:18px;border-radius:12px;margin-top:15px;border-right:4px solid #176b87;text-align:center}
+.uploadBox h3{margin-bottom:8px;color:#0b1f3a}
+.uploadBox p{font-size:13px;color:#555;margin-bottom:12px}
+.uploadBox input[type=file]{display:none}
+.uploadBtn{display:inline-block;background:#176b87;color:#fff;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:14px;border:none}
+.uploadBtn:hover{background:#0b1f3a}
+.uploadBtn:disabled{opacity:.6;cursor:not-allowed}
+.uploadPreview{max-width:100%;max-height:200px;border-radius:10px;margin-top:12px;display:block;margin-left:auto;margin-right:auto}
+.uploadedBadge{background:#d4edda;color:#155724;padding:10px 14px;border-radius:8px;font-weight:bold;font-size:14px;margin-top:10px;display:inline-block}
+body.dark .uploadBox{background:#1e293b;border-color:#5eb8d6}
+body.dark .uploadBox h3{color:#e2e8f0}
+body.dark .uploadBox p{color:#94a3b8}
 
 /* Toast */
 #toastBox{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:90%}
@@ -147,6 +159,15 @@ body.dark .toast.err{background:#4c1d24;color:#fecaca}
 <h2 style="margin:10px 0">تم تسجيل طلب الحجز</h2>
 <div class="info" id="payInfo" style="text-align:right;white-space:pre-line;margin:12px 0"></div>
 <a id="waLink" class="wa" href="#" target="_blank" onclick="track('whatsapp_click')">إرسال الحجز وصورة التحويل على واتساب</a>
+
+<div class="uploadBox" id="uploadProofBox">
+  <h3>📷 ارفع صورة التحويل</h3>
+  <p>اختار صورة التحويل من موبايلك (أو صورة الشاشة)</p>
+  <input type="file" id="proofFile" accept="image/*" onchange="previewProof(event)">
+  <label for="proofFile" class="uploadBtn" id="proofLabel">اختار صورة</label>
+  <div id="proofPreviewWrap"></div>
+  <button class="uploadBtn" id="proofSubmit" style="display:none;margin-top:12px" onclick="uploadProof()">رفع الصورة</button>
+</div>
 </div>
 
 <div id="formBox">
@@ -204,7 +225,8 @@ const RULES = {4: {days: 4, nights: 3, inOff: 1, outOff: 4}, 0: {days: 5, nights
 const addDays = (d, n) => { const [y, m, dd] = d.split("-").map(Number); return new Date(Date.UTC(y, m - 1, dd + n)).toISOString().slice(0, 10); };
 const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); return /thu|خميس/.test(s) ? 4 : /sun|أحد|احد/.test(s) ? 0 : -1; };
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
-
+let currentProofRef = "", currentProofPhone = "";
+  
 /* ============ Toast Notifications ============ */
 function toast(msg, type, dur) {
   type = type || "info"; dur = dur || 3000;
@@ -387,7 +409,55 @@ function calc() {
   }
   $("total").innerText = total > 0 ? "الإجمالي: " + total.toLocaleString() + " جنيه" : "الإجمالي: اختر البيانات المطلوبة";
 }
+/* ============ Payment Proof Upload ============ */
+function previewProof(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  if (f.size > 5 * 1024 * 1024) { toast("الصورة كبيرة — الحد الأقصى 5 ميجا", "err"); e.target.value = ""; return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $("proofPreviewWrap").innerHTML = `<img class="uploadPreview" src="${ev.target.result}" alt="preview">`;
+    $("proofSubmit").style.display = "inline-block";
+  };
+  reader.readAsDataURL(f);
+}
 
+async function uploadProof() {
+  const f = $("proofFile").files[0];
+  if (!f) { toast("اختار صورة الأول", "info"); return; }
+  const btn = $("proofSubmit");
+  btn.disabled = true; btn.innerText = "جاري الرفع...";
+
+  const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+  const path = currentProofRef + "-" + Date.now() + "." + ext;
+
+  const up = await db.storage.from("payment-proofs").upload(path, f, { contentType: f.type, upsert: false });
+  if (up.error) {
+    console.error(up.error);
+    toast("تعذر رفع الصورة: " + up.error.message, "err", 5000);
+    btn.disabled = false; btn.innerText = "رفع الصورة";
+    return;
+  }
+
+  const url = db.storage.from("payment-proofs").getPublicUrl(path).data.publicUrl;
+
+  const r = await db.rpc("attach_payment_proof", { p_ref: currentProofRef, p_phone: currentProofPhone, p_url: url });
+  if (r.error || !r.data || !r.data.ok) {
+    console.error(r.error || r.data);
+    toast("تعذر حفظ الصورة، حاول تاني", "err");
+    btn.disabled = false; btn.innerText = "رفع الصورة";
+    return;
+  }
+
+  track("payment_proof_uploaded", { ref: currentProofRef });
+  $("uploadProofBox").innerHTML = `
+    <h3>✅ تم رفع صورة التحويل</h3>
+    <p style="margin-top:8px">فريق خدمة العملاء هيراجع الصورة ويتواصل معاك قريبًا</p>
+    <img class="uploadPreview" src="${url}" alt="payment proof">
+    <div class="uploadedBadge">تم الاستلام بنجاح</div>`;
+  toast("✅ تم رفع صورة التحويل", "ok", 4000);
+}
+  
 async function sendBooking() {
   const name = $("name").value.trim(), phone = $("phone").value.trim();
   if (!name || !phone) { toast("اكتب الاسم ورقم الموبايل", "info"); return; }
@@ -460,10 +530,27 @@ async function sendBooking() {
 
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
 
-  track("booking", {hotel: sel.h.Name, total: finalTotal});
+   track("booking", {hotel: sel.h.Name, total: finalTotal});
   toast("✅ تم تسجيل حجزك: " + ref, "ok", 4000);
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
+
+  // إعادة تهيئة منطقة الرفع
+  currentProofRef = ref;
+  currentProofPhone = phone;
+  $("proofFile").value = "";
+  $("proofPreviewWrap").innerHTML = "";
+  $("proofSubmit").style.display = "none";
+  $("proofSubmit").disabled = false;
+  $("proofSubmit").innerText = "رفع الصورة";
+  $("uploadProofBox").style.display = "block";
+  $("uploadProofBox").innerHTML = `
+    <h3>📷 ارفع صورة التحويل</h3>
+    <p>اختار صورة التحويل من موبايلك (أو صورة الشاشة)</p>
+    <input type="file" id="proofFile" accept="image/*" onchange="previewProof(event)">
+    <label for="proofFile" class="uploadBtn" id="proofLabel">اختار صورة</label>
+    <div id="proofPreviewWrap"></div>
+    <button class="uploadBtn" id="proofSubmit" style="display:none;margin-top:12px" onclick="uploadProof()">رفع الصورة</button>`;
 }
 
 /* ============ متابعة الحجز ============ */
@@ -549,6 +636,14 @@ function showBookingResult(d) {
         <p style="margin-top:10px;color:#666;font-size:13px">المبلغ المتبقي: ${remaining.toLocaleString()} جنيه</p>
       </div>
       <a class="wa" href="${waHref}" target="_blank" onclick="track('whatsapp_click')">إرسال صورة التحويل على واتساب</a>`;
+  }
+
+   if (d.payment_proof_url) {
+    html += `
+      <div style="margin-top:12px;text-align:center">
+        <p style="font-size:13px;color:#666;margin-bottom:6px">📷 صورة التحويل المرفوعة</p>
+        <img src="${d.payment_proof_url}" class="uploadPreview" alt="payment proof">
+      </div>`;
   }
 
   html += `<button style="width:100%;margin-top:15px;background:#ddd;color:#172033" onclick="closeTrack()">إغلاق</button>`;
