@@ -24,14 +24,14 @@ nav a{color:#fff;text-decoration:none;margin-right:20px}
 input,select{padding:13px;border:1px solid #ddd;border-radius:8px;width:100%;background:#fff;color:#172033;transition:background .3s,color .3s,border-color .3s}
 button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer}
 .section{padding:55px 7%}
-.section h2{text-align:center;margin-bottom:35px;font-size:30px}
+.section h2{text-align:center;margin-bottom:20px;font-size:30px}
 .trips{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
 .card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08);transition:background .3s,transform .3s;animation:fadeUp .4s ease}
 .card:hover{transform:translateY(-3px)}
 .card-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:65px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover;position:relative}
 .card-img .badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:bold;display:flex;align-items:center;gap:4px}
 .card-content{padding:20px}
-.card-content h3{margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.card-content h3{margin-bottom:8px}
 .card-content p{margin-bottom:12px;color:#555}
 .price{color:#176b87;font-size:20px;font-weight:bold;margin:12px 0}
 .card button{width:100%}
@@ -60,11 +60,18 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .payBox{background:#fff3cd;padding:15px;border-radius:10px;margin-top:12px;border-right:4px solid #e0a800}
 .payBox p{margin:6px 0;font-size:14px}
 
+/* Filters */
+.filtersBar{background:#fff;border-radius:12px;padding:14px;margin-bottom:22px;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:10px;box-shadow:0 3px 14px rgba(0,0,0,.06);transition:background .3s}
+.filtersBar label{font-size:12px;margin-bottom:4px;display:block;color:#666;font-weight:bold}
+.filtersBar input,.filtersBar select{padding:10px;font-size:13px}
+.resultCount{text-align:center;color:#666;margin-bottom:18px;font-size:14px}
+.resultCount b{color:#176b87}
+.clearFilters{background:#dc3545;color:#fff;padding:8px 14px;font-size:12px;margin-top:6px;width:100%}
+
 /* Reviews & Stars */
 .stars{display:inline-flex;gap:2px;color:#ddd;font-size:16px}
 .stars .on{color:#f5a623}
-.stars.small{font-size:13px}
-.rating{display:flex;align-items:center;gap:6px;font-size:13px;color:#666}
+.rating{display:flex;align-items:center;gap:6px;font-size:13px;color:#666;margin-bottom:6px}
 .rating b{color:#172033;font-size:15px}
 .reviewItem{padding:12px;border-bottom:1px solid #eee;transition:border-color .3s}
 .reviewItem:last-child{border-bottom:none}
@@ -74,11 +81,10 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .reviewItem .comment{font-size:13px;color:#555;line-height:1.6;white-space:pre-line}
 .reviewCard{background:#f9fafb;border-radius:10px;padding:10px 14px;margin-top:12px;transition:background .3s}
 .reviewCard h4{margin-bottom:8px;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.reviewSummary{background:#fff8e1;border-radius:8px;padding:10px 14px;margin:8px 0;display:flex;align-items:center;gap:10px;border-right:4px solid #f5a623}
 .mapsBtn{display:inline-block;background:#4285f4;color:#fff;text-decoration:none;font-weight:bold;padding:10px 16px;border-radius:8px;margin-top:10px;font-size:14px}
 .mapsBtn:hover{background:#3367d6}
 
-/* Reviews form */
+/* Review form */
 .reviewForm{background:#f9fafb;border-radius:10px;padding:14px;margin-top:12px}
 .ratingInput{display:flex;gap:6px;font-size:30px;cursor:pointer;justify-content:center;margin:10px 0}
 .ratingInput span{color:#ddd;transition:color .15s}
@@ -118,7 +124,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 
 /* Dark Mode */
 body.dark{background:#0f172a;color:#e2e8f0}
-body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select{background:#1e293b;color:#e2e8f0;border-color:#334155}
+body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select,body.dark .filtersBar{background:#1e293b;color:#e2e8f0;border-color:#334155}
 body.dark .info,body.dark .stBox{background:#1e293b;color:#cbd5e1}
 body.dark .card-content p,body.dark label{color:#94a3b8}
 body.dark .section h2{color:#e2e8f0}
@@ -139,10 +145,11 @@ body.dark .discountBox{background:#14532d;color:#bbf7d0}
 body.dark .reviewCard,body.dark .reviewForm,body.dark .reviewItem{background:#1e293b;border-color:#334155}
 body.dark .reviewItem .name,body.dark .reviewCard h4{color:#e2e8f0}
 body.dark .reviewItem .comment,body.dark .reviewItem .date{color:#94a3b8}
-body.dark .reviewSummary{background:#3a2f0f;color:#e2e8f0}
 body.dark .reviewForm textarea{background:#0f172a;color:#e2e8f0;border-color:#334155}
 body.dark .rating{color:#94a3b8}
 body.dark .rating b{color:#e2e8f0}
+
+@media(max-width:800px){.filtersBar{grid-template-columns:1fr 1fr}.filtersBar>div:nth-child(3),.filtersBar>div:nth-child(4){grid-column:span 1}}
 
 /* Animations */
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -169,7 +176,41 @@ body.dark .rating b{color:#e2e8f0}
 </section>
 
 <section class="section" id="trips"><h2>الوجهات المميزة</h2><div class="trips" id="dynamicTrips"></div></section>
-<section class="section" id="hotels" style="display:none"><h2 id="hotelsTitle">الفنادق المتاحة</h2><div class="trips" id="hotelList"></div></section>
+<section class="section" id="hotels" style="display:none">
+  <h2 id="hotelsTitle">الفنادق المتاحة</h2>
+  <div class="filtersBar">
+    <div>
+      <label>الترتيب</label>
+      <select id="sortBy" onchange="applyFilters()">
+        <option value="">الافتراضي</option>
+        <option value="price_asc">السعر: الأقل أولاً</option>
+        <option value="price_desc">السعر: الأعلى أولاً</option>
+        <option value="rating">الأعلى تقييمًا</option>
+        <option value="name">الاسم (أ - ي)</option>
+      </select>
+    </div>
+    <div>
+      <label>أقل تقييم</label>
+      <select id="minRating" onchange="applyFilters()">
+        <option value="0">الكل</option>
+        <option value="3">3 نجوم فأكثر ⭐</option>
+        <option value="4">4 نجوم فأكثر ⭐⭐</option>
+        <option value="4.5">4.5 نجمة فأكثر ⭐⭐⭐</option>
+      </select>
+    </div>
+    <div>
+      <label>السعر من</label>
+      <input type="number" id="priceMin" placeholder="أقل سعر" min="0" oninput="applyFilters()">
+    </div>
+    <div>
+      <label>السعر إلى</label>
+      <input type="number" id="priceMax" placeholder="أعلى سعر" min="0" oninput="applyFilters()">
+      <button class="clearFilters" onclick="clearFilters()">✕ مسح الفلاتر</button>
+    </div>
+  </div>
+  <div class="resultCount" id="resultCount"></div>
+  <div class="trips" id="hotelList"></div>
+</section>
 
 <section class="section" id="services">
 <h2>ليه تحجز مع Nerea Travel؟</h2>
@@ -277,10 +318,10 @@ const SUPABASE_URL = "https://saqgyyedcemfszzqbgtu.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Zl0kQG2MndgtgDsfGI6qMg_F-8vt7iB";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let imgs = {}, galImgs = [], galIdx = 0, dests = [], deps = [], list = [], sel = null, total = 0, salesPhone = "201012853009", pay = {insta: "mohamed.mokhtar99@instapay", voda: "01012853009", pct: 25};
+let imgs = {}, galImgs = [], galIdx = 0, dests = [], deps = [], list = [], filtered = [], sel = null, total = 0, salesPhone = "201012853009", pay = {insta: "mohamed.mokhtar99@instapay", voda: "01012853009", pct: 25};
 let lastBooking = { ref: "", phone: "" };
 let appliedCoupon = null;
-let hotelRatings = {}; // {hotel_id: {avg, count}}
+let hotelRatings = {};
 let currentReviewRating = 0;
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
@@ -293,7 +334,10 @@ const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); ret
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-/* ============ Helpers ============ */
+function priceOf(o) {
+  return o.t ? N(o.t.price_per_person) : (N(o.h.price_per_night) || N(o.h.price_double) || N(o.h.price_triple));
+}
+
 function starsHtml(rating) {
   rating = Math.round(N(rating));
   let html = '<span class="stars">';
@@ -302,7 +346,6 @@ function starsHtml(rating) {
   return html;
 }
 
-/* ============ Toast Notifications ============ */
 function toast(msg, type, dur) {
   type = type || "info"; dur = dur || 3000;
   let box = $("toastBox");
@@ -317,7 +360,6 @@ function toast(msg, type, dur) {
   }, dur);
 }
 
-/* ============ Dark Mode ============ */
 function toggleDark() {
   const isDark = document.body.classList.toggle("dark");
   try { localStorage.setItem("nt_dark", isDark ? "1" : "0"); } catch (e) {}
@@ -333,7 +375,6 @@ function initDark() {
   } catch (e) {}
 }
 
-/* ============ Customer data ============ */
 function saveCustomer(name, phone) {
   try { localStorage.setItem("nt_name", name); localStorage.setItem("nt_phone", phone); } catch (e) {}
 }
@@ -345,7 +386,6 @@ function fillCustomer() {
   } catch (e) {}
 }
 
-/* ============ Ratings & Reviews ============ */
 async function loadRatings(hotelIds) {
   if (!hotelIds || !hotelIds.length) return;
   try {
@@ -363,17 +403,13 @@ async function loadReviews(hotelId) {
   const d = r.data || {};
   const reviews = d.reviews || [];
   if (!reviews.length) { box.innerHTML = ""; return; }
-
   const avg = (reviews.reduce((s,x)=>s+N(x.rating),0) / reviews.length).toFixed(1);
   let html = `<div class="reviewCard">
     <h4>⭐ تقييمات العملاء <span style="background:#f5a623;color:#fff;padding:2px 10px;border-radius:12px;font-size:13px">${avg} / 5</span> <span style="color:#888;font-size:13px;font-weight:normal">(${reviews.length} تقييم)</span></h4>`;
   reviews.slice(0, 5).forEach(x => {
     const dt = x.created_at ? new Date(x.created_at).toLocaleDateString("ar-EG") : "";
     html += `<div class="reviewItem">
-      <div class="head">
-        <div class="name">${esc(x.customer_name || "عميل")}</div>
-        <div class="date">${esc(dt)}</div>
-      </div>
+      <div class="head"><div class="name">${esc(x.customer_name || "عميل")}</div><div class="date">${esc(dt)}</div></div>
       ${starsHtml(x.rating)}
       ${x.comment ? `<div class="comment">${esc(x.comment)}</div>` : ""}
     </div>`;
@@ -385,8 +421,7 @@ async function loadReviews(hotelId) {
 
 function openReviewForm() {
   const box = $("trackResult");
-  const b = lastBooking;
-  if (!box || !b.ref || !b.phone) return;
+  if (!box || !lastBooking.ref || !lastBooking.phone) return;
   currentReviewRating = 0;
   const html = `
     <div class="reviewForm" id="reviewFormBox">
@@ -442,46 +477,89 @@ async function submitReview() {
   if (box) box.outerHTML = `<div class="reviewCard" style="text-align:center;background:#d4edda;color:#155724">✅ تم إرسال تقييمك، شكرًا لك!</div>`;
 }
 
+/* ============ Filters ============ */
+function clearFilters() {
+  $("sortBy").value = "";
+  $("minRating").value = "0";
+  $("priceMin").value = "";
+  $("priceMax").value = "";
+  applyFilters();
+}
+
+function applyFilters() {
+  const sortBy = $("sortBy").value;
+  const minR = Number($("minRating").value) || 0;
+  const pMin = $("priceMin").value ? Number($("priceMin").value) : null;
+  const pMax = $("priceMax").value ? Number($("priceMax").value) : null;
+
+  filtered = list.filter(o => {
+    const p = priceOf(o);
+    if (pMin !== null && p < pMin) return false;
+    if (pMax !== null && p > pMax) return false;
+    if (minR > 0) {
+      const r = hotelRatings[String(o.h.id)];
+      const avg = r && r.count > 0 ? N(r.avg) : 0;
+      if (avg < minR) return false;
+    }
+    return true;
+  });
+
+  if (sortBy === "price_asc") filtered.sort((a,b) => priceOf(a) - priceOf(b));
+  else if (sortBy === "price_desc") filtered.sort((a,b) => priceOf(b) - priceOf(a));
+  else if (sortBy === "rating") filtered.sort((a,b) => {
+    const ra = N((hotelRatings[String(a.h.id)]||{}).avg);
+    const rb = N((hotelRatings[String(b.h.id)]||{}).avg);
+    return rb - ra;
+  });
+  else if (sortBy === "name") filtered.sort((a,b) => String(a.h.Name||"").localeCompare(String(b.h.Name||""), "ar"));
+
+  renderHotelList();
+}
+
+function renderHotelList() {
+  const listToRender = filtered;
+  $("resultCount").innerHTML = `عدد النتائج: <b>${listToRender.length}</b> ${listToRender.length < list.length ? `(من أصل ${list.length})` : ""}`;
+
+  $("hotelList").innerHTML = listToRender.length ? listToRender.map(o => {
+    const i = list.indexOf(o); // original index for showHotel
+    const np = N(o.h.price_per_night) || N(o.h.price_double) || N(o.h.price_triple);
+    const rating = hotelRatings[String(o.h.id)];
+    const ratingBadge = rating && rating.count > 0 ? `<span class="badge">★ ${rating.avg} (${rating.count})</span>` : "";
+    const ratingLine = rating && rating.count > 0 ? `<div class="rating">${starsHtml(rating.avg)} <b>${rating.avg}</b> <span>(${rating.count} تقييم)</span></div>` : "";
+    return `<div class="card">
+      <div class="card-img" style="cursor:pointer;${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}" onclick="openGallery(${o.h.id})">${img(o.h) ? '' : '🏨'}${ratingBadge}</div>
+      <div class="card-content">
+        ${(imgs[o.h.id] || []).length > 1 ? `<p style="font-size:12px;color:#888;margin-bottom:6px">📷 اضغط على الصورة لعرض ${imgs[o.h.id].length} صور</p>` : ""}
+        <h3>${o.h.Name || "فندق بدون اسم"}</h3>
+        ${ratingLine}
+        <p>${o.h.description || ""}</p>
+        ${o.t ? `<p>📅 ${o.t.days} أيام / ${o.t.nights} ليالي</p>
+        <p>🚌 المغادرة: ${o.t.start_date} • 🏨 دخول الفندق: ${o.t.hotelIn}</p>
+        <p>↩️ الرجوع: ${o.t.end_date}</p>
+        <p>✅ السعر شامل الإقامة والانتقالات</p>` : ""}
+        <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + " جنيه / للفرد" : (np ? np.toLocaleString() + " جنيه / الليلة" : "السعر غير محدد")}</div>
+        <button onclick="showHotel(${i})">عرض التفاصيل</button>
+      </div></div>`;
+  }).join("") : '<p class="note">لا توجد نتائج مطابقة للفلاتر</p>';
+}
+
 /* ============ Coupon ============ */
 async function applyCoupon() {
   const code = $("couponCode").value.trim();
   const msg = $("couponMsg");
   const dbox = $("discountBox");
-
   if (!code) {
-    msg.className = "couponMsg err";
-    msg.innerText = "اكتب كود الخصم الأول";
-    appliedCoupon = null;
-    dbox.classList.remove("show");
-    calc();
-    return;
+    msg.className = "couponMsg err"; msg.innerText = "اكتب كود الخصم الأول";
+    appliedCoupon = null; dbox.classList.remove("show"); calc(); return;
   }
-  if (!(total > 0)) {
-    msg.className = "couponMsg err";
-    msg.innerText = "اختر تفاصيل الحجز أولاً";
-    return;
-  }
-
-  msg.className = "couponMsg";
-  msg.style.display = "block";
-  msg.innerText = "جاري التحقق...";
-
+  if (!(total > 0)) { msg.className = "couponMsg err"; msg.innerText = "اختر تفاصيل الحجز أولاً"; return; }
+  msg.className = "couponMsg"; msg.style.display = "block"; msg.innerText = "جاري التحقق...";
   const r = await db.rpc("validate_coupon", { p_code: code, p_amount: total });
-
-  if (r.error) {
-    console.error(r.error);
-    msg.className = "couponMsg err";
-    msg.innerText = "حصل خطأ، حاول تاني";
-    return;
-  }
+  if (r.error) { console.error(r.error); msg.className = "couponMsg err"; msg.innerText = "حصل خطأ، حاول تاني"; return; }
   const d = r.data;
   if (!d || !d.valid) {
-    msg.className = "couponMsg err";
-    msg.innerText = (d && d.message) || "كود غير صالح";
-    appliedCoupon = null;
-    dbox.classList.remove("show");
-    calc();
-    return;
+    msg.className = "couponMsg err"; msg.innerText = (d && d.message) || "كود غير صالح";
+    appliedCoupon = null; dbox.classList.remove("show"); calc(); return;
   }
   appliedCoupon = { code: d.code, discount: N(d.discount) };
   msg.className = "couponMsg ok";
@@ -517,39 +595,30 @@ async function uploadPaymentProof(ref, phone, inputEl, file) {
   if (!ref || !phone) { toast("مش قادرين نحدد الحجز", "err"); return; }
   if (!file.type.startsWith("image/")) { toast("اختار صورة من فضلك", "err"); return; }
   if (file.size > 10 * 1024 * 1024) { toast("الصورة كبيرة (أقصى 10 ميجا)", "err"); return; }
-
   const btn = inputEl.closest("label") || $("uploadBtn");
   const origText = btn ? btn.innerHTML : "";
   if (btn) { btn.classList.add("loading"); btn.innerText = "⏳ جاري رفع الصورة..."; }
-
   try {
     const blob = await resizeImage(file, 1400);
     const path = `${ref}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
     const up = await db.storage.from("payment-proofs").upload(path, blob, { contentType: "image/jpeg", upsert: false });
-
     if (up.error) {
-      console.error(up.error);
-      toast("تعذر رفع الصورة: " + up.error.message, "err", 5000);
+      console.error(up.error); toast("تعذر رفع الصورة: " + up.error.message, "err", 5000);
       if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
-      inputEl.value = "";
-      return;
+      inputEl.value = ""; return;
     }
     const url = db.storage.from("payment-proofs").getPublicUrl(path).data.publicUrl;
     const r = await db.rpc("attach_payment_proof", { p_ref: ref, p_phone: phone, p_url: url });
-
     if (r.error || !r.data || !r.data.ok) {
-      console.error(r.error, r.data);
-      toast("تعذر تثبيت الصورة على الحجز", "err", 5000);
+      console.error(r.error, r.data); toast("تعذر تثبيت الصورة على الحجز", "err", 5000);
       if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
-      inputEl.value = "";
-      return;
+      inputEl.value = ""; return;
     }
     toast("✅ تم رفع صورة التحويل بنجاح", "ok", 4000);
     track("payment_proof_uploaded", {ref: ref});
     markUploadDone(url);
   } catch (err) {
-    console.error(err);
-    toast("حصل خطأ أثناء الرفع", "err");
+    console.error(err); toast("حصل خطأ أثناء الرفع", "err");
     if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
     inputEl.value = "";
   }
@@ -558,24 +627,15 @@ async function uploadPaymentProof(ref, phone, inputEl, file) {
 function markUploadDone(url) {
   const area = $("uploadArea");
   if (area) {
-    area.outerHTML = `
-      <div class="proofPreview">
-        <p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p>
-        <img src="${url}" alt="صورة التحويل">
-      </div>`;
+    area.outerHTML = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${url}" alt="صورة التحويل"></div>`;
     return;
   }
   const box = $("trackUploadArea");
   if (box) {
-    box.outerHTML = `
-      <div class="proofPreview">
-        <p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p>
-        <img src="${url}" alt="صورة التحويل">
-      </div>`;
+    box.outerHTML = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${url}" alt="صورة التحويل"></div>`;
   }
 }
 
-/* ============ Cancel Booking ============ */
 async function cancelBooking(ref, phone) {
   if (!confirm("هل أنت متأكد من إلغاء الحجز؟\nلا يمكن التراجع عن هذه العملية.")) return;
   const r = await db.rpc("cancel_booking", { p_ref: ref, p_phone: phone });
@@ -631,42 +691,18 @@ async function searchTrips() {
   const wd = new Date(date + "T00:00:00").getDay(), rule = RULES[wd];
   const trips = rule ? (t.data || []).filter(y => dayKey(y) === wd).map(y => ({...y, start_date: date, hotelIn: addDays(date, rule.inOff), end_date: addDays(date, rule.outOff), days: rule.days, nights: rule.nights})) : [];
   const hasTrip = x => trips.some(y => String(y.hotel_id) === String(x.id));
-  const ser = hotels.filter(hasTrip)
-    .map(x => ({h: x, t: trips.find(y => String(y.hotel_id) === String(x.id))}));
+  const ser = hotels.filter(hasTrip).map(x => ({h: x, t: trips.find(y => String(y.hotel_id) === String(x.id))}));
   const non = hotels.filter(x => x.is_series !== true && !hasTrip(x)).map(x => ({h: x, t: null}));
   list = [...ser, ...non];
   imgs = {};
   if (hotels.length) {
     const gi = await db.from("hotel_images").select("hotel_id,url").in("hotel_id", hotels.map(x => x.id)).order("id");
     (gi.data || []).forEach(r => (imgs[r.hotel_id] = imgs[r.hotel_id] || []).push(r.url));
-    // Ratings
     await loadRatings(hotels.map(x => x.id));
   }
   const dest = dests.find(x => String(x.id) === String(destId));
   $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + (dest ? dest.Name : "");
-  $("hotelList").innerHTML = list.length ? list.map((o, i) => {
-    const np = N(o.h.price_per_night) || N(o.h.price_double) || N(o.h.price_triple);
-    const rating = hotelRatings[String(o.h.id)];
-    const ratingBadge = rating && rating.count > 0
-      ? `<span class="badge">★ ${rating.avg} (${rating.count})</span>` : "";
-    const ratingLine = rating && rating.count > 0
-      ? `<div class="rating">${starsHtml(rating.avg)} <b>${rating.avg}</b> <span>(${rating.count} تقييم)</span></div>` : "";
-    return `<div class="card">
-      <div class="card-img" style="cursor:pointer;${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}" onclick="openGallery(${o.h.id})">${img(o.h) ? '' : '🏨'}${ratingBadge}</div>
-      <div class="card-content">
-        ${(imgs[o.h.id] || []).length > 1 ? `<p style="font-size:12px;color:#888;margin-bottom:6px">📷 اضغط على الصورة لعرض ${imgs[o.h.id].length} صور</p>` : ""}
-        <h3>${o.h.Name || "فندق بدون اسم"}</h3>
-        ${ratingLine}
-        <p>${o.h.description || ""}</p>
-        ${o.t ? `<p>📅 ${o.t.days} أيام / ${o.t.nights} ليالي</p>
-        <p>🚌 المغادرة: ${o.t.start_date} • 🏨 دخول الفندق: ${o.t.hotelIn}</p>
-        <p>↩️ الرجوع: ${o.t.end_date}</p>
-        <p>✅ السعر شامل الإقامة والانتقالات</p>` : ""}
-        <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + " جنيه / للفرد" : (np ? np.toLocaleString() + " جنيه / الليلة" : "السعر غير محدد")}</div>
-        <button onclick="showHotel(${i})">عرض التفاصيل</button>
-      </div></div>`;
-  }).join("") : '<p class="note">لا توجد فنادق متاحة لهذه الوجهة</p>';
-  track("search", {destination: dest ? dest.Name : "", results: list.length});
+  clearFilters();
   $("hotels").style.display = "block";
   $("hotels").scrollIntoView({behavior: "smooth"});
   if (list.length) toast("تم العثور على " + list.length + " نتيجة", "ok");
@@ -678,22 +714,18 @@ function showHotel(i) {
   const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
   $("formBox").style.display = "block"; $("doneBox").style.display = "none";
 
-  // reset coupon
   appliedCoupon = null;
   $("couponCode").value = "";
-  $("couponMsg").className = "couponMsg";
-  $("couponMsg").innerText = "";
+  $("couponMsg").className = "couponMsg"; $("couponMsg").innerText = "";
   $("discountBox").classList.remove("show");
 
-  // reset upload area
   const oldPreview = document.querySelector("#doneBox .proofPreview");
   if (oldPreview) oldPreview.remove();
   const oldArea = document.querySelector("#doneBox #uploadArea");
   if (!oldArea) {
     const newArea = document.createElement("div");
     newArea.id = "uploadArea";
-    newArea.innerHTML = `
-      <p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">أو ارفع صورة التحويل مباشرة هنا:</p>
+    newArea.innerHTML = `<p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">أو ارفع صورة التحويل مباشرة هنا:</p>
       <label class="uploadBtn" id="uploadBtn">📷 ارفع صورة التحويل
         <input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)">
       </label>`;
@@ -705,18 +737,13 @@ function showHotel(i) {
   $("mImg").style.backgroundImage = img(h) ? `url('${img(h)}')` : "";
   $("mImg").innerText = img(h) ? "" : "🏨";
 
-  // Rating in modal
   const r = hotelRatings[String(h.id)];
   $("mRating").innerHTML = r && r.count > 0
-    ? `<div style="margin:6px 0;display:flex;align-items:center;gap:8px">${starsHtml(r.avg)} <b>${r.avg}</b> <span style="color:#888;font-size:13px">(${r.count} تقييم)</span></div>`
-    : "";
+    ? `<div style="margin:6px 0;display:flex;align-items:center;gap:8px">${starsHtml(r.avg)} <b>${r.avg}</b> <span style="color:#888;font-size:13px">(${r.count} تقييم)</span></div>` : "";
 
-  // Google Maps button
   let mapsHtml = "";
   const mapsUrl = h.google_maps_url || (h.latitude && h.longitude ? `https://www.google.com/maps?q=${h.latitude},${h.longitude}` : "");
-  if (mapsUrl) {
-    mapsHtml = `<a class="mapsBtn" href="${esc(mapsUrl)}" target="_blank" onclick="track('maps_click',{hotel:'${esc(h.Name)}'})">📍 موقع الفندق على خرائط جوجل</a>`;
-  }
+  if (mapsUrl) mapsHtml = `<a class="mapsBtn" href="${esc(mapsUrl)}" target="_blank" onclick="track('maps_click',{hotel:'${esc(h.Name)}'})">📍 موقع الفندق على خرائط جوجل</a>`;
   $("mMaps").innerHTML = mapsHtml;
 
   $("adults").value = a;
@@ -733,7 +760,7 @@ function showHotel(i) {
   if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
   fillCustomer();
   calc();
-  loadReviews(h.id); // lazy load
+  loadReviews(h.id);
   $("hotelModal").style.display = "flex";
 }
 
@@ -798,10 +825,8 @@ async function sendBooking() {
   if (!name || !phone) { toast("اكتب الاسم ورقم الموبايل", "info"); return; }
   if (!(total > 0)) { toast("اختر تاريخ الدخول والخروج", "info"); return; }
   if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) { toast("رقم الموبايل غير صحيح — اكتبه بالشكل 01xxxxxxxxx", "err"); return; }
-
   const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
-
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
     Series_Trips_id: t ? t.id : null,
@@ -817,22 +842,17 @@ async function sendBooking() {
     needs_transport: needT, extra_seats: x,
     coupon_code: appliedCoupon ? appliedCoupon.code : null
   };
-
   const r = await db.rpc("create_booking", { payload: row });
   if (r.error) { console.error(r.error); toast("تعذر إرسال الطلب: " + r.error.message, "err", 5000); return; }
-
   const saved = r.data;
   const finalTotal = N(saved.total_price);
   const dep = N(saved.deposit_amount);
   const ref = saved.booking_ref;
   const disc = N(saved.discount_amount);
-
   lastBooking = { ref: ref, phone: phone };
   saveCustomer(name, phone);
-
   const depName = needT ? ((deps.find(y => y.id == saved.departure_points_id) || {}).name || "-") : "-";
   const nights = Math.round((new Date(saved.check_out) - new Date(saved.check_in)) / 86400000);
-
   const msgLines = [
     "طلب حجز جديد", "رقم الحجز: " + ref, "الاسم: " + name, "الموبايل: " + phone,
     "الفندق: " + sel.h.Name, "النوع: " + (t ? "سيريال" : "عادي"),
@@ -847,24 +867,20 @@ async function sendBooking() {
   msgLines.push("الإجمالي: " + finalTotal.toLocaleString() + " جنيه");
   msgLines.push("العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه");
   const msg = msgLines.join("\n");
-
   let payText = "رقم حجزك: " + ref + "\n";
   if (disc > 0 && saved.coupon_code) payText += "🎟️ خصم " + saved.coupon_code + ": -" + disc.toLocaleString() + " جنيه\n";
   payText += "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه" +
     "\n\nحوّل المبلغ على:\n• إنستاباي: " + pay.insta +
     "\n• فودافون كاش: " + pay.voda +
     "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب.";
-
   $("payInfo").innerText = payText;
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
-
   track("booking", {hotel: sel.h.Name, total: finalTotal, coupon: saved.coupon_code || null});
   toast("✅ تم تسجيل حجزك: " + ref, "ok", 4000);
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
 }
 
-/* ============ متابعة الحجز ============ */
 const ST_LABELS = {
   "Pending Confirmation":  {label:"قيد التأكيد",        color:"#e0a800", icon:"⏳"},
   "Waiting Confirmation":  {label:"في انتظار التأكيد",   color:"#e0a800", icon:"⏳"},
@@ -878,33 +894,22 @@ function openTrack() {
   $("trackForm").style.display = "block";
   $("trackResult").style.display = "none";
   $("tError").innerText = "";
-  $("tRef").value = "";
-  $("tPhone").value = "";
+  $("tRef").value = ""; $("tPhone").value = "";
   $("trackModal").style.display = "flex";
   track("track_open");
 }
-
 function closeTrack() { $("trackModal").style.display = "none"; }
 
 async function checkBooking(btn) {
   const ref = $("tRef").value.trim(), phone = $("tPhone").value.trim();
   $("tError").innerText = "";
   if (!ref || !phone) { $("tError").innerText = "اكتب رقم الحجز ورقم الموبايل"; return; }
-
   btn.disabled = true; btn.innerText = "جاري البحث...";
   const r = await db.rpc("track_booking", { p_ref: ref, p_phone: phone });
   btn.disabled = false; btn.innerText = "عرض حالة الحجز";
-
-  if (r.error) {
-    $("tError").innerText = "حصل خطأ، حاول تاني";
-    console.error(r.error);
-    return;
-  }
+  if (r.error) { $("tError").innerText = "حصل خطأ، حاول تاني"; console.error(r.error); return; }
   const d = r.data;
-  if (!d || !d.found) {
-    $("tError").innerText = "مفيش حجز بالبيانات دي. اتأكد من رقم الحجز والموبايل";
-    return;
-  }
+  if (!d || !d.found) { $("tError").innerText = "مفيش حجز بالبيانات دي. اتأكد من رقم الحجز والموبايل"; return; }
   lastBooking = { ref: d.booking_ref, phone: phone };
   showBookingResult(d);
   track("track_view", {ref:d.booking_ref, status:d.status});
@@ -913,11 +918,8 @@ async function checkBooking(btn) {
 function showBookingResult(d) {
   $("trackForm").style.display = "none";
   $("trackResult").style.display = "block";
-
   const st = ST_LABELS[d.status] || {label:d.status, color:"#999", icon:"📋"};
-  const nights = (d.check_in && d.check_out)
-    ? Math.round((new Date(d.check_out) - new Date(d.check_in)) / 86400000) : 0;
-
+  const nights = (d.check_in && d.check_out) ? Math.round((new Date(d.check_out) - new Date(d.check_in)) / 86400000) : 0;
   let html = `
     <div style="text-align:center;margin-bottom:18px">
       <div style="font-size:50px">${st.icon}</div>
@@ -933,50 +935,28 @@ function showBookingResult(d) {
 الإجمالي: ${Number(d.total_price||0).toLocaleString()} جنيه
 العربون: ${Number(d.deposit_amount||0).toLocaleString()} جنيه
     </div>`;
-
   if (d.status === "Waiting Payment") {
     const s = d.settings || {};
     const remaining = Math.max(Number(d.total_price||0) - Number(d.deposit_amount||0), 0);
-    const waHref = "https://wa.me/" + String(s.sales_phone||"").replace(/\D/g,"") +
-      "?text=" + encodeURIComponent("تحويل عربون حجز " + d.booking_ref);
-    html += `
-      <div class="payBox">
+    const waHref = "https://wa.me/" + String(s.sales_phone||"").replace(/\D/g,"") + "?text=" + encodeURIComponent("تحويل عربون حجز " + d.booking_ref);
+    html += `<div class="payBox">
         <h3 style="margin-bottom:10px">💳 يرجى إتمام الدفع</h3>
         <p>حوّل العربون <b>${Number(d.deposit_amount||0).toLocaleString()} جنيه</b> على:</p>
         <p>• إنستاباي: <b>${s.instapay_address||"-"}</b></p>
         <p>• فودافون كاش: <b>${s.vodafone_cash||"-"}</b></p>
         <p style="margin-top:10px;color:#666;font-size:13px">المبلغ المتبقي: ${remaining.toLocaleString()} جنيه</p>
       </div>`;
-
     if (d.payment_proof_url) {
-      html += `<div class="proofPreview">
-        <p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p>
-        <img src="${d.payment_proof_url}" alt="صورة التحويل">
-      </div>`;
+      html += `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${d.payment_proof_url}" alt="صورة التحويل"></div>`;
     } else {
-      html += `<div id="trackUploadArea">
-        <p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">ارفع صورة التحويل:</p>
-        <label class="uploadBtn">📷 ارفع صورة التحويل
-          <input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)">
-        </label>
-      </div>`;
+      html += `<div id="trackUploadArea"><p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">ارفع صورة التحويل:</p><label class="uploadBtn">📷 ارفع صورة التحويل<input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)"></label></div>`;
     }
     html += `<a class="wa" href="${waHref}" target="_blank" onclick="track('whatsapp_click')">إرسال صورة التحويل على واتساب</a>`;
   }
-
-  // زر التقييم (بعد انتهاء الرحلة أو دفع)
   const today = new Date().toISOString().slice(0, 10);
-  const canReview = (d.status === "Paid" || d.status === "Confirmed" || d.payment_status === "Paid")
-                    && d.check_out && d.check_out <= today;
-  if (canReview) {
-    html += `<button class="reviewBtn" onclick="openReviewForm()">⭐ قيّم رحلتك</button>`;
-  }
-
-  // زر الإلغاء
-  if (d.status !== "Cancelled" && d.status !== "Paid") {
-    html += `<button class="cancelBtn" onclick="cancelBooking('${d.booking_ref}', '${lastBooking.phone}')">❌ إلغاء الحجز</button>`;
-  }
-
+  const canReview = (d.status === "Paid" || d.status === "Confirmed" || d.payment_status === "Paid") && d.check_out && d.check_out <= today;
+  if (canReview) html += `<button class="reviewBtn" onclick="openReviewForm()">⭐ قيّم رحلتك</button>`;
+  if (d.status !== "Cancelled" && d.status !== "Paid") html += `<button class="cancelBtn" onclick="cancelBooking('${d.booking_ref}', '${lastBooking.phone}')">❌ إلغاء الحجز</button>`;
   html += `<button style="width:100%;margin-top:10px;background:#ddd;color:#172033" onclick="closeTrack()">إغلاق</button>`;
   $("trackResult").innerHTML = html;
 }
@@ -986,7 +966,6 @@ document.addEventListener("click", e => {
   if (tm && e.target === tm) closeTrack();
 });
 
-/* ============ Gallery keyboard & swipe ============ */
 document.addEventListener("keydown", e => {
   const g = $("gal");
   if (!g || g.style.display !== "flex") return;
