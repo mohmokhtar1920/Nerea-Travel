@@ -59,6 +59,17 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .payBox{background:#fff3cd;padding:15px;border-radius:10px;margin-top:12px;border-right:4px solid #e0a800}
 .payBox p{margin:6px 0;font-size:14px}
 
+/* Coupon */
+.couponRow{display:flex;gap:8px;margin-top:8px}
+.couponRow input{margin:0;flex:1}
+.couponRow button{padding:13px 18px;background:#0b1f3a;color:#fff;white-space:nowrap;font-size:14px}
+.couponRow button:hover{background:#176b87}
+.couponMsg{font-size:13px;margin-top:6px;padding:6px 10px;border-radius:6px;display:none}
+.couponMsg.ok{display:block;background:#d4edda;color:#155724}
+.couponMsg.err{display:block;background:#f8d7da;color:#721c24}
+.discountBox{background:#d4edda;color:#155724;padding:10px 14px;border-radius:8px;margin:10px 0;font-size:14px;font-weight:bold;display:none;border-right:4px solid #28a745}
+.discountBox.show{display:block}
+
 /* Upload proof */
 .uploadBtn{display:block;text-align:center;background:#25d366;color:#fff;font-weight:bold;padding:14px;border-radius:8px;cursor:pointer;user-select:none;margin-top:12px;transition:background .2s}
 .uploadBtn:hover{background:#1ea855}
@@ -66,6 +77,10 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .uploadBtn.done{background:#28a745;cursor:default}
 .proofPreview{margin-top:12px;text-align:center;animation:fadeUp .4s ease}
 .proofPreview img{max-width:100%;max-height:250px;border-radius:10px;border:2px solid #28a745;background:#fff}
+
+/* Cancel */
+.cancelBtn{display:block;width:100%;margin-top:10px;background:#dc3545;color:#fff;font-weight:bold;padding:12px;border-radius:8px;cursor:pointer;border:none;font-size:14px}
+.cancelBtn:hover{background:#b02a37}
 
 /* Toast */
 #toastBox{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:90%}
@@ -91,6 +106,9 @@ body.dark .toast.ok{background:#14532d;color:#bbf7d0}
 body.dark .toast.err{background:#4c1d24;color:#fecaca}
 body.dark .uploadBtn{background:#1e8a45}
 body.dark .uploadBtn:hover{background:#166534}
+body.dark .couponMsg.ok{background:#14532d;color:#bbf7d0}
+body.dark .couponMsg.err{background:#4c1d24;color:#fecaca}
+body.dark .discountBox{background:#14532d;color:#bbf7d0}
 
 /* Animations */
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -189,6 +207,17 @@ body.dark .uploadBtn:hover{background:#166534}
 <div class="info" id="seatInfo"></div>
 </div>
 
+<div style="margin-top:12px">
+  <label>كود الخصم (اختياري)</label>
+  <div class="couponRow">
+    <input type="text" id="couponCode" placeholder="مثال: WELCOME10">
+    <button type="button" onclick="applyCoupon()">تطبيق</button>
+  </div>
+  <div id="couponMsg" class="couponMsg"></div>
+</div>
+
+<div id="discountBox" class="discountBox"></div>
+
 <div class="total" id="total"></div>
 
 <label>الاسم بالكامل</label><input type="text" id="name">
@@ -212,6 +241,7 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let imgs = {}, galImgs = [], galIdx = 0, dests = [], deps = [], list = [], sel = null, total = 0, salesPhone = "201012853009", pay = {insta: "mohamed.mokhtar99@instapay", voda: "01012853009", pct: 25};
 let lastBooking = { ref: "", phone: "" };
+let appliedCoupon = null; // {code, discount}
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
 const vid = (() => { try { let v = localStorage.getItem("nt_vid"); if (!v) { v = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)); localStorage.setItem("nt_vid", v); } return v; } catch (e) { return "anon"; } })();
@@ -263,6 +293,58 @@ function fillCustomer() {
     if (n && !$("name").value) $("name").value = n;
     if (p && !$("phone").value) $("phone").value = p;
   } catch (e) {}
+}
+
+/* ============ Coupon ============ */
+async function applyCoupon() {
+  const code = $("couponCode").value.trim();
+  const msg = $("couponMsg");
+  const dbox = $("discountBox");
+
+  if (!code) {
+    msg.className = "couponMsg err";
+    msg.innerText = "اكتب كود الخصم الأول";
+    appliedCoupon = null;
+    dbox.classList.remove("show");
+    calc();
+    return;
+  }
+
+  if (!(total > 0)) {
+    msg.className = "couponMsg err";
+    msg.innerText = "اختر تفاصيل الحجز أولاً";
+    return;
+  }
+
+  msg.className = "couponMsg";
+  msg.innerText = "جاري التحقق...";
+  msg.style.display = "block";
+  msg.className = "couponMsg info";
+
+  const r = await db.rpc("validate_coupon", { p_code: code, p_amount: total });
+
+  if (r.error) {
+    console.error(r.error);
+    msg.className = "couponMsg err";
+    msg.innerText = "حصل خطأ، حاول تاني";
+    return;
+  }
+
+  const d = r.data;
+  if (!d || !d.valid) {
+    msg.className = "couponMsg err";
+    msg.innerText = (d && d.message) || "كود غير صالح";
+    appliedCoupon = null;
+    dbox.classList.remove("show");
+    calc();
+    return;
+  }
+
+  appliedCoupon = { code: d.code, discount: N(d.discount) };
+  msg.className = "couponMsg ok";
+  msg.innerText = "✅ تم تطبيق الكود — خصم " + N(d.discount).toLocaleString() + " جنيه";
+  track("coupon_applied", {code: d.code, discount: d.discount});
+  calc();
 }
 
 /* ============ Upload Payment Proof ============ */
@@ -335,7 +417,6 @@ async function uploadPaymentProof(ref, phone, inputEl, file) {
 }
 
 function markUploadDone(url) {
-  // في doneBox
   const area = $("uploadArea");
   if (area) {
     area.outerHTML = `
@@ -345,7 +426,6 @@ function markUploadDone(url) {
       </div>`;
     return;
   }
-  // في trackResult (متابعة الحجز)
   const box = $("trackUploadArea");
   if (box) {
     box.outerHTML = `
@@ -354,6 +434,28 @@ function markUploadDone(url) {
         <img src="${url}" alt="صورة التحويل">
       </div>`;
   }
+}
+
+/* ============ Cancel Booking ============ */
+async function cancelBooking(ref, phone) {
+  if (!confirm("هل أنت متأكد من إلغاء الحجز؟\nلا يمكن التراجع عن هذه العملية.")) return;
+
+  const r = await db.rpc("cancel_booking", { p_ref: ref, p_phone: phone });
+
+  if (r.error) {
+    console.error(r.error);
+    toast("حصل خطأ، حاول تاني", "err");
+    return;
+  }
+  const d = r.data;
+  if (!d || !d.ok) {
+    toast((d && d.message) || "تعذر إلغاء الحجز", "err", 5000);
+    return;
+  }
+  toast("✅ تم إلغاء الحجز", "ok", 4000);
+  track("booking_cancelled", {ref: ref});
+  closeTrack();
+  setTimeout(() => { if (ref) { $("tRef").value = ref; $("tPhone").value = phone; checkBooking({disabled:false, innerText:"عرض حالة الحجز"}); } }, 300);
 }
 
 async function init() {
@@ -436,7 +538,15 @@ function showHotel(i) {
   track("hotel_view", {hotel: list[i].h.Name});
   const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
   $("formBox").style.display = "block"; $("doneBox").style.display = "none";
-  // إعادة تعيين زر الرفع لو كان اتغير
+
+  // reset coupon
+  appliedCoupon = null;
+  $("couponCode").value = "";
+  $("couponMsg").className = "couponMsg";
+  $("couponMsg").innerText = "";
+  $("discountBox").classList.remove("show");
+
+  // reset upload area
   const oldPreview = document.querySelector("#doneBox .proofPreview");
   if (oldPreview) oldPreview.remove();
   const oldArea = document.querySelector("#doneBox #uploadArea");
@@ -450,6 +560,7 @@ function showHotel(i) {
       </label>`;
     $("doneBox").appendChild(newArea);
   }
+
   $("mName").innerText = h.Name;
   $("mDesc").innerText = h.description || "";
   $("mImg").style.backgroundImage = img(h) ? `url('${img(h)}')` : "";
@@ -507,7 +618,26 @@ function calc() {
       if (needT) total += seats * (N(h.extra_seat_price) + dep);
     }
   }
-  $("total").innerText = total > 0 ? "الإجمالي: " + total.toLocaleString() + " جنيه" : "الإجمالي: اختر البيانات المطلوبة";
+
+  // إعادة حساب الخصم لو الكوبون مطبق
+  let discount = 0;
+  if (appliedCoupon && total > 0) {
+    discount = Math.min(appliedCoupon.discount, total);
+    const dbox = $("discountBox");
+    dbox.classList.add("show");
+    dbox.innerText = "🎟️ خصم " + appliedCoupon.code + ": -" + discount.toLocaleString() + " جنيه";
+  } else {
+    $("discountBox").classList.remove("show");
+  }
+
+  const final = Math.max(total - discount, 0);
+  if (final > 0) {
+    $("total").innerText = "الإجمالي: " + final.toLocaleString() + " جنيه" + (discount > 0 ? " (بعد الخصم)" : "");
+  } else if (discount > 0) {
+    $("total").innerText = "الإجمالي: " + total.toLocaleString() + " جنيه";
+  } else {
+    $("total").innerText = "الإجمالي: اختر البيانات المطلوبة";
+  }
 }
 
 async function sendBooking() {
@@ -537,7 +667,8 @@ async function sendBooking() {
     children: c,
     room_type: $("roomType").value,
     needs_transport: needT,
-    extra_seats: x
+    extra_seats: x,
+    coupon_code: appliedCoupon ? appliedCoupon.code : null
   };
 
   const r = await db.rpc("create_booking", { payload: row });
@@ -547,6 +678,7 @@ async function sendBooking() {
   const finalTotal = N(saved.total_price);
   const dep        = N(saved.deposit_amount);
   const ref        = saved.booking_ref;
+  const disc       = N(saved.discount_amount);
 
   lastBooking = { ref: ref, phone: phone };
   saveCustomer(name, phone);
@@ -556,7 +688,7 @@ async function sendBooking() {
     : "-";
   const nights = Math.round((new Date(saved.check_out) - new Date(saved.check_in)) / 86400000);
 
-  const msg = [
+  const msgLines = [
     "طلب حجز جديد",
     "رقم الحجز: " + ref,
     "الاسم: " + name,
@@ -569,21 +701,28 @@ async function sendBooking() {
     "البالغين: " + a + " | الأطفال: " + c,
     "الغرف: " + saved.number_of_rooms + " (" + saved.room_type + ")",
     "الانتقالات: " + (needT ? "نعم (" + saved.bus_seats + " كراسي)" : "لا"),
-    "مكان التحرك: " + depName,
-    "الإجمالي: " + finalTotal.toLocaleString() + " جنيه",
-    "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه"
-  ].join("\n");
+    "مكان التحرك: " + depName
+  ];
+  if (disc > 0 && saved.coupon_code) {
+    msgLines.push("كود الخصم: " + saved.coupon_code + " (-" + disc.toLocaleString() + " جنيه)");
+  }
+  msgLines.push("الإجمالي: " + finalTotal.toLocaleString() + " جنيه");
+  msgLines.push("العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه");
+  const msg = msgLines.join("\n");
 
-  $("payInfo").innerText =
-    "رقم حجزك: " + ref +
-    "\nالعربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه" +
+  let payText = "رقم حجزك: " + ref + "\n";
+  if (disc > 0 && saved.coupon_code) {
+    payText += "🎟️ خصم " + saved.coupon_code + ": -" + disc.toLocaleString() + " جنيه\n";
+  }
+  payText += "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه" +
     "\n\nحوّل المبلغ على:\n• إنستاباي: " + pay.insta +
     "\n• فودافون كاش: " + pay.voda +
     "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب.";
 
+  $("payInfo").innerText = payText;
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
 
-  track("booking", {hotel: sel.h.Name, total: finalTotal});
+  track("booking", {hotel: sel.h.Name, total: finalTotal, coupon: saved.coupon_code || null});
   toast("✅ تم تسجيل حجزك: " + ref, "ok", 4000);
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
@@ -692,7 +831,12 @@ function showBookingResult(d) {
     html += `<a class="wa" href="${waHref}" target="_blank" onclick="track('whatsapp_click')">إرسال صورة التحويل على واتساب</a>`;
   }
 
-  html += `<button style="width:100%;margin-top:15px;background:#ddd;color:#172033" onclick="closeTrack()">إغلاق</button>`;
+  // زر الإلغاء (لو مش ملغي ولا مدفوع)
+  if (d.status !== "Cancelled" && d.status !== "Paid") {
+    html += `<button class="cancelBtn" onclick="cancelBooking('${d.booking_ref}', '${lastBooking.phone}')">❌ إلغاء الحجز</button>`;
+  }
+
+  html += `<button style="width:100%;margin-top:10px;background:#ddd;color:#172033" onclick="closeTrack()">إغلاق</button>`;
   $("trackResult").innerHTML = html;
 }
 
