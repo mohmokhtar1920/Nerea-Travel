@@ -10,21 +10,24 @@
 <meta name="theme-color" content="#0b1f3a">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f5f7fa;color:#172033}
-header{background:#0b1f3a;color:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center}
+body{background:#f5f7fa;color:#172033;transition:background .3s,color .3s}
+header{background:#0b1f3a;color:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;position:relative}
 .logo{font-size:26px;font-weight:bold;color:#d9b45b}
 .logo img{height:115px;width:auto;object-fit:contain;display:block}
 nav a{color:#fff;text-decoration:none;margin-right:20px}
+.darkToggle{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:18px;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-right:15px}
+.darkToggle:hover{background:rgba(255,255,255,.2)}
 .hero{min-height:420px;padding:70px 7%;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;text-align:center}
 .hero h1{font-size:42px;margin-bottom:15px}
 .hero p{font-size:19px;margin-bottom:35px}
 .search-box{max-width:980px;margin:auto;background:#fff;padding:20px;border-radius:15px;display:grid;grid-template-columns:1.4fr 1fr .7fr .7fr auto;gap:10px;align-items:end;text-align:right;box-shadow:0 10px 30px rgba(0,0,0,.2)}
-input,select{padding:13px;border:1px solid #ddd;border-radius:8px;width:100%}
+input,select{padding:13px;border:1px solid #ddd;border-radius:8px;width:100%;background:#fff;color:#172033;transition:background .3s,color .3s,border-color .3s}
 button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer}
 .section{padding:55px 7%}
 .section h2{text-align:center;margin-bottom:35px;font-size:30px}
 .trips{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
-.card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08)}
+.card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08);transition:background .3s,transform .3s;animation:fadeUp .4s ease}
+.card:hover{transform:translateY(-3px)}
 .card-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:65px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover}
 .card-content{padding:20px}
 .card-content h3{margin-bottom:10px}
@@ -32,34 +35,64 @@ button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:
 .price{color:#176b87;font-size:20px;font-weight:bold;margin:12px 0}
 .card button{width:100%}
 .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center}
-.feature{background:#fff;padding:30px 20px;border-radius:15px}
+.feature{background:#fff;padding:30px 20px;border-radius:15px;transition:background .3s}
 .feature-icon{font-size:40px;margin-bottom:15px}
 footer{background:#0b1f3a;color:#fff;text-align:center;padding:30px}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);justify-content:center;align-items:center;z-index:1000;overflow:auto}
-.modal-box{background:#fff;width:92%;max-width:520px;max-height:92vh;overflow:auto;padding:25px;border-radius:15px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);justify-content:center;align-items:center;z-index:1000;overflow:auto;animation:fadeIn .2s ease}
+.modal-box{background:#fff;width:92%;max-width:520px;max-height:92vh;overflow:auto;padding:25px;border-radius:15px;animation:fadeUp .3s ease;transition:background .3s}
 .modal-box input,.modal-box select{margin-bottom:10px}
 .close{float:left;font-size:28px;cursor:pointer}
 .himg{height:160px;border-radius:10px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:60px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover}
-.info{background:#f0f6fa;padding:10px;border-radius:8px;margin-bottom:10px;font-size:14px}
+.info{background:#f0f6fa;padding:10px;border-radius:8px;margin-bottom:10px;font-size:14px;transition:background .3s}
 label{display:block;font-size:13px;margin:4px 0;color:#555}
 .chk{display:flex;align-items:center;gap:8px;margin:8px 0}
 .chk input{width:auto;margin:0}
 .total{font-size:20px;font-weight:bold;color:#176b87;margin:10px 0}
 .note{text-align:center;color:#777;grid-column:1/-1}
 .wa{display:block;text-align:center;background:#25d366;color:#fff;text-decoration:none;font-weight:bold;padding:14px;border-radius:8px;margin-top:15px}
-@media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}header{justify-content:center;padding:14px 7%}.logo img{height:150px}}
+@media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}header{justify-content:center;padding:14px 7%}.logo img{height:150px}.darkToggle{position:absolute;top:14px;left:14px;margin:0}}
 .gal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:3000;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:15px}#galMain{max-width:100%;max-height:68vh;border-radius:10px}.gthumbs{display:flex;gap:6px;overflow:auto;max-width:100%}.gthumbs img{height:56px;border-radius:6px;opacity:.55;cursor:pointer}.gthumbs img.on{opacity:1;outline:2px solid #d9b45b}.gnav{display:flex;gap:14px;align-items:center;color:#fff}.gx{position:absolute;top:12px;left:18px;color:#fff;font-size:34px;cursor:pointer}
 .fab{position:fixed;bottom:22px;left:22px;background:#0b1f3a;color:#fff;border:none;border-radius:30px;padding:14px 22px;font-weight:bold;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:500;font-size:15px;font-family:inherit}
 .fab:hover{background:#176b87}
-.stBox{background:#f0f6fa;padding:14px;border-radius:10px;margin-bottom:12px;white-space:pre-line;font-size:14px;line-height:1.7}
+.stBox{background:#f0f6fa;padding:14px;border-radius:10px;margin-bottom:12px;white-space:pre-line;font-size:14px;line-height:1.7;transition:background .3s}
 .stBadge{display:inline-block;padding:6px 14px;border-radius:20px;color:#fff;font-weight:bold;font-size:14px}
 .payBox{background:#fff3cd;padding:15px;border-radius:10px;margin-top:12px;border-right:4px solid #e0a800}
 .payBox p{margin:6px 0;font-size:14px}
+
+/* Toast */
+#toastBox{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:90%}
+.toast{background:#fff;color:#172033;padding:14px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.15);font-size:14px;font-weight:bold;min-width:220px;border-right:5px solid #176b87;animation:slideIn .3s ease}
+.toast.ok{border-color:#28a745;background:#d4edda;color:#155724}
+.toast.err{border-color:#dc3545;background:#f8d7da;color:#721c24}
+.toast.info{border-color:#176b87;background:#e3f2fd;color:#0d47a1}
+
+/* Dark Mode */
+body.dark{background:#0f172a;color:#e2e8f0}
+body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select{background:#1e293b;color:#e2e8f0;border-color:#334155}
+body.dark .info,body.dark .stBox{background:#1e293b;color:#cbd5e1}
+body.dark .card-content p,body.dark label{color:#94a3b8}
+body.dark .section h2{color:#e2e8f0}
+body.dark .price,body.dark .total{color:#5eb8d6}
+body.dark .note{color:#64748b}
+body.dark .payBox{background:#3a2f0f;border-color:#d9b45b;color:#e2e8f0}
+body.dark .payBox p{color:#e2e8f0}
+body.dark .wa{background:#1e8a45}
+body.dark .close{color:#e2e8f0}
+body.dark .toast{background:#1e293b;color:#e2e8f0;border-right-color:#5eb8d6}
+body.dark .toast.ok{background:#14532d;color:#bbf7d0}
+body.dark .toast.err{background:#4c1d24;color:#fecaca}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slideOut{to{transform:translateX(120%);opacity:0}}
 </style>
 </head>
 <body>
 <header><div class="logo"><img src="logo.png?v=2" alt="Nerea Travel"></div>
-<nav><a href="#trips">الرحلات</a><a href="#services">خدماتنا</a><a href="#contact">تواصل معنا</a></nav></header>
+<nav><a href="#trips">الرحلات</a><a href="#services">خدماتنا</a><a href="#contact">تواصل معنا</a></nav>
+<button class="darkToggle" id="darkBtn" onclick="toggleDark()" title="الوضع الليلي">🌙</button></header>
 
 <section class="hero">
 <h1>احجز رحلتك بسهولة</h1>
@@ -87,14 +120,11 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 
 <footer id="contact"><h3>Nerea Travel</h3><p>رحلتك تبدأ من هنا ✈️</p><p>© 2026 Nerea Travel</p></footer>
 
-<!-- زر متابعة الحجز -->
 <button class="fab" onclick="openTrack()">📋 متابعة الحجز</button>
 
-<!-- مودال متابعة الحجز -->
 <div class="modal" id="trackModal">
   <div class="modal-box">
     <span class="close" onclick="closeTrack()">×</span>
-
     <div id="trackForm">
       <h2 style="margin-bottom:15px">متابعة الحجز</h2>
       <p style="color:#666;margin-bottom:15px;font-size:14px">اكتب رقم الحجز ورقم الموبايل اللي حجزت بيه</p>
@@ -105,7 +135,6 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
       <button style="width:100%" onclick="checkBooking(this)">عرض حالة الحجز</button>
       <div id="tError" style="color:#c00;margin-top:10px;font-size:14px;text-align:center"></div>
     </div>
-
     <div id="trackResult" style="display:none"></div>
   </div>
 </div>
@@ -176,7 +205,51 @@ const addDays = (d, n) => { const [y, m, dd] = d.split("-").map(Number); return 
 const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); return /thu|خميس/.test(s) ? 4 : /sun|أحد|احد/.test(s) ? 0 : -1; };
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 
+/* ============ Toast Notifications ============ */
+function toast(msg, type, dur) {
+  type = type || "info"; dur = dur || 3000;
+  let box = $("toastBox");
+  if (!box) { box = document.createElement("div"); box.id = "toastBox"; document.body.appendChild(box); }
+  const el = document.createElement("div");
+  el.className = "toast " + type;
+  el.innerText = msg;
+  box.appendChild(el);
+  setTimeout(() => {
+    el.style.animation = "slideOut .3s ease forwards";
+    setTimeout(() => el.remove(), 300);
+  }, dur);
+}
+
+/* ============ Dark Mode ============ */
+function toggleDark() {
+  const isDark = document.body.classList.toggle("dark");
+  try { localStorage.setItem("nt_dark", isDark ? "1" : "0"); } catch (e) {}
+  $("darkBtn").innerText = isDark ? "☀️" : "🌙";
+}
+function initDark() {
+  try {
+    const saved = localStorage.getItem("nt_dark");
+    if (saved === "1") {
+      document.body.classList.add("dark");
+      $("darkBtn").innerText = "☀️";
+    }
+  } catch (e) {}
+}
+
+/* ============ Customer data ============ */
+function saveCustomer(name, phone) {
+  try { localStorage.setItem("nt_name", name); localStorage.setItem("nt_phone", phone); } catch (e) {}
+}
+function fillCustomer() {
+  try {
+    const n = localStorage.getItem("nt_name"), p = localStorage.getItem("nt_phone");
+    if (n && !$("name").value) $("name").value = n;
+    if (p && !$("phone").value) $("phone").value = p;
+  } catch (e) {}
+}
+
 async function init() {
+  initDark();
   const d = await db.from("destinations").select("*").order("id");
   if (d.error) { console.error(d.error); return; }
   dests = d.data || [];
@@ -202,16 +275,16 @@ async function init() {
 
 function pickDest(id) {
   $("destination").value = id;
-  if (!$("date").value) { alert("اختر تاريخ السفر أولاً ثم اضغط بحث"); window.scrollTo({top: 0, behavior: "smooth"}); return; }
+  if (!$("date").value) { toast("اختر تاريخ السفر أولاً ثم اضغط بحث", "info"); window.scrollTo({top: 0, behavior: "smooth"}); return; }
   searchTrips();
 }
 
 async function searchTrips() {
   const destId = $("destination").value, date = $("date").value;
-  if (!destId || !date) { alert("اختر الوجهة والتاريخ"); return; }
-  if (date < new Date().toISOString().slice(0, 10)) { alert("اختر تاريخًا من اليوم فصاعدًا"); return; }
+  if (!destId || !date) { toast("اختر الوجهة والتاريخ", "info"); return; }
+  if (date < new Date().toISOString().slice(0, 10)) { toast("اختر تاريخًا من اليوم فصاعدًا", "info"); return; }
   const h = await db.from("Hotels").select("*").eq("Destination_id", destId).order("Name", {ascending: true});
-  if (h.error) { console.error("Hotels error:", h.error); alert("تعذر تحميل الفنادق: " + h.error.message); return; }
+  if (h.error) { console.error("Hotels error:", h.error); toast("تعذر تحميل الفنادق", "err"); return; }
   const hotels = h.data || [];
   const t = await db.from("Series_Trips").select("*");
   if (t.error) console.warn("Series_Trips error:", t.error);
@@ -247,6 +320,7 @@ async function searchTrips() {
   track("search", {destination: dest ? dest.Name : "", results: list.length});
   $("hotels").style.display = "block";
   $("hotels").scrollIntoView({behavior: "smooth"});
+  if (list.length) toast("تم العثور على " + list.length + " نتيجة", "ok");
 }
 
 function showHotel(i) {
@@ -270,6 +344,7 @@ function showHotel(i) {
   $("childAge").innerText = "(حتى 10 سنوات مجانًا في الفندق، الأكبر يُحسب بالغًا)";
   $("mInfo").innerText = t ? `رحلة سيريال ${t.days} أيام / ${t.nights} ليالي\nالمغادرة: ${t.start_date} • دخول الفندق: ${t.hotelIn} • الرجوع: ${t.end_date}\nالسعر شامل الإقامة بالغرف الدبل والتريبل والانتقالات` : "اختر تاريخ الدخول والخروج";
   if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
+  fillCustomer();
   calc();
   $("hotelModal").style.display = "flex";
 }
@@ -315,12 +390,9 @@ function calc() {
 
 async function sendBooking() {
   const name = $("name").value.trim(), phone = $("phone").value.trim();
-  if (!name || !phone) { alert("من فضلك اكتب الاسم ورقم الموبايل"); return; }
-  if (!(total > 0)) { alert("اختر تاريخ الدخول والخروج"); return; }
-  if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) {
-    alert("رقم الموبايل غير صحيح — اكتبه بالشكل 01xxxxxxxxx");
-    return;
-  }
+  if (!name || !phone) { toast("اكتب الاسم ورقم الموبايل", "info"); return; }
+  if (!(total > 0)) { toast("اختر تاريخ الدخول والخروج", "info"); return; }
+  if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) { toast("رقم الموبايل غير صحيح — اكتبه بالشكل 01xxxxxxxxx", "err"); return; }
 
   const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
@@ -347,16 +419,14 @@ async function sendBooking() {
   };
 
   const r = await db.rpc("create_booking", { payload: row });
-  if (r.error) {
-    console.error(r.error);
-    alert("خطأ:\n" + r.error.message + "\n\nالكود: " + r.error.code);
-    return;
-  }
+  if (r.error) { console.error(r.error); toast("تعذر إرسال الطلب: " + r.error.message, "err", 5000); return; }
 
   const saved = r.data;
   const finalTotal = N(saved.total_price);
   const dep        = N(saved.deposit_amount);
   const ref        = saved.booking_ref;
+
+  saveCustomer(name, phone);
 
   const depName = needT
     ? ((deps.find(y => y.id == saved.departure_points_id) || {}).name || "-")
@@ -391,6 +461,7 @@ async function sendBooking() {
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
 
   track("booking", {hotel: sel.h.Name, total: finalTotal});
+  toast("✅ تم تسجيل حجزك: " + ref, "ok", 4000);
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
 }
