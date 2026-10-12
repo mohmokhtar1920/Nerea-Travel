@@ -105,6 +105,9 @@ input,select{padding:11px;border:1px solid #ddd;border-radius:8px;width:100%}
 .adminPanel{display:none;background:#fff;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 3px 14px rgba(0,0,0,.07)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.tabs button{background:#eee;color:#172033}.tabs button.active{background:#0b1f3a;color:#fff}.adminForm{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:15px 0}.adminForm .full{grid-column:1/-1}.tableWrap{overflow:auto}.simpleTable{width:100%;border-collapse:collapse}.simpleTable th,.simpleTable td{padding:9px;border-bottom:1px solid #eee;text-align:right;white-space:nowrap}.danger{background:#dc3545;color:#fff}.secondary{background:#ddd;color:#172033}.roleBadge{background:#d9b45b;color:#0b1f3a;padding:5px 9px;border-radius:15px;font-size:12px}@media(max-width:600px){.adminForm{grid-template-columns:1fr}}
 .follow{margin-top:10px;padding-top:10px;border-top:1px dashed #ccc}.follow select,.follow textarea{width:100%;margin:6px 0;padding:9px;border:1px solid #ddd;border-radius:8px;font-family:inherit}.follow small{color:#777;display:block;margin-top:6px}
 .photoGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin:15px 0}.ph img{width:100%;height:100px;object-fit:cover;border-radius:8px}.ph button{width:100%;margin-top:4px;padding:6px}
+.proofBox{margin-top:10px;padding:10px;background:#f0f9ff;border-radius:8px;text-align:center;border:1px solid #bae6fd}
+.proofBox img{max-width:100%;max-height:150px;border-radius:6px;cursor:zoom-in;margin-top:4px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+body.dark .proofBox{background:#1e293b;border-color:#334155}
 </style>
 </head>
 
@@ -710,9 +713,35 @@ async function loadStaff(){
 
 function paymentHtml(b){
   const paid=b.payment_status==="Paid";
-  return `<div class="call" style="background:${paid?"#d4edda":"#e8f1ff"}">🆔 ${esc(b.booking_ref||"—")} • العربون: ${Number(b.deposit_amount||0).toLocaleString()} جنيه • ${paid?"✅ مدفوع":"⏳ لم يُدفع"}</div>`
-  +(role==="admin"&&!paid?`<button type="button" class="editBtn" style="background:#28a745" onclick="markPaid(${Number(b.id)})">💰 تم استلام العربون</button>`:"")
-  +(b.invoice_number?`<button type="button" class="editBtn" onclick="showInvoice(${Number(b.id)})">🧾 الفاتورة</button>`:"");
+  let html = `<div class="call" style="background:${paid?"#d4edda":"#e8f1ff"}">🆔 ${esc(b.booking_ref||"—")} • العربون: ${Number(b.deposit_amount||0).toLocaleString()} جنيه • ${paid?"✅ مدفوع":"⏳ لم يُدفع"}</div>`;
+  if (b.payment_proof_url) {
+    html += `<div class="proofBox">
+      <div style="font-size:13px;color:#28a745;font-weight:bold;margin-bottom:6px">📷 صورة التحويل مرفوعة</div>
+      <img src="${esc(b.payment_proof_url)}" onclick="showProof('${esc(b.payment_proof_url)}')" alt="إثبات التحويل">
+      <button type="button" class="editBtn" style="background:#176b87;margin-top:8px" onclick="showProof('${esc(b.payment_proof_url)}')">🔍 عرض بحجم كامل</button>
+    </div>`;
+  }
+  html += (role==="admin"&&!paid?`<button type="button" class="editBtn" style="background:#28a745" onclick="markPaid(${Number(b.id)})">💰 تم استلام العربون</button>`:"");
+  html += (b.invoice_number?`<button type="button" class="editBtn" onclick="showInvoice(${Number(b.id)})">🧾 الفاتورة</button>`:"");
+  return html;
+}
+
+function showProof(url) {
+  let ov = document.getElementById("proofOv");
+  if (!ov) {
+    ov = document.createElement("div");
+    ov.id = "proofOv";
+    ov.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:25000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:14px;cursor:zoom-out";
+    ov.onclick = function(e){ if(e.target===ov) ov.remove(); };
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML = `
+    <img src="${url}" style="max-width:95%;max-height:85vh;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.6)" onclick="event.stopPropagation()">
+    <div style="display:flex;gap:10px">
+      <a href="${url}" download target="_blank" style="padding:10px 20px;background:#d9b45b;color:#0b1f3a;border-radius:8px;text-decoration:none;font-weight:bold">⬇️ تحميل</a>
+      <button type="button" style="padding:10px 20px;background:#ddd;color:#172033;border:none;border-radius:8px;cursor:pointer;font-weight:bold" onclick="document.getElementById('proofOv').remove()">إغلاق</button>
+    </div>
+  `;
 }
 async function markPaid(id){
   const b=rows.find(x=>x.id==id);if(!b)return;
