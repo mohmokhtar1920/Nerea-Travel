@@ -856,7 +856,7 @@ function calc() {
       const diff = Math.max(0, N(h.highs_price) - N(h.extra_seat_price));
       total = rp * a + diff * a + x * N(h.extra_highs_seat_price) + dep * seats;
     } else {
-      total = rp * a + x * N(t.extra_seat_price) + dep * seats;
+      total = rp * a + x * N(h.extra_bus_seat_price) + dep * seats;
     }
   } else {
     const n = Math.round((new Date($("cout").value) - new Date($("cin").value)) / 86400000);
