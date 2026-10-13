@@ -30,6 +30,7 @@ button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:
 .card:hover{transform:translateY(-3px)}
 .card-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:65px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover;position:relative}
 .card-img .badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:bold;display:flex;align-items:center;gap:4px}
+.card-img .breakfast-badge{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#f5a623,#ff9500);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;box-shadow:0 4px 12px rgba(245,166,35,.4)}
 .card-content{padding:20px}
 .card-content h3{margin-bottom:8px}
 .card-content p{margin-bottom:12px;color:#555}
@@ -59,6 +60,15 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .stBadge{display:inline-block;padding:6px 14px;border-radius:20px;color:#fff;font-weight:bold;font-size:14px}
 .payBox{background:#fff3cd;padding:15px;border-radius:10px;margin-top:12px;border-right:4px solid #e0a800}
 .payBox p{margin:6px 0;font-size:14px}
+
+/* Breakfast inside modal */
+.breakfastInfo{background:linear-gradient(135deg,#fff8e1,#ffe4a1);padding:12px 15px;border-radius:10px;margin-bottom:12px;font-size:14px;border-right:4px solid #f5a623;display:flex;align-items:center;gap:10px}
+.breakfastInfo .bIcon{font-size:24px}
+.breakfastInfo b{color:#856404}
+.breakfastInfo small{display:block;color:#7a5a00;margin-top:4px;font-size:12px}
+
+/* Departure info */
+.depInfo{background:linear-gradient(135deg,#e3f2fd,#bbdefb);padding:10px 14px;border-radius:8px;margin:8px 0;font-size:13px;border-right:4px solid #176b87;color:#0d47a1;font-weight:bold}
 
 /* Filters */
 .filtersBar{background:#fff;border-radius:12px;padding:14px;margin-bottom:22px;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:10px;box-shadow:0 3px 14px rgba(0,0,0,.06);transition:background .3s}
@@ -148,6 +158,10 @@ body.dark .reviewItem .comment,body.dark .reviewItem .date{color:#94a3b8}
 body.dark .reviewForm textarea{background:#0f172a;color:#e2e8f0;border-color:#334155}
 body.dark .rating{color:#94a3b8}
 body.dark .rating b{color:#e2e8f0}
+body.dark .breakfastInfo{background:linear-gradient(135deg,#3a2f0f,#4a3a15);border-color:#f5a623;color:#ffe4a1}
+body.dark .breakfastInfo b{color:#f5d97e}
+body.dark .breakfastInfo small{color:#d4a83a}
+body.dark .depInfo{background:linear-gradient(135deg,#1e3a5f,#2a4a6f);border-color:#5eb8d6;color:#bbdefb}
 
 @media(max-width:800px){.filtersBar{grid-template-columns:1fr 1fr}.filtersBar>div:nth-child(3),.filtersBar>div:nth-child(4){grid-column:span 1}}
 
@@ -262,6 +276,7 @@ body.dark .rating b{color:#e2e8f0}
 <div class="himg" id="mImg" style="cursor:pointer" onclick="openGallery(sel.h.id)">🏨</div>
 <h2 id="mName"></h2>
 <div id="mRating"></div>
+<div id="mBreakfast"></div>
 <p id="mDesc" style="margin:8px 0;color:#555"></p>
 <div class="info" id="mInfo" style="white-space:pre-line"></div>
 <div id="mMaps"></div>
@@ -275,13 +290,14 @@ body.dark .rating b{color:#e2e8f0}
 <label>عدد الأطفال <span id="childAge"></span></label><input type="number" id="children" min="0" value="0" oninput="calc()">
 <label>عدد الغرف (الطفل لا يحتاج غرفة)</label><input type="number" id="rooms" min="1" value="1" oninput="calc()">
 <label>نوع الغرفة</label>
-<select id="roomType" onchange="calc()"><option value="Double">Double - دبل</option><option value="Triple">Triple - تريبل</option><option value="Single">Single - سنجل</option></select>
+<select id="roomType" onchange="calc()"></select>
 
 <div class="chk" id="transRow"><input type="checkbox" id="transChk" onchange="toggleTrans()"><label style="margin:0">محتاج انتقالات؟</label></div>
 <div id="transBox">
 <label>نقطة التحرك</label><select id="dep" onchange="calc()"></select>
 <label>كرسي إضافي (اختياري، بسعره)</label><input type="number" id="extraSeats" min="0" value="0" oninput="calc()">
 <div class="info" id="seatInfo"></div>
+<div id="depInfo" class="depInfo" style="display:none"></div>
 </div>
 
 <div style="margin-top:12px">
@@ -334,8 +350,63 @@ const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); ret
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
+/* ============ Room Types ============ */
+const ROOM_TYPES = [
+  {key: "single", price: "price_single", label: "Single - فرد"},
+  {key: "double", price: "price_double", label: "Double - دبل"},
+  {key: "triple", price: "price_triple", label: "Triple - تربل"},
+  {key: "quad",   price: "price_quad",   label: "Quad - رباعي"},
+  {key: "quint",  price: "price_quint",  label: "Quint - خماسي"}
+];
+
+function getAvailableRoomTypes(hotel) {
+  return ROOM_TYPES.filter(rt => N(hotel[rt.price]) > 0);
+}
+
+function getRoomPrice(hotel, type, trip) {
+  if (trip) {
+    if (type.toLowerCase() === "single") return N(trip.price_single) || N(trip.price_per_person);
+    return N(trip.price_per_person);
+  }
+  const rt = ROOM_TYPES.find(x => x.key === type.toLowerCase());
+  if (!rt) return N(hotel.price_per_night);
+  return N(hotel[rt.price]) || N(hotel.price_per_night);
+}
+
+function renderRoomOptions() {
+  const h = sel.h, t = sel.t;
+  let opts = [];
+  if (t) {
+    // Series: single + double/others (shared)
+    opts.push({key: "Double", label: "Double - دبل"});
+    opts.push({key: "Triple", label: "Triple - تربل"});
+    opts.push({key: "Single", label: "Single - فرد", price: N(t.price_single)});
+    // Show double/triple/quad/quint all pointing to price_per_person
+    opts.push({key: "Quad", label: "Quad - رباعي"});
+    opts.push({key: "Quint", label: "Quint - خماسي"});
+  } else {
+    const avail = getAvailableRoomTypes(h);
+    if (!avail.length) {
+      opts.push({key: "Double", label: "Double - دبل"});
+    } else {
+      avail.forEach(rt => {
+        const cap = rt.key.charAt(0).toUpperCase() + rt.key.slice(1);
+        opts.push({key: cap, label: rt.label});
+      });
+    }
+  }
+  $("roomType").innerHTML = opts.map(o => `<option value="${esc(o.key)}">${esc(o.label)}</option>`).join("");
+}
+
+/* ============ Helpers ============ */
 function priceOf(o) {
-  return o.t ? N(o.t.price_per_person) : (N(o.h.price_per_night) || N(o.h.price_double) || N(o.h.price_triple));
+  if (o.t) return N(o.t.price_per_person);
+  // Cheapest available room type
+  const avail = getAvailableRoomTypes(o.h);
+  if (!avail.length) return N(o.h.price_per_night) || 0;
+  let min = Infinity;
+  avail.forEach(rt => { const p = N(o.h[rt.price]); if (p > 0 && p < min) min = p; });
+  return isFinite(min) ? min : N(o.h.price_per_night);
 }
 
 function starsHtml(rating) {
@@ -368,10 +439,7 @@ function toggleDark() {
 function initDark() {
   try {
     const saved = localStorage.getItem("nt_dark");
-    if (saved === "1") {
-      document.body.classList.add("dark");
-      $("darkBtn").innerText = "☀️";
-    }
+    if (saved === "1") { document.body.classList.add("dark"); $("darkBtn").innerText = "☀️"; }
   } catch (e) {}
 }
 
@@ -404,15 +472,10 @@ async function loadReviews(hotelId) {
   const reviews = d.reviews || [];
   if (!reviews.length) { box.innerHTML = ""; return; }
   const avg = (reviews.reduce((s,x)=>s+N(x.rating),0) / reviews.length).toFixed(1);
-  let html = `<div class="reviewCard">
-    <h4>⭐ تقييمات العملاء <span style="background:#f5a623;color:#fff;padding:2px 10px;border-radius:12px;font-size:13px">${avg} / 5</span> <span style="color:#888;font-size:13px;font-weight:normal">(${reviews.length} تقييم)</span></h4>`;
+  let html = `<div class="reviewCard"><h4>⭐ تقييمات العملاء <span style="background:#f5a623;color:#fff;padding:2px 10px;border-radius:12px;font-size:13px">${avg} / 5</span> <span style="color:#888;font-size:13px;font-weight:normal">(${reviews.length} تقييم)</span></h4>`;
   reviews.slice(0, 5).forEach(x => {
     const dt = x.created_at ? new Date(x.created_at).toLocaleDateString("ar-EG") : "";
-    html += `<div class="reviewItem">
-      <div class="head"><div class="name">${esc(x.customer_name || "عميل")}</div><div class="date">${esc(dt)}</div></div>
-      ${starsHtml(x.rating)}
-      ${x.comment ? `<div class="comment">${esc(x.comment)}</div>` : ""}
-    </div>`;
+    html += `<div class="reviewItem"><div class="head"><div class="name">${esc(x.customer_name || "عميل")}</div><div class="date">${esc(dt)}</div></div>${starsHtml(x.rating)}${x.comment ? `<div class="comment">${esc(x.comment)}</div>` : ""}</div>`;
   });
   if (reviews.length > 5) html += `<p style="text-align:center;color:#888;font-size:12px;margin-top:8px">يظهر أول 5 تقييمات من أصل ${reviews.length}</p>`;
   html += `</div>`;
@@ -423,36 +486,20 @@ function openReviewForm() {
   const box = $("trackResult");
   if (!box || !lastBooking.ref || !lastBooking.phone) return;
   currentReviewRating = 0;
-  const html = `
-    <div class="reviewForm" id="reviewFormBox">
-      <h3 style="text-align:center;margin-bottom:6px">⭐ قيّم رحلتك</h3>
-      <p style="text-align:center;color:#666;font-size:13px">رأيك بيهمنا وياريت يكون صادق</p>
-      <div class="ratingInput" id="ratingInput">
-        <span data-r="1">★</span><span data-r="2">★</span><span data-r="3">★</span><span data-r="4">★</span><span data-r="5">★</span>
-      </div>
-      <textarea id="reviewComment" placeholder="اكتب رأيك في الرحلة والفندق (اختياري)"></textarea>
-      <button class="reviewBtn" onclick="submitReview()">إرسال التقييم</button>
-      <button class="reviewBtn" style="background:#999" onclick="document.getElementById('reviewFormBox').remove()">إلغاء</button>
-    </div>`;
+  const html = `<div class="reviewForm" id="reviewFormBox"><h3 style="text-align:center;margin-bottom:6px">⭐ قيّم رحلتك</h3><p style="text-align:center;color:#666;font-size:13px">رأيك بيهمنا وياريت يكون صادق</p><div class="ratingInput" id="ratingInput"><span data-r="1">★</span><span data-r="2">★</span><span data-r="3">★</span><span data-r="4">★</span><span data-r="5">★</span></div><textarea id="reviewComment" placeholder="اكتب رأيك في الرحلة والفندق (اختياري)"></textarea><button class="reviewBtn" onclick="submitReview()">إرسال التقييم</button><button class="reviewBtn" style="background:#999" onclick="document.getElementById('reviewFormBox').remove()">إلغاء</button></div>`;
   box.insertAdjacentHTML("beforeend", html);
   document.querySelectorAll("#ratingInput span").forEach(s => {
     s.addEventListener("click", () => {
       currentReviewRating = Number(s.dataset.r);
-      document.querySelectorAll("#ratingInput span").forEach(x => {
-        x.classList.toggle("on", Number(x.dataset.r) <= currentReviewRating);
-      });
+      document.querySelectorAll("#ratingInput span").forEach(x => { x.classList.toggle("on", Number(x.dataset.r) <= currentReviewRating); });
     });
     s.addEventListener("mouseenter", () => {
       const r = Number(s.dataset.r);
-      document.querySelectorAll("#ratingInput span").forEach(x => {
-        x.classList.toggle("on", Number(x.dataset.r) <= r);
-      });
+      document.querySelectorAll("#ratingInput span").forEach(x => { x.classList.toggle("on", Number(x.dataset.r) <= r); });
     });
   });
   document.getElementById("ratingInput").addEventListener("mouseleave", () => {
-    document.querySelectorAll("#ratingInput span").forEach(x => {
-      x.classList.toggle("on", Number(x.dataset.r) <= currentReviewRating);
-    });
+    document.querySelectorAll("#ratingInput span").forEach(x => { x.classList.toggle("on", Number(x.dataset.r) <= currentReviewRating); });
   });
 }
 
@@ -461,12 +508,7 @@ async function submitReview() {
   const btn = document.querySelector(".reviewBtn");
   if (btn) { btn.disabled = true; btn.innerText = "جاري الإرسال..."; }
   const comment = ($("reviewComment").value || "").trim();
-  const r = await db.rpc("submit_review", {
-    p_ref: lastBooking.ref,
-    p_phone: lastBooking.phone,
-    p_rating: currentReviewRating,
-    p_comment: comment
-  });
+  const r = await db.rpc("submit_review", { p_ref: lastBooking.ref, p_phone: lastBooking.phone, p_rating: currentReviewRating, p_comment: comment });
   if (btn) { btn.disabled = false; btn.innerText = "إرسال التقييم"; }
   if (r.error) { console.error(r.error); toast("تعذر إرسال التقييم", "err"); return; }
   const d = r.data;
@@ -506,11 +548,7 @@ function applyFilters() {
 
   if (sortBy === "price_asc") filtered.sort((a,b) => priceOf(a) - priceOf(b));
   else if (sortBy === "price_desc") filtered.sort((a,b) => priceOf(b) - priceOf(a));
-  else if (sortBy === "rating") filtered.sort((a,b) => {
-    const ra = N((hotelRatings[String(a.h.id)]||{}).avg);
-    const rb = N((hotelRatings[String(b.h.id)]||{}).avg);
-    return rb - ra;
-  });
+  else if (sortBy === "rating") filtered.sort((a,b) => { const ra = N((hotelRatings[String(a.h.id)]||{}).avg); const rb = N((hotelRatings[String(b.h.id)]||{}).avg); return rb - ra; });
   else if (sortBy === "name") filtered.sort((a,b) => String(a.h.Name||"").localeCompare(String(b.h.Name||""), "ar"));
 
   renderHotelList();
@@ -521,23 +559,32 @@ function renderHotelList() {
   $("resultCount").innerHTML = `عدد النتائج: <b>${listToRender.length}</b> ${listToRender.length < list.length ? `(من أصل ${list.length})` : ""}`;
 
   $("hotelList").innerHTML = listToRender.length ? listToRender.map(o => {
-    const i = list.indexOf(o); // original index for showHotel
-    const np = N(o.h.price_per_night) || N(o.h.price_double) || N(o.h.price_triple);
+    const i = list.indexOf(o);
     const rating = hotelRatings[String(o.h.id)];
     const ratingBadge = rating && rating.count > 0 ? `<span class="badge">★ ${rating.avg} (${rating.count})</span>` : "";
     const ratingLine = rating && rating.count > 0 ? `<div class="rating">${starsHtml(rating.avg)} <b>${rating.avg}</b> <span>(${rating.count} تقييم)</span></div>` : "";
+    const breakfastBadge = o.h.has_breakfast ? `<span class="breakfast-badge">🍳 فطار مشمول</span>` : "";
+    // أنواع الغرف المتاحة
+    let roomsLine = "";
+    if (o.t) {
+      roomsLine = `<p style="font-size:12px;color:#176b87;margin-top:6px">🛏 متوفر: Double / Triple / Single</p>`;
+    } else {
+      const avail = getAvailableRoomTypes(o.h);
+      if (avail.length) {
+        const names = avail.map(rt => rt.label.split(" - ")[0]).join(" / ");
+        roomsLine = `<p style="font-size:12px;color:#176b87;margin-top:6px">🛏 متوفر: ${names}</p>`;
+      }
+    }
     return `<div class="card">
-      <div class="card-img" style="cursor:pointer;${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}" onclick="openGallery(${o.h.id})">${img(o.h) ? '' : '🏨'}${ratingBadge}</div>
+      <div class="card-img" style="cursor:pointer;${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}" onclick="openGallery(${o.h.id})">${img(o.h) ? '' : '🏨'}${ratingBadge}${breakfastBadge}</div>
       <div class="card-content">
         ${(imgs[o.h.id] || []).length > 1 ? `<p style="font-size:12px;color:#888;margin-bottom:6px">📷 اضغط على الصورة لعرض ${imgs[o.h.id].length} صور</p>` : ""}
         <h3>${o.h.Name || "فندق بدون اسم"}</h3>
         ${ratingLine}
         <p>${o.h.description || ""}</p>
-        ${o.t ? `<p>📅 ${o.t.days} أيام / ${o.t.nights} ليالي</p>
-        <p>🚌 المغادرة: ${o.t.start_date} • 🏨 دخول الفندق: ${o.t.hotelIn}</p>
-        <p>↩️ الرجوع: ${o.t.end_date}</p>
-        <p>✅ السعر شامل الإقامة والانتقالات</p>` : ""}
-        <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + " جنيه / للفرد" : (np ? np.toLocaleString() + " جنيه / الليلة" : "السعر غير محدد")}</div>
+        ${roomsLine}
+        ${o.t ? `<p>📅 ${o.t.days} أيام / ${o.t.nights} ليالي</p><p>🚌 المغادرة: ${o.t.start_date} • 🏨 دخول الفندق: ${o.t.hotelIn}</p><p>↩️ الرجوع: ${o.t.end_date}</p><p>✅ السعر شامل الإقامة والانتقالات</p>` : ""}
+        <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + " جنيه / للفرد" : (priceOf(o) ? priceOf(o).toLocaleString() + " جنيه / الليلة" : "السعر غير محدد")}</div>
         <button onclick="showHotel(${i})">عرض التفاصيل</button>
       </div></div>`;
   }).join("") : '<p class="note">لا توجد نتائج مطابقة للفلاتر</p>';
@@ -548,19 +595,13 @@ async function applyCoupon() {
   const code = $("couponCode").value.trim();
   const msg = $("couponMsg");
   const dbox = $("discountBox");
-  if (!code) {
-    msg.className = "couponMsg err"; msg.innerText = "اكتب كود الخصم الأول";
-    appliedCoupon = null; dbox.classList.remove("show"); calc(); return;
-  }
+  if (!code) { msg.className = "couponMsg err"; msg.innerText = "اكتب كود الخصم الأول"; appliedCoupon = null; dbox.classList.remove("show"); calc(); return; }
   if (!(total > 0)) { msg.className = "couponMsg err"; msg.innerText = "اختر تفاصيل الحجز أولاً"; return; }
   msg.className = "couponMsg"; msg.style.display = "block"; msg.innerText = "جاري التحقق...";
   const r = await db.rpc("validate_coupon", { p_code: code, p_amount: total });
   if (r.error) { console.error(r.error); msg.className = "couponMsg err"; msg.innerText = "حصل خطأ، حاول تاني"; return; }
   const d = r.data;
-  if (!d || !d.valid) {
-    msg.className = "couponMsg err"; msg.innerText = (d && d.message) || "كود غير صالح";
-    appliedCoupon = null; dbox.classList.remove("show"); calc(); return;
-  }
+  if (!d || !d.valid) { msg.className = "couponMsg err"; msg.innerText = (d && d.message) || "كود غير صالح"; appliedCoupon = null; dbox.classList.remove("show"); calc(); return; }
   appliedCoupon = { code: d.code, discount: N(d.discount) };
   msg.className = "couponMsg ok";
   msg.innerText = "✅ تم تطبيق الكود — خصم " + N(d.discount).toLocaleString() + " جنيه";
@@ -584,13 +625,11 @@ function resizeImage(file, maxSize) {
     img.src = URL.createObjectURL(file);
   });
 }
-
 function onProofSelected(el) {
   const file = el.files[0];
   if (!file) return;
   uploadPaymentProof(lastBooking.ref, lastBooking.phone, el, file);
 }
-
 async function uploadPaymentProof(ref, phone, inputEl, file) {
   if (!ref || !phone) { toast("مش قادرين نحدد الحجز", "err"); return; }
   if (!file.type.startsWith("image/")) { toast("اختار صورة من فضلك", "err"); return; }
@@ -602,38 +641,20 @@ async function uploadPaymentProof(ref, phone, inputEl, file) {
     const blob = await resizeImage(file, 1400);
     const path = `${ref}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
     const up = await db.storage.from("payment-proofs").upload(path, blob, { contentType: "image/jpeg", upsert: false });
-    if (up.error) {
-      console.error(up.error); toast("تعذر رفع الصورة: " + up.error.message, "err", 5000);
-      if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
-      inputEl.value = ""; return;
-    }
+    if (up.error) { console.error(up.error); toast("تعذر رفع الصورة: " + up.error.message, "err", 5000); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; return; }
     const url = db.storage.from("payment-proofs").getPublicUrl(path).data.publicUrl;
     const r = await db.rpc("attach_payment_proof", { p_ref: ref, p_phone: phone, p_url: url });
-    if (r.error || !r.data || !r.data.ok) {
-      console.error(r.error, r.data); toast("تعذر تثبيت الصورة على الحجز", "err", 5000);
-      if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
-      inputEl.value = ""; return;
-    }
+    if (r.error || !r.data || !r.data.ok) { console.error(r.error, r.data); toast("تعذر تثبيت الصورة على الحجز", "err", 5000); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; return; }
     toast("✅ تم رفع صورة التحويل بنجاح", "ok", 4000);
     track("payment_proof_uploaded", {ref: ref});
     markUploadDone(url);
-  } catch (err) {
-    console.error(err); toast("حصل خطأ أثناء الرفع", "err");
-    if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; }
-    inputEl.value = "";
-  }
+  } catch (err) { console.error(err); toast("حصل خطأ أثناء الرفع", "err"); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; }
 }
-
 function markUploadDone(url) {
   const area = $("uploadArea");
-  if (area) {
-    area.outerHTML = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${url}" alt="صورة التحويل"></div>`;
-    return;
-  }
+  if (area) { area.outerHTML = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${url}" alt="صورة التحويل"></div>`; return; }
   const box = $("trackUploadArea");
-  if (box) {
-    box.outerHTML = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${url}" alt="صورة التحويل"></div>`;
-  }
+  if (box) { box.outerHTML = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${url}" alt="صورة التحويل"></div>`; }
 }
 
 async function cancelBooking(ref, phone) {
@@ -653,8 +674,7 @@ async function init() {
   const d = await db.from("destinations").select("*").order("id");
   if (d.error) { console.error(d.error); return; }
   dests = d.data || [];
-  $("destination").innerHTML = '<option value="">إلى أين تريد الذهاب؟</option>' +
-    dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
+  $("destination").innerHTML = '<option value="">إلى أين تريد الذهاب؟</option>' + dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
   $("dynamicTrips").innerHTML = dests.map(x => `
     <div class="card">
       <div class="card-img" style="${img(x) ? `background-image:url('${img(x)}')` : ''}">${img(x) ? '' : '🏖️'}</div>
@@ -725,10 +745,7 @@ function showHotel(i) {
   if (!oldArea) {
     const newArea = document.createElement("div");
     newArea.id = "uploadArea";
-    newArea.innerHTML = `<p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">أو ارفع صورة التحويل مباشرة هنا:</p>
-      <label class="uploadBtn" id="uploadBtn">📷 ارفع صورة التحويل
-        <input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)">
-      </label>`;
+    newArea.innerHTML = `<p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">أو ارفع صورة التحويل مباشرة هنا:</p><label class="uploadBtn" id="uploadBtn">📷 ارفع صورة التحويل<input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)"></label>`;
     $("doneBox").appendChild(newArea);
   }
 
@@ -738,9 +755,19 @@ function showHotel(i) {
   $("mImg").innerText = img(h) ? "" : "🏨";
 
   const r = hotelRatings[String(h.id)];
-  $("mRating").innerHTML = r && r.count > 0
-    ? `<div style="margin:6px 0;display:flex;align-items:center;gap:8px">${starsHtml(r.avg)} <b>${r.avg}</b> <span style="color:#888;font-size:13px">(${r.count} تقييم)</span></div>` : "";
+  $("mRating").innerHTML = r && r.count > 0 ? `<div style="margin:6px 0;display:flex;align-items:center;gap:8px">${starsHtml(r.avg)} <b>${r.avg}</b> <span style="color:#888;font-size:13px">(${r.count} تقييم)</span></div>` : "";
 
+  // Breakfast Info
+  if (h.has_breakfast) {
+    $("mBreakfast").innerHTML = `<div class="breakfastInfo"><span class="bIcon">🍳</span><div><b>الفطار مشمول في السعر</b>${h.breakfast_note ? `<small>${esc(h.breakfast_note)}</small>` : ""}</div></div>`;
+  } else {
+    $("mBreakfast").innerHTML = "";
+  }
+
+  // Render room types
+  renderRoomOptions();
+
+  // Maps
   let mapsHtml = "";
   const mapsUrl = h.google_maps_url || (h.latitude && h.longitude ? `https://www.google.com/maps?q=${h.latitude},${h.longitude}` : "");
   if (mapsUrl) mapsHtml = `<a class="mapsBtn" href="${esc(mapsUrl)}" target="_blank" onclick="track('maps_click',{hotel:'${esc(h.Name)}'})">📍 موقع الفندق على خرائط جوجل</a>`;
@@ -750,13 +777,12 @@ function showHotel(i) {
   $("children").value = $("sChildren").value;
   $("rooms").value = Math.ceil(a / 2);
   $("extraSeats").value = 0;
-  $("roomType").value = "Double";
   $("transChk").checked = false;
   $("nonBox").style.display = t ? "none" : "block";
   $("transRow").style.display = t ? "none" : "flex";
   $("transBox").style.display = t ? "block" : "none";
   $("childAge").innerText = "(حتى 10 سنوات مجانًا في الفندق، الأكبر يُحسب بالغًا)";
-  $("mInfo").innerText = t ? `رحلة سيريال ${t.days} أيام / ${t.nights} ليالي\nالمغادرة: ${t.start_date} • دخول الفندق: ${t.hotelIn} • الرجوع: ${t.end_date}\nالسعر شامل الإقامة بالغرف الدبل والتريبل والانتقالات` : "اختر تاريخ الدخول والخروج";
+  $("mInfo").innerText = t ? `رحلة سيريال ${t.days} أيام / ${t.nights} ليالي\nالمغادرة: ${t.start_date} • دخول الفندق: ${t.hotelIn} • الرجوع: ${t.end_date}\nالسعر شامل الإقامة والانتقالات` : "اختر تاريخ الدخول والخروج";
   if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
   fillCustomer();
   calc();
@@ -795,12 +821,22 @@ function calc() {
     total = rp * a + x * N(t.extra_seat_price) + dep * seats;
   } else {
     const n = Math.round((new Date($("cout").value) - new Date($("cin").value)) / 86400000);
-    const rp = N(h["price_" + type.toLowerCase()]) || N(h.price_per_night);
+    const rp = getRoomPrice(h, type, null);
     if (n > 0) {
       total = rp * r * n;
       if (needT) total += seats * (N(h.extra_seat_price) + dep);
     }
   }
+
+  // Departure date info for non-series with transport
+  if (!t && needT && $("cin").value) {
+    const depDate = addDays($("cin").value, -1);
+    $("depInfo").style.display = "block";
+    $("depInfo").innerHTML = `🚌 تاريخ التحرك: <b>${depDate}</b> (اليوم السابق للدخول)`;
+  } else {
+    $("depInfo").style.display = "none";
+  }
+
   let discount = 0;
   if (appliedCoupon && total > 0) {
     discount = Math.min(appliedCoupon.discount, total);
@@ -825,8 +861,18 @@ async function sendBooking() {
   if (!name || !phone) { toast("اكتب الاسم ورقم الموبايل", "info"); return; }
   if (!(total > 0)) { toast("اختر تاريخ الدخول والخروج", "info"); return; }
   if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) { toast("رقم الموبايل غير صحيح — اكتبه بالشكل 01xxxxxxxxx", "err"); return; }
+
   const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
+
+  // Departure date
+  let departureDate = null;
+  if (t) {
+    departureDate = t.start_date;
+  } else if (needT && $("cin").value) {
+    departureDate = addDays($("cin").value, -1);
+  }
+
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
     Series_Trips_id: t ? t.id : null,
@@ -842,45 +888,56 @@ async function sendBooking() {
     needs_transport: needT, extra_seats: x,
     coupon_code: appliedCoupon ? appliedCoupon.code : null
   };
+
   const r = await db.rpc("create_booking", { payload: row });
   if (r.error) { console.error(r.error); toast("تعذر إرسال الطلب: " + r.error.message, "err", 5000); return; }
+
   const saved = r.data;
   const finalTotal = N(saved.total_price);
   const dep = N(saved.deposit_amount);
   const ref = saved.booking_ref;
   const disc = N(saved.discount_amount);
+
   lastBooking = { ref: ref, phone: phone };
   saveCustomer(name, phone);
+
   const depName = needT ? ((deps.find(y => y.id == saved.departure_points_id) || {}).name || "-") : "-";
   const nights = Math.round((new Date(saved.check_out) - new Date(saved.check_in)) / 86400000);
+
   const msgLines = [
     "طلب حجز جديد", "رقم الحجز: " + ref, "الاسم: " + name, "الموبايل: " + phone,
     "الفندق: " + sel.h.Name, "النوع: " + (t ? "سيريال" : "عادي"),
     "التاريخ: " + saved.check_in + " ← " + saved.check_out, "عدد الليالي: " + nights,
-    "تاريخ التحرك: " + (t ? t.start_date : (needT ? saved.check_in : "-")),
+    "تاريخ التحرك: " + (departureDate || "-"),
     "البالغين: " + a + " | الأطفال: " + c,
-    "الغرف: " + saved.number_of_rooms + " (" + saved.room_type + ")",
+    "نوع الغرفة: " + $("roomType").value,
+    "الغرف: " + saved.number_of_rooms,
     "الانتقالات: " + (needT ? "نعم (" + saved.bus_seats + " كراسي)" : "لا"),
     "مكان التحرك: " + depName
   ];
+  if (sel.h.has_breakfast) msgLines.push("🍳 الفطار مشمول" + (sel.h.breakfast_note ? " (" + sel.h.breakfast_note + ")" : ""));
   if (disc > 0 && saved.coupon_code) msgLines.push("كود الخصم: " + saved.coupon_code + " (-" + disc.toLocaleString() + " جنيه)");
   msgLines.push("الإجمالي: " + finalTotal.toLocaleString() + " جنيه");
   msgLines.push("العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه");
   const msg = msgLines.join("\n");
+
   let payText = "رقم حجزك: " + ref + "\n";
   if (disc > 0 && saved.coupon_code) payText += "🎟️ خصم " + saved.coupon_code + ": -" + disc.toLocaleString() + " جنيه\n";
   payText += "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه" +
     "\n\nحوّل المبلغ على:\n• إنستاباي: " + pay.insta +
     "\n• فودافون كاش: " + pay.voda +
     "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب.";
+
   $("payInfo").innerText = payText;
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
+
   track("booking", {hotel: sel.h.Name, total: finalTotal, coupon: saved.coupon_code || null});
   toast("✅ تم تسجيل حجزك: " + ref, "ok", 4000);
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
 }
 
+/* ============ متابعة الحجز ============ */
 const ST_LABELS = {
   "Pending Confirmation":  {label:"قيد التأكيد",        color:"#e0a800", icon:"⏳"},
   "Waiting Confirmation":  {label:"في انتظار التأكيد",   color:"#e0a800", icon:"⏳"},
@@ -939,13 +996,7 @@ function showBookingResult(d) {
     const s = d.settings || {};
     const remaining = Math.max(Number(d.total_price||0) - Number(d.deposit_amount||0), 0);
     const waHref = "https://wa.me/" + String(s.sales_phone||"").replace(/\D/g,"") + "?text=" + encodeURIComponent("تحويل عربون حجز " + d.booking_ref);
-    html += `<div class="payBox">
-        <h3 style="margin-bottom:10px">💳 يرجى إتمام الدفع</h3>
-        <p>حوّل العربون <b>${Number(d.deposit_amount||0).toLocaleString()} جنيه</b> على:</p>
-        <p>• إنستاباي: <b>${s.instapay_address||"-"}</b></p>
-        <p>• فودافون كاش: <b>${s.vodafone_cash||"-"}</b></p>
-        <p style="margin-top:10px;color:#666;font-size:13px">المبلغ المتبقي: ${remaining.toLocaleString()} جنيه</p>
-      </div>`;
+    html += `<div class="payBox"><h3 style="margin-bottom:10px">💳 يرجى إتمام الدفع</h3><p>حوّل العربون <b>${Number(d.deposit_amount||0).toLocaleString()} جنيه</b> على:</p><p>• إنستاباي: <b>${s.instapay_address||"-"}</b></p><p>• فودافون كاش: <b>${s.vodafone_cash||"-"}</b></p><p style="margin-top:10px;color:#666;font-size:13px">المبلغ المتبقي: ${remaining.toLocaleString()} جنيه</p></div>`;
     if (d.payment_proof_url) {
       html += `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${d.payment_proof_url}" alt="صورة التحويل"></div>`;
     } else {
