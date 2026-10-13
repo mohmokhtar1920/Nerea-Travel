@@ -854,8 +854,9 @@ function calc() {
   if (t) {
     const rp = type === "Single" ? (N(t.price_single) || N(t.price_per_person)) : N(t.price_per_person);
     total = rp * a + x * N(t.extra_seat_price) + dep * seats;
-    if (selectedVehicle === "highs" && N(h.highs_price) > 0) {
-      total = total + N(h.highs_price) * seats;
+       if (selectedVehicle === "highs" && N(h.highs_price) > 0) {
+      const diff = Math.max(0, N(h.highs_price) - N(h.extra_seat_price));
+      total = total + diff * seats;
     }
   } else {
     const n = Math.round((new Date($("cout").value) - new Date($("cin").value)) / 86400000);
