@@ -14,9 +14,8 @@ button:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
 button:active{transform:translateY(0)}
 input,select,textarea{padding:12px;border:2px solid #e5e9f0;border-radius:10px;width:100%;font-family:inherit;font-size:14px;transition:all .2s ease;background:#fff;color:#172033}
 input:focus,select:focus,textarea:focus{border-color:#176b87;box-shadow:0 0 0 4px rgba(23,107,135,.1);outline:none}
-input[type="checkbox"]{width:auto;cursor:pointer}
+input[type="checkbox"]{width:auto;cursor:pointer;accent-color:#176b87;width:20px;height:20px}
 
-/* ===== Login Page ===== */
 #login{position:fixed;inset:0;background:#f5f7fa;z-index:999;display:flex;align-items:stretch;overflow:hidden;max-width:none;margin:0;padding:0;border-radius:0;box-shadow:none}
 .loginLeft{flex:1;background:linear-gradient(135deg,#0b1f3a 0%,#176b87 50%,#0b1f3a 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;position:relative;overflow:hidden}
 .loginLeft::before{content:"";position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(217,180,91,.15) 0%,transparent 70%);top:-100px;right:-100px;animation:floatSlow 8s ease-in-out infinite}
@@ -60,7 +59,6 @@ input[type="checkbox"]{width:auto;cursor:pointer}
   .loginBox h2{font-size:22px}
 }
 
-/* ===== Modern Header ===== */
 header{background:linear-gradient(135deg,#0b1f3a 0%,#176b87 100%);color:#fff;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px rgba(0,0,0,.15);position:sticky;top:0;z-index:100}
 header .logo{font-size:20px;font-weight:bold;color:#fff;display:flex;align-items:center;gap:12px}
 header .logo::before{content:"";width:6px;height:28px;background:linear-gradient(180deg,#d9b45b,#f5d97e);border-radius:3px}
@@ -69,7 +67,6 @@ header .logo span{color:#d9b45b}
 #outBtn{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);padding:9px 20px;font-size:13px}
 #outBtn:hover{background:rgba(220,53,69,.9);border-color:rgba(220,53,69,.9);box-shadow:0 4px 12px rgba(220,53,69,.3)}
 
-/* ===== Modern App Layout ===== */
 #app{display:none;padding:24px 5%;max-width:1600px;margin:0 auto}
 .bar{display:flex;gap:12px;margin-bottom:20px;align-items:center;flex-wrap:wrap;background:#fff;padding:16px 20px;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
 .bar select{max-width:240px;padding:10px 12px}
@@ -93,9 +90,8 @@ header .logo span{color:#d9b45b}
 .s-Cancelled{border-right-color:#dc3545}
 .s-Waiting{border-right-color:#fd7e14}
 .couponTag{display:inline-block;background:linear-gradient(135deg,#d4edda,#a8e6b5);color:#155724;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:bold;margin:8px 0;border-right:3px solid #28a745}
-.breakfastTag{display:inline-block;background:linear-gradient(135deg,#fff8e1,#ffe4a1);color:#856404;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin:6px 0;border-right:3px solid #f5a623}
+.mealTag{display:inline-block;background:linear-gradient(135deg,#fff8e1,#ffe4a1);color:#856404;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin:4px;border-right:3px solid #f5a623}
 
-/* ===== Admin Panel ===== */
 .adminPanel{display:none;background:#fff;border-radius:18px;padding:24px;margin-bottom:24px;box-shadow:0 4px 24px rgba(0,0,0,.06);animation:fadeUp .4s ease}
 .adminPanel h2{color:#0b1f3a;font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:2px solid #f0f4f8}
 .adminPanel h2::before{content:"";width:5px;height:26px;background:linear-gradient(180deg,#d9b45b,#f5d97e);border-radius:3px}
@@ -110,10 +106,19 @@ header .logo span{color:#d9b45b}
 .formSection{grid-column:1/-1;background:linear-gradient(135deg,#f0f6fa,#e3f2fd);padding:14px 18px;border-radius:10px;border-right:4px solid #176b87;margin-bottom:6px}
 .formSection h4{color:#0b1f3a;font-size:14px;margin-bottom:4px}
 .formSection p{font-size:12px;color:#666}
-.checkRow{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:2px solid #e5e9f0;border-radius:10px;cursor:pointer}
-.checkRow:hover{border-color:#176b87}
+
+.checkRow{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;border:2px solid #e5e9f0;border-radius:10px;cursor:pointer;transition:all .2s ease}
+.checkRow:hover{border-color:#176b87;background:#f0f6fa}
+.checkRow.checked{border-color:#176b87;background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
 .checkRow input{width:20px;height:20px;cursor:pointer;flex-shrink:0}
-.checkRow label{margin:0;cursor:pointer;font-size:13px;font-weight:600;color:#172033}
+.checkRow label{margin:0;cursor:pointer;font-size:14px;font-weight:600;color:#172033}
+.checkRow .mealIcon{font-size:24px}
+
+.mealGroup{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+.mealToggle{display:flex;align-items:center;gap:8px;padding:14px;background:#fff;border:2px solid #e5e9f0;border-radius:10px;cursor:pointer;transition:all .2s ease;font-size:14px;font-weight:600}
+.mealToggle:hover{border-color:#176b87;background:#f0f6fa}
+.mealToggle.checked{border-color:#f5a623;background:linear-gradient(135deg,#fff8e1,#ffe4a1);color:#856404}
+.mealToggle input{margin:0;flex-shrink:0}
 
 .tableWrap{overflow:auto;border-radius:12px;border:1px solid #f0f4f8;max-height:70vh}
 .simpleTable{width:100%;border-collapse:collapse;font-size:13.5px}
@@ -129,14 +134,12 @@ header .logo span{color:#d9b45b}
 .warn{background:linear-gradient(135deg,#fd7e14,#e8590c);color:#fff}
 .simpleTable td button{padding:7px 12px;font-size:12px;margin-left:5px;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff}
 
-/* Badges */
 .badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:bold;margin:2px}
 .badge-green{background:#d4edda;color:#155724}
 .badge-gold{background:#fff8e1;color:#856404;border:1px solid #f5a623}
 .badge-blue{background:#e3f2fd;color:#0d47a1}
 .badge-gray{background:#f0f0f0;color:#666}
 
-/* Modals */
 .modal{display:none;position:fixed;inset:0;background:rgba(11,31,58,.7);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease}
 .modalBox{background:#fff;width:100%;max-width:850px;max-height:90vh;overflow-y:auto;border-radius:20px;padding:28px;box-shadow:0 25px 80px rgba(0,0,0,.3);animation:fadeUp .3s ease}
 .modalHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #f0f4f8}
@@ -156,6 +159,7 @@ header .logo span{color:#d9b45b}
   .bar{flex-wrap:wrap}
   .bar select{max-width:none;width:100%}
   .adminForm{grid-template-columns:1fr}
+  .mealGroup{grid-template-columns:1fr}
   header{padding:14px 4%}
   header .logo{font-size:15px}
   .adminPanel{padding:16px}
@@ -175,8 +179,7 @@ header .logo span{color:#d9b45b}
 .ph button{width:100%;margin-top:0;padding:8px;font-size:12px;border-radius:0;background:linear-gradient(135deg,#dc3545,#c82333);color:#fff}
 
 .proofBox{margin-top:12px;padding:14px;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border-radius:12px;text-align:center;border:2px dashed #bae6fd}
-.proofBox img{max-width:100%;max-height:160px;border-radius:10px;cursor:zoom-in;margin-top:8px;border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .2s ease}
-.proofBox img:hover{transform:scale(1.02)}
+.proofBox img{max-width:100%;max-height:160px;border-radius:10px;cursor:zoom-in;margin-top:8px;border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 
 .stars{color:#f5a623;font-size:15px;letter-spacing:2px}
 .stars .off{color:#ddd}
@@ -187,18 +190,14 @@ header .logo span{color:#d9b45b}
 .reportCard::before{content:"";position:absolute;top:-40px;left:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(101,199,247,.1),transparent 70%)}
 .reportCard:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.1)}
 .reportCard.green{border-right-color:#28a745}
-.reportCard.green::before{background:radial-gradient(circle,rgba(40,167,69,.1),transparent 70%)}
 .reportCard.gold{border-right-color:#d9b45b}
-.reportCard.gold::before{background:radial-gradient(circle,rgba(217,180,91,.15),transparent 70%)}
 .reportCard.orange{border-right-color:#fd7e14}
-.reportCard.orange::before{background:radial-gradient(circle,rgba(253,126,20,.1),transparent 70%)}
 .reportCard.red{border-right-color:#dc3545}
-.reportCard.red::before{background:radial-gradient(circle,rgba(220,53,69,.1),transparent 70%)}
 .reportCard .label{font-size:13px;color:#666;margin-bottom:8px;font-weight:600;position:relative;z-index:1}
 .reportCard .value{font-size:26px;font-weight:bold;background:linear-gradient(135deg,#0b1f3a,#176b87);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1}
 .reportCard .sub{font-size:12px;color:#888;margin-top:6px;position:relative;z-index:1}
 
-.chartBox{background:#fff;border-radius:16px;padding:24px;margin:16px 0;box-shadow:0 4px 20px rgba(0,0,0,.06);animation:fadeUp .5s ease backwards}
+.chartBox{background:#fff;border-radius:16px;padding:24px;margin:16px 0;box-shadow:0 4px 20px rgba(0,0,0,.06)}
 .chartBox h3{margin-bottom:20px;font-size:17px;color:#0b1f3a;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:2px solid #f0f4f8}
 .chartRow{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:13px}
 .chartLabel{min-width:90px;color:#444;font-weight:600}
@@ -210,7 +209,6 @@ header .logo span{color:#d9b45b}
 .exportBtn{background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff;padding:10px 20px;font-size:13px}
 .rangeTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
 .rangeTabs button{background:#f0f4f8;color:#0b1f3a;padding:9px 18px;font-size:13px;border:2px solid transparent}
-.rangeTabs button:hover{background:#e3f2fd}
 .rangeTabs button.active{background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;box-shadow:0 4px 12px rgba(11,31,58,.25)}
 .emptyReport{text-align:center;padding:50px;color:#999;font-size:14px}
 </style>
@@ -254,6 +252,7 @@ header .logo span{color:#d9b45b}
   <button onclick="newHotel()">➕ إضافة فندق</button>
   <div id="hotelForm" class="adminForm" style="display:none">
     <input type="hidden" id="aHotelId">
+    
     <div class="formSection">
       <h4>📋 معلومات أساسية</h4>
       <p>اسم الفندق والوجهة التابع لها</p>
@@ -261,11 +260,33 @@ header .logo span{color:#d9b45b}
     <input id="aHotelName" placeholder="اسم الفندق">
     <select id="aHotelDest"></select>
     <select id="aHotelSeries"><option value="false">Non-Series (فندق عادي)</option><option value="true">Series (رحلة سيريال)</option></select>
-    <div class="checkRow">
-      <input type="checkbox" id="aHasBreakfast">
-      <label for="aHasBreakfast">🍳 الفطار مشمول في السعر</label>
+
+    <div class="formSection">
+      <h4>🍽 الوجبات</h4>
+      <p>اختار الوجبات المتاحة + لو السعر بيشملها</p>
     </div>
-    <input class="full" id="aBreakfastNote" placeholder="ملاحظة عن الفطار (اختياري) — مثال: بوفيه مفتوح">
+    <div class="mealGroup">
+      <label class="mealToggle" id="mealBf">
+        <input type="checkbox" id="aMealBreakfast">
+        <span class="mealIcon">🍳</span>
+        <span>فطار</span>
+      </label>
+      <label class="mealToggle" id="mealLn">
+        <input type="checkbox" id="aMealLunch">
+        <span class="mealIcon">🍽</span>
+        <span>غداء</span>
+      </label>
+      <label class="mealToggle" id="mealDn">
+        <input type="checkbox" id="aMealDinner">
+        <span class="mealIcon">🍴</span>
+        <span>عشاء</span>
+      </label>
+    </div>
+    <div class="checkRow full" id="mealsIncludedRow" style="grid-column:1/-1">
+      <input type="checkbox" id="aMealsIncluded">
+      <label for="aMealsIncluded">💰 السعر شامل الوجبات المختارة</label>
+    </div>
+    <input class="full" id="aMealNote" placeholder="ملاحظة عن الوجبات (اختياري) — مثال: بوفيه مفتوح">
 
     <div class="formSection">
       <h4>🛏 أسعار الغرف (اترك صفر لو النوع مش متاح)</h4>
@@ -302,7 +323,7 @@ header .logo span{color:#d9b45b}
   </div>
   <div class="tableWrap">
     <table class="simpleTable">
-      <thead><tr><th>الفندق</th><th>الوجهة</th><th>النوع</th><th>أنواع الغرف</th><th>الفطار</th><th>الموقع</th><th>إجراء</th></tr></thead>
+      <thead><tr><th>الفندق</th><th>الوجهة</th><th>النوع</th><th>أنواع الغرف</th><th>الوجبات</th><th>الموقع</th><th>إجراء</th></tr></thead>
       <tbody id="hotelRows"></tbody>
     </table>
   </div>
@@ -371,6 +392,28 @@ const cls = s => "s-" + String(s || "").split(" ")[0];
 const fmtNum = n => Number(n||0).toLocaleString("en-EG");
 
 $("filter").innerHTML += ST.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+
+/* ============ Meal Helper ============ */
+function getMealBadges(h) {
+  const meals = [];
+  if (h.meal_breakfast) meals.push("🍳 فطار");
+  if (h.meal_lunch) meals.push("🍽 غداء");
+  if (h.meal_dinner) meals.push("🍴 عشاء");
+  if (!meals.length) return "";
+  const included = h.meals_included !== false;
+  return meals.map(m => `<span class="mealTag">${m}${included ? " ✓ مشمول" : ""}</span>`).join("");
+}
+
+/* ============ Meal Toggle UI ============ */
+function updateMealToggles() {
+  ["mealBf","mealLn","mealDn"].forEach((id,i) => {
+    const checkbox = ["aMealBreakfast","aMealLunch","aMealDinner"][i];
+    const el = $(id);
+    if (el) el.classList.toggle("checked", $(checkbox).checked);
+  });
+  const incRow = $("mealsIncludedRow");
+  if (incRow) incRow.classList.toggle("checked", $("aMealsIncluded").checked);
+}
 
 async function start(){
   const {data,error}=await db.auth.getSession();
@@ -548,8 +591,7 @@ async function loadAdminData(){
   
   $("hotelRows").innerHTML=adminHotels.map(x=>{
     const hasMap=(x.latitude&&x.longitude)||x.google_maps_url;
-    const mapTag=hasMap?'<span class="badge badge-green">🟢 موجود</span>':'<span class="badge badge-gray">⚫ ناقص</span>';
-    // أنواع الغرف
+    const mapTag=hasMap?'<span class="badge badge-green">🟢</span>':'<span class="badge badge-gray">⚫</span>';
     const rooms=[];
     if(Number(x.price_single||0)>0) rooms.push('<span class="badge badge-blue">S</span>');
     if(Number(x.price_double||0)>0) rooms.push('<span class="badge badge-blue">D</span>');
@@ -557,24 +599,27 @@ async function loadAdminData(){
     if(Number(x.price_quad||0)>0) rooms.push('<span class="badge badge-blue">Q</span>');
     if(Number(x.price_quint||0)>0) rooms.push('<span class="badge badge-blue">Q5</span>');
     const roomsTag=rooms.length?rooms.join(" "):'<span class="badge badge-gray">-</span>';
-    // الفطار
-    const breakfastTag=x.has_breakfast?'<span class="badge badge-gold">🍳 مشمول</span>':'<span class="badge badge-gray">بدون</span>';
-    return `<tr><td><b>${esc(x.Name)}</b></td><td>${esc((destinations.find(d=>d.id==x.Destination_id)||{}).Name||"-")}</td><td>${x.is_series?"✈️ Series":"🏨 عادي"}</td><td>${roomsTag}</td><td>${breakfastTag}</td><td>${mapTag}</td><td><button onclick="openPhotos(${x.id})">📷 صور</button> <button onclick="editHotel(${x.id})">✏️ تعديل</button> <button class="danger" onclick="delHotel(${x.id})">🗑 حذف</button></td></tr>`;
+    const mealsTag = getMealBadges(x) || '<span class="badge badge-gray">بدون وجبات</span>';
+    return `<tr><td><b>${esc(x.Name)}</b></td><td>${esc((destinations.find(d=>d.id==x.Destination_id)||{}).Name||"-")}</td><td>${x.is_series?"✈️ Series":"🏨 عادي"}</td><td>${roomsTag}</td><td style="max-width:220px">${mealsTag}</td><td>${mapTag}</td><td><button onclick="openPhotos(${x.id})">📷</button> <button onclick="editHotel(${x.id})">✏️</button> <button class="danger" onclick="delHotel(${x.id})">🗑</button></td></tr>`;
   }).join("");
   
-  $("tripRows").innerHTML=trips.map(x=>`<tr><td>${esc((adminHotels.find(h=>h.id==x.hotel_id)||{}).Name||"-")}</td><td>${esc(x.departure_day||"")}</td><td>${esc(x.start_date||"")}</td><td>${Number(x.price_per_person||0).toLocaleString()}</td><td><button onclick="editTrip(${x.id})">✏️ تعديل</button> <button class="danger" onclick="delTrip(${x.id})">🗑 حذف</button></td></tr>`).join("");
-  $("destRows").innerHTML=destinations.map(x=>`<tr><td>${esc(x.Name)}</td><td><button onclick="editDest(${x.id})">✏️ تعديل</button> <button class="danger" onclick="delDest(${x.id})">🗑 حذف</button></td></tr>`).join("");
-  $("pointRows").innerHTML=departurePoints.map(x=>`<tr><td>${esc(x.name)}</td><td>${Number(x.extra_price||0).toLocaleString()}</td><td><button onclick="editPoint(${x.id})">✏️ تعديل</button> <button class="danger" onclick="delPoint(${x.id})">🗑 حذف</button></td></tr>`).join("");
+  $("tripRows").innerHTML=trips.map(x=>`<tr><td>${esc((adminHotels.find(h=>h.id==x.hotel_id)||{}).Name||"-")}</td><td>${esc(x.departure_day||"")}</td><td>${esc(x.start_date||"")}</td><td>${Number(x.price_per_person||0).toLocaleString()}</td><td><button onclick="editTrip(${x.id})">✏️</button> <button class="danger" onclick="delTrip(${x.id})">🗑</button></td></tr>`).join("");
+  $("destRows").innerHTML=destinations.map(x=>`<tr><td>${esc(x.Name)}</td><td><button onclick="editDest(${x.id})">✏️</button> <button class="danger" onclick="delDest(${x.id})">🗑</button></td></tr>`).join("");
+  $("pointRows").innerHTML=departurePoints.map(x=>`<tr><td>${esc(x.name)}</td><td>${Number(x.extra_price||0).toLocaleString()}</td><td><button onclick="editPoint(${x.id})">✏️</button> <button class="danger" onclick="delPoint(${x.id})">🗑</button></td></tr>`).join("");
 }
 
 function newHotel(){
   $("hotelForm").style.display="grid";
   $("aHotelId").value="";
-  ["aHotelName","aSingle","aDouble","aTriple","aQuad","aQuint","aNight","aImage","aDesc","aLat","aLong","aMaps","aBreakfastNote"].forEach(i=>$(i).value="");
+  ["aHotelName","aSingle","aDouble","aTriple","aQuad","aQuint","aNight","aImage","aDesc","aLat","aLong","aMaps","aMealNote"].forEach(i=>$(i).value="");
   $("aHotelSeries").value="false";
   $("aChildAge").value=10;
   $("aSeatPrice").value=0;
-  $("aHasBreakfast").checked=false;
+  $("aMealBreakfast").checked=false;
+  $("aMealLunch").checked=false;
+  $("aMealDinner").checked=false;
+  $("aMealsIncluded").checked=true;
+  updateMealToggles();
 }
 function cancelHotel(){$("hotelForm").style.display="none";}
 
@@ -598,8 +643,12 @@ function editHotel(id){
   $("aMaps").value=x.google_maps_url||"";
   $("aImage").value=x.image_url||"";
   $("aDesc").value=x.description||"";
-  $("aHasBreakfast").checked=!!x.has_breakfast;
-  $("aBreakfastNote").value=x.breakfast_note||"";
+  $("aMealBreakfast").checked=!!x.meal_breakfast;
+  $("aMealLunch").checked=!!x.meal_lunch;
+  $("aMealDinner").checked=!!x.meal_dinner;
+  $("aMealsIncluded").checked=x.meals_included!==false;
+  $("aMealNote").value=x.meal_note||"";
+  updateMealToggles();
 }
 
 async function saveHotel(){
@@ -620,8 +669,11 @@ async function saveHotel(){
     latitude:$("aLat").value?Number($("aLat").value):null,
     longitude:$("aLong").value?Number($("aLong").value):null,
     google_maps_url:$("aMaps").value.trim()||null,
-    has_breakfast:$("aHasBreakfast").checked,
-    breakfast_note:$("aBreakfastNote").value.trim()||null
+    meal_breakfast:$("aMealBreakfast").checked,
+    meal_lunch:$("aMealLunch").checked,
+    meal_dinner:$("aMealDinner").checked,
+    meals_included:$("aMealsIncluded").checked,
+    meal_note:$("aMealNote").value.trim()||null
   };
   let q=$("aHotelId").value?db.from("Hotels").update(d).eq("id",+$("aHotelId").value):db.from("Hotels").insert(d);
   let r=await q;
@@ -636,7 +688,7 @@ function newDest(){$("destForm").style.display="grid";$('aDestId').value="";$('a
 function newPoint(){$("pointForm").style.display="grid";$('aPointId').value="";$('aPointName').value="";$('aPointPrice').value=0;}function cancelPoint(){$("pointForm").style.display="none";}function editPoint(id){let x=departurePoints.find(p=>p.id==id);if(!x)return;newPoint();$("aPointId").value=x.id;$("aPointName").value=x.name||"";$("aPointPrice").value=x.extra_price||0;}async function savePoint(){let d={name:$("aPointName").value.trim(),extra_price:+$("aPointPrice").value||0};let r=$("aPointId").value?await db.from("departure_points").update(d).eq("id",+$("aPointId").value):await db.from("departure_points").insert(d);if(r.error)alert(r.error.message);else{cancelPoint();await loadAdminData();}}async function delPoint(id){if(confirm("حذف نقطة التحرك؟")){let r=await db.from("departure_points").delete().eq("id",id);if(r.error)alert(r.error.message);else await loadAdminData();}}
 
 async function loadCoupons(){if(role!=="admin")return;const r=await db.from("coupons").select("*").order("id",{ascending:false});if(r.error){alert("تعذر تحميل الكوبونات: "+r.error.message);return;}allCoupons=r.data||[];renderCoupons();}
-function renderCoupons(){$("couponRows").innerHTML=allCoupons.map(c=>{const typeTxt=c.type==="percent"?c.value+"%":Number(c.value).toLocaleString()+" جنيه";const usesTxt=(c.used_count||0)+(c.max_uses?" / "+c.max_uses:" / ∞");const exp=c.expires_at?new Date(c.expires_at).toLocaleDateString("en-CA"):"بدون";const active=c.is_active?'<span style="color:#28a745;font-weight:bold">🟢 مفعّل</span>':'<span style="color:#999">⚫ موقوف</span>';return `<tr><td><b>${esc(c.code)}</b></td><td>${c.type==="percent"?"نسبة":"ثابت"}</td><td>${esc(typeTxt)}</td><td>${Number(c.min_amount||0).toLocaleString()}</td><td>${usesTxt}</td><td>${exp}</td><td>${active}</td><td><button onclick="editCoupon(${c.id})">✏️ تعديل</button> <button class="danger" onclick="delCoupon(${c.id})">🗑 حذف</button></td></tr>`;}).join("")||"<tr><td colspan=8 style='text-align:center;padding:30px;color:#999'>مفيش كوبونات</td></tr>";}
+function renderCoupons(){$("couponRows").innerHTML=allCoupons.map(c=>{const typeTxt=c.type==="percent"?c.value+"%":Number(c.value).toLocaleString()+" جنيه";const usesTxt=(c.used_count||0)+(c.max_uses?" / "+c.max_uses:" / ∞");const exp=c.expires_at?new Date(c.expires_at).toLocaleDateString("en-CA"):"بدون";const active=c.is_active?'<span style="color:#28a745;font-weight:bold">🟢</span>':'<span style="color:#999">⚫</span>';return `<tr><td><b>${esc(c.code)}</b></td><td>${c.type==="percent"?"نسبة":"ثابت"}</td><td>${esc(typeTxt)}</td><td>${Number(c.min_amount||0).toLocaleString()}</td><td>${usesTxt}</td><td>${exp}</td><td>${active}</td><td><button onclick="editCoupon(${c.id})">✏️</button> <button class="danger" onclick="delCoupon(${c.id})">🗑</button></td></tr>`;}).join("")||"<tr><td colspan=8 style='text-align:center;padding:30px;color:#999'>مفيش كوبونات</td></tr>";}
 function newCoupon(){$("couponForm").style.display="grid";$("aCouponId").value="";$("aCouponCode").value="";$("aCouponType").value="percent";$("aCouponValue").value="";$("aCouponMin").value=0;$("aCouponMaxUses").value="";$("aCouponExpires").value="";$("aCouponActive").value="true";}
 function cancelCoupon(){$("couponForm").style.display="none";}
 function editCoupon(id){const c=allCoupons.find(x=>x.id==id);if(!c)return;newCoupon();$("aCouponId").value=c.id;$("aCouponCode").value=c.code||"";$("aCouponType").value=c.type||"percent";$("aCouponValue").value=c.value||"";$("aCouponMin").value=c.min_amount||0;$("aCouponMaxUses").value=c.max_uses||"";$("aCouponExpires").value=c.expires_at?new Date(c.expires_at).toISOString().slice(0,10):"";$("aCouponActive").value=String(!!c.is_active);}
@@ -645,7 +697,7 @@ async function delCoupon(id){if(confirm("حذف الكوبون؟")){const r=awai
 
 function starsHtml(n){n=Math.round(Number(n)||0);let s='<span class="stars">';for(let i=1;i<=5;i++)s+=`<span class="${i<=n?'':'off'}">★</span>`;return s+'</span>';}
 async function loadReviews(){if(role!=="admin")return;const r=await db.from("reviews").select("*").order("created_at",{ascending:false}).limit(500);if(r.error){alert("تعذر تحميل التقييمات: "+r.error.message);return;}allReviews=r.data||[];renderReviews();}
-function renderReviews(){$("reviewRows").innerHTML=allReviews.map(r=>{const hn=hotels[String(r.hotel_id)]||"—";const dt=r.created_at?new Date(r.created_at).toLocaleDateString("en-CA"):"—";const pub=r.is_published?'<span style="color:#28a745;font-weight:bold">🟢 منشور</span>':'<span style="color:#fd7e14;font-weight:bold">⏸️ مخفي</span>';return `<tr><td>${esc(hn)}</td><td>${esc(r.customer_name||"—")}</td><td>${starsHtml(r.rating)} <b>${r.rating}</b></td><td><div class="reviewComment">${esc(r.comment||"بدون تعليق")}</div></td><td>${esc(dt)}</td><td>${pub}</td><td><button class="warn" onclick="toggleReview(${r.id})">${r.is_published?"👁️ إخفاء":"📢 نشر"}</button> <button class="danger" onclick="delReview(${r.id})">🗑 حذف</button></td></tr>`;}).join("")||"<tr><td colspan=7 style='text-align:center;padding:30px;color:#999'>مفيش تقييمات</td></tr>";}
+function renderReviews(){$("reviewRows").innerHTML=allReviews.map(r=>{const hn=hotels[String(r.hotel_id)]||"—";const dt=r.created_at?new Date(r.created_at).toLocaleDateString("en-CA"):"—";const pub=r.is_published?'<span style="color:#28a745;font-weight:bold">🟢</span>':'<span style="color:#fd7e14;font-weight:bold">⏸️</span>';return `<tr><td>${esc(hn)}</td><td>${esc(r.customer_name||"—")}</td><td>${starsHtml(r.rating)} <b>${r.rating}</b></td><td><div class="reviewComment">${esc(r.comment||"بدون تعليق")}</div></td><td>${esc(dt)}</td><td>${pub}</td><td><button class="warn" onclick="toggleReview(${r.id})">${r.is_published?"👁️":"📢"}</button> <button class="danger" onclick="delReview(${r.id})">🗑</button></td></tr>`;}).join("")||"<tr><td colspan=7 style='text-align:center;padding:30px;color:#999'>مفيش تقييمات</td></tr>";}
 async function toggleReview(id){const r=allReviews.find(x=>x.id==id);if(!r)return;const newPub=!r.is_published;const up=await db.from("reviews").update({is_published:newPub}).eq("id",id);if(up.error){alert(up.error.message);return;}r.is_published=newPub;renderReviews();}
 async function delReview(id){if(!confirm("حذف التقييم نهائيًا؟"))return;const r=await db.from("reviews").delete().eq("id",id);if(r.error){alert(r.error.message);return;}allReviews=allReviews.filter(x=>x.id!=id);renderReviews();}
 
@@ -694,10 +746,9 @@ function renderMonthlyChart(data) {
     if (!b.created_at) return;
     const d = new Date(b.created_at);
     const key = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0");
-    if (!months[key]) months[key] = {total: 0, paid: 0, count: 0};
+    if (!months[key]) months[key] = {total: 0, count: 0};
     months[key].total += Number(b.total_price||0);
     months[key].count += 1;
-    if (b.payment_status === "Paid" || b.status === "Paid") months[key].paid += Number(b.total_price||0);
   });
   const keys = Object.keys(months).sort();
   if (!keys.length) { $("monthlyChart").innerHTML = '<p class="emptyReport">مفيش بيانات في الفترة دي</p>'; return; }
@@ -775,7 +826,7 @@ async function saveFollow(id){
 let photoHotel=null;
 async function openPhotos(id){photoHotel=id;const h=adminHotels.find(x=>x.id==id);$("photoTitle").innerText="📷 صور: "+(h?h.Name:"");$("photoModal").style.display="flex";await renderPhotos();}
 function closePhotos(){$("photoModal").style.display="none";photoHotel=null;loadAdminData();}
-async function renderPhotos(){const r=await db.from("hotel_images").select("*").eq("hotel_id",photoHotel).order("id");if(r.error){alert(r.error.message);return;}$("photoGrid").innerHTML=(r.data||[]).map(p=>`<div class="ph"><img src="${esc(p.url)}"><button class="danger" onclick="delPhoto(${p.id})">🗑 حذف</button></div>`).join("")||"<p style='text-align:center;padding:30px;color:#999'>لا توجد صور</p>";}
+async function renderPhotos(){const r=await db.from("hotel_images").select("*").eq("hotel_id",photoHotel).order("id");if(r.error){alert(r.error.message);return;}$("photoGrid").innerHTML=(r.data||[]).map(p=>`<div class="ph"><img src="${esc(p.url)}"><button class="danger" onclick="delPhoto(${p.id})">🗑</button></div>`).join("")||"<p style='text-align:center;padding:30px;color:#999'>لا توجد صور</p>";}
 function resizeImg(file){return new Promise(res=>{const img=new Image();img.onload=()=>{const k=Math.min(1,1600/Math.max(img.width,img.height));const c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);c.toBlob(b=>res(b||file),"image/jpeg",0.85);URL.revokeObjectURL(img.src);};img.onerror=()=>res(file);img.src=URL.createObjectURL(file);});}
 async function uploadPhotos(){
   const files=[...$("photoFiles").files];if(!files.length){alert("اختر صور أولاً");return;}
@@ -807,7 +858,7 @@ async function delPhoto(id){
 
 const addD=(d,n)=>{const [y,m,x]=d.split("-").map(Number);return new Date(Date.UTC(y,m-1,x+n)).toISOString().slice(0,10)};
 function nightsOf(b){if(!b.check_in||!b.check_out)return "-";const n=Math.round((new Date(b.check_out)-new Date(b.check_in))/86400000);return n>0?n:"-";}
-function depDate(b){if(!b.check_in)return "—";if(b.Series_Trips_id)return addD(b.check_in,-1);return b.departure_points_id?b.check_in:"—";}
+function depDate(b){if(!b.check_in)return "—";if(b.Series_Trips_id)return addD(b.check_in,-1);return b.departure_points_id?addD(b.check_in,-1):"—";}
 async function ping(login){
   const u=(await db.auth.getUser()).data.user;if(!u)return;
   const now=new Date().toISOString();
@@ -824,7 +875,7 @@ async function loadStaff(){
   $("staffRows").innerHTML=(p.data||[]).map(x=>{
     const v=(a.data||[]).find(y=>y.user_id===x.user_id)||{};
     const on=v.last_seen&&(Date.now()-new Date(v.last_seen).getTime())<180000;
-    return `<tr><td>${esc(v.email||x.name||"—")}</td><td>${x.role==="admin"?"👑 Admin":"🎧 خدمة العملاء"}</td><td>${esc(fmt(v.last_login))}</td><td>${esc(fmt(v.last_seen))}</td><td>${on?"🟢 نشط الآن":"⚫ غير نشط"}</td></tr>`;
+    return `<tr><td>${esc(v.email||x.name||"—")}</td><td>${x.role==="admin"?"👑 Admin":"🎧 خدمة العملاء"}</td><td>${esc(fmt(v.last_login))}</td><td>${esc(fmt(v.last_seen))}</td><td>${on?"🟢 نشط":"⚫"}</td></tr>`;
   }).join("");
   $("loginRows").innerHTML=(l.data||[]).map(x=>`<tr><td>${esc(x.email)}</td><td>${x.role==="admin"?"👑 Admin":"🎧 خدمة العملاء"}</td><td>${esc(fmt(x.logged_at))}</td></tr>`).join("")||"<tr><td colspan='3' style='text-align:center;padding:20px;color:#999'>لا يوجد</td></tr>";
 }
@@ -847,7 +898,7 @@ function showProof(url) {
     ov.onclick = function(e){ if(e.target===ov) ov.remove(); };
     document.body.appendChild(ov);
   }
-  ov.innerHTML = `<img src="${url}" style="max-width:95%;max-height:80vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.8)" onclick="event.stopPropagation()"><div style="display:flex;gap:12px"><a href="${url}" download target="_blank" style="padding:12px 24px;background:linear-gradient(135deg,#d9b45b,#f5d97e);color:#0b1f3a;border-radius:10px;text-decoration:none;font-weight:bold;box-shadow:0 4px 12px rgba(217,180,91,.4)">⬇️ تحميل</a><button type="button" style="padding:12px 24px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:10px;cursor:pointer;font-weight:bold" onclick="document.getElementById('proofOv').remove()">✕ إغلاق</button></div>`;
+  ov.innerHTML = `<img src="${url}" style="max-width:95%;max-height:80vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.8)" onclick="event.stopPropagation()"><div style="display:flex;gap:12px"><a href="${url}" download target="_blank" style="padding:12px 24px;background:linear-gradient(135deg,#d9b45b,#f5d97e);color:#0b1f3a;border-radius:10px;text-decoration:none;font-weight:bold">⬇️ تحميل</a><button type="button" style="padding:12px 24px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:10px;cursor:pointer;font-weight:bold" onclick="document.getElementById('proofOv').remove()">✕ إغلاق</button></div>`;
 }
 async function markPaid(id){
   const b=rows.find(x=>x.id==id);if(!b)return;
@@ -871,10 +922,10 @@ function showInvoice(id){
   rowsArr.push(tr("المدفوع (عربون)",paid.toLocaleString()+" جنيه"));
   rowsArr.push(tr("المتبقي",Math.max(tot-paid,0).toLocaleString()+" جنيه"));
   const rowsHtml=rowsArr.join("");
-  const html=`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>${esc(b.invoice_number)}</title><style>body{font-family:'Segoe UI',Arial;max-width:700px;margin:30px auto;padding:20px;color:#172033}h1{color:#0b1f3a;background:linear-gradient(135deg,#0b1f3a,#176b87);-webkit-background-clip:text;-webkit-text-fill-color:transparent}table{width:100%;border-collapse:collapse;margin:20px 0}td{padding:12px;border-bottom:1px solid #eee}td:first-child{color:#666;width:38%}.hd{display:flex;justify-content:space-between;border-bottom:3px solid #d9b45b;padding-bottom:15px}button{padding:12px 24px;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold}@media print{button{display:none}}</style></head><body><div class="hd"><h1>Nerea Travel</h1><div><b>فاتورة ${esc(b.invoice_number)}</b><br>${esc(new Date(b.paid_at||b.created_at).toLocaleDateString("ar-EG"))}</div></div><table>${rowsHtml}</table><button onclick="window.print()">🖨 طباعة</button></body></html>`;
+  const html=`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>${esc(b.invoice_number)}</title><style>body{font-family:'Segoe UI',Arial;max-width:700px;margin:30px auto;padding:20px;color:#172033}h1{color:#0b1f3a}table{width:100%;border-collapse:collapse;margin:20px 0}td{padding:12px;border-bottom:1px solid #eee}td:first-child{color:#666;width:38%}.hd{display:flex;justify-content:space-between;border-bottom:3px solid #d9b45b;padding-bottom:15px}button{padding:12px 24px;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold}@media print{button{display:none}}</style></head><body><div class="hd"><h1>Nerea Travel</h1><div><b>فاتورة ${esc(b.invoice_number)}</b><br>${esc(new Date(b.paid_at||b.created_at).toLocaleDateString("ar-EG"))}</div></div><table>${rowsHtml}</table><button onclick="window.print()">🖨 طباعة</button></body></html>`;
   let ov=$("invOv");
   if(!ov){ov=document.createElement("div");ov.id="invOv";ov.style.cssText="position:fixed;inset:0;background:rgba(11,31,58,.7);backdrop-filter:blur(4px);z-index:20000;display:flex;flex-direction:column;align-items:center;padding:20px;gap:12px";document.body.appendChild(ov);}
-  ov.innerHTML=`<div style="display:flex;gap:12px"><button type="button" onclick="document.getElementById('invFrame').contentWindow.print()" style="background:linear-gradient(135deg,#d9b45b,#f5d97e);color:#0b1f3a;padding:12px 24px">🖨 طباعة / حفظ PDF</button><button type="button" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:12px 24px" onclick="document.getElementById('invOv').remove()">✕ إغلاق</button></div><iframe id="invFrame" style="width:100%;max-width:760px;flex:1;background:#fff;border:0;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4)"></iframe>`;
+  ov.innerHTML=`<div style="display:flex;gap:12px"><button type="button" onclick="document.getElementById('invFrame').contentWindow.print()" style="background:linear-gradient(135deg,#d9b45b,#f5d97e);color:#0b1f3a;padding:12px 24px">🖨 طباعة / حفظ PDF</button><button type="button" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:12px 24px" onclick="document.getElementById('invOv').remove()">✕ إغلاق</button></div><iframe id="invFrame" style="width:100%;max-width:760px;flex:1;background:#fff;border:0;border-radius:16px"></iframe>`;
   $("invFrame").srcdoc=html;
 }
 
@@ -890,7 +941,7 @@ async function loadStats(){
   const pct=(a,b)=>b?Math.round(a*100/b)+"%":"—";
   const card=(t,v)=>`<div class="reportCard" style="border-color:#d9b45b"><div class="label">${t}</div><div class="value">${v}</div></div>`;
   $("statCards").innerHTML=[card("👤 زوار فريدون",V),card("📄 مشاهدات الصفحة",cnt("page_view")),card("🔎 عمليات بحث",cnt("search")),card("🏨 مشاهدات فنادق",cnt("hotel_view")),card("📷 فتح الألبوم",cnt("gallery_open")),card("📝 طلبات حجز",cnt("booking")),card("💬 ضغطات واتساب",cnt("whatsapp_click"))].join("");
-  $("statRates").innerHTML=[`زوار بحثوا: <b>${pct(S,V)}</b> من الزوار`,`شاهدوا فندق: <b>${pct(H,S)}</b> ممن بحثوا`,`أرسلوا حجز: <b>${pct(B,H)}</b> ممن شاهدوا فندق`,`نسبة التحويل الكلية (حجز ÷ زوار): <b>${pct(B,V)}</b>`].map(x=>`<p style="margin:8px 0;font-size:14px">${x}</p>`).join("");
+  $("statRates").innerHTML=[`زوار بحثوا: <b>${pct(S,V)}</b>`,`شاهدوا فندق: <b>${pct(H,S)}</b>`,`أرسلوا حجز: <b>${pct(B,H)}</b>`,`نسبة التحويل: <b>${pct(B,V)}</b>`].map(x=>`<p style="margin:8px 0;font-size:14px">${x}</p>`).join("");
   const top=(n,k)=>{const m={};ev.filter(e=>e.event===n&&e.meta&&e.meta[k]).forEach(e=>m[e.meta[k]]=(m[e.meta[k]]||0)+1);return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([a,b])=>`<tr><td>${esc(a)}</td><td>${b}</td></tr>`).join("")||"<tr><td colspan='2' style='text-align:center;padding:20px;color:#999'>—</td></tr>";};
   $("statDest").innerHTML=top("search","destination");$("statHotels").innerHTML=top("hotel_view","hotel");
   const d={};ev.filter(e=>e.event==="page_view").forEach(e=>{const k=new Date(e.created_at).toLocaleDateString("en-CA");(d[k]=d[k]||new Set()).add(e.visitor_id);});
@@ -899,9 +950,15 @@ async function loadStats(){
 
 $("editModal").addEventListener("click",function(e){ if(e.target === $("editModal")){ closeEdit(); } });
 
-const LABELS={aHotelName:"اسم الفندق",aHotelDest:"الوجهة",aHotelSeries:"نوع الفندق",aSingle:"سعر الغرفة Single (فرد)",aDouble:"سعر الغرفة Double (دبل)",aTriple:"سعر الغرفة Triple (تربل)",aNight:"سعر الليلة (احتياطي لو لم تكتب أسعار الغرف)",aChildAge:"أقصى سن للطفل (الأطفال حتى هذا السن مجانًا)",aSeatPrice:"سعر الكرسي الإضافي في الباص",aLat:"خط العرض (latitude) — اختياري",aLong:"خط الطول (longitude) — اختياري",aMaps:"رابط خرائط جوجل (بديل عن الإحداثيات)",aImage:"رابط الصورة (أو استخدم زر 📷 صور)",aDesc:"وصف الفندق",
-aTripHotel:"الفندق",aTripDay:"يوم المغادرة",aTripStart:"تاريخ البداية (غير مستخدم، اتركه كما هو)",aTripEnd:"تاريخ النهاية (غير مستخدم، اتركه كما هو)",aTripNights:"عدد الليالي",aTripPrice:"سعر الفرد (دبل/تريبل) شامل الإقامة والانتقال",aTripSingle:"سعر الفرد في غرفة Single",aTripChild:"سعر الطفل (غير مستخدم حاليًا)",aTripChildAge:"أقصى سن للطفل (مجانًا)",aTripSeat:"سعر الكرسي الإضافي",aTripRooms:"عدد الغرف المتاحة",aTripSeats:"عدد المقاعد المتاحة",
-aDestName:"اسم الوجهة",aDestImage:"رابط صورة الوجهة",aDestDesc:"وصف الوجهة",aPointName:"اسم نقطة التحرك",aPointPrice:"السعر الإضافي للفرد",aQuad:"سعر الغرفة Quad (رباعية)",aQuint:"سعر الغرفة Quint (خماسية)",aBreakfastNote:"ملاحظة عن الفطار (اختياري)"};
+/* Meal toggle listeners */
+["aMealBreakfast","aMealLunch","aMealDinner","aMealsIncluded"].forEach(id => {
+  const el = $(id);
+  if (el) el.addEventListener("change", updateMealToggles);
+});
+
+const LABELS={aHotelName:"اسم الفندق",aHotelDest:"الوجهة",aHotelSeries:"نوع الفندق",aSingle:"سعر الغرفة Single (فرد)",aDouble:"سعر الغرفة Double (دبل)",aTriple:"سعر الغرفة Triple (تربل)",aQuad:"سعر الغرفة Quad (رباعية)",aQuint:"سعر الغرفة Quint (خماسية)",aNight:"سعر الليلة (احتياطي)",aChildAge:"أقصى سن للطفل (مجانًا)",aSeatPrice:"سعر الكرسي الإضافي",aLat:"خط العرض (lat)",aLong:"خط الطول (lng)",aMaps:"رابط خرائط جوجل (بديل)",aImage:"رابط الصورة",aDesc:"وصف الفندق",aMealNote:"ملاحظة عن الوجبات (اختياري)",
+aTripHotel:"الفندق",aTripDay:"يوم المغادرة",aTripStart:"تاريخ البداية",aTripEnd:"تاريخ النهاية",aTripNights:"عدد الليالي",aTripPrice:"سعر الفرد",aTripSingle:"سعر Single",aTripChild:"سعر الطفل",aTripChildAge:"أقصى سن للطفل",aTripSeat:"سعر الكرسي",aTripRooms:"عدد الغرف",aTripSeats:"عدد المقاعد",
+aDestName:"اسم الوجهة",aDestImage:"رابط الصورة",aDestDesc:"وصف الوجهة",aPointName:"اسم نقطة التحرك",aPointPrice:"السعر الإضافي"};
 function addLabels(){
   Object.keys(LABELS).forEach(id=>{
     const el=$(id);if(!el||el.parentNode.dataset.lbl)return;
