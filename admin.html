@@ -260,10 +260,12 @@ header .logo span{color:#d9b45b}
     <input id="aQuint" type="number" placeholder="سعر Quint (خماسي)" min="0">
     <input id="aNight" type="number" placeholder="سعر الليلة (احتياطي)" min="0">
 
-    <div class="formSection"><h4>👶 الأطفال والانتقالات</h4><p>سن الطفل المجاني + أسعار الباص والـ High S للفرد</p></div>
+    <div class="formSection"><h4>👶 الأطفال والانتقالات</h4><p>سن الطفل المجاني + أسعار الانتقالات للبالغين والأطفال</p></div>
     <input id="aChildAge" type="number" placeholder="أقصى سن للطفل (مجانًا)">
-    <input id="aSeatPrice" type="number" placeholder="سعر الباص (لكل فرد)" min="0">
-    <input id="aHighs" type="number" placeholder="سعر High S (لكل فرد)" min="0">
+    <input id="aSeatPrice" type="number" placeholder="🚌 سعر الباص (لكل فرد)" min="0">
+    <input id="aHighs" type="number" placeholder="🚐 سعر High S (لكل فرد)" min="0">
+    <input id="aExtraBusSeat" type="number" placeholder="💺 سعر الكرسي الإضافي - Bus" min="0">
+    <input id="aExtraHighsSeat" type="number" placeholder="💺 سعر الكرسي الإضافي - High S" min="0">
 
     <div class="formSection"><h4>📍 الموقع والصور</h4><p>الإحداثيات أو رابط خرائط جوجل + الصورة الرئيسية</p></div>
     <input id="aLat" type="number" step="any" placeholder="خط العرض (lat)">
@@ -576,7 +578,7 @@ async function loadAdminData(){
 function newHotel(){
   $("hotelForm").style.display="grid";
   $("aHotelId").value="";
-  ["aHotelName","aSingle","aDouble","aTriple","aQuad","aQuint","aNight","aImage","aDesc","aLat","aLong","aMaps","aMealNote","aHighs"].forEach(i=>$(i).value="");
+  ["aHotelName","aSingle","aDouble","aTriple","aQuad","aQuint","aNight","aImage","aDesc","aLat","aLong","aMaps","aMealNote","aHighs","aExtraBusSeat","aExtraHighsSeat"].forEach(i=>$(i).value="");
   $("aHotelSeries").value="false";
   $("aChildAge").value=10;
   $("aSeatPrice").value=0;
@@ -604,6 +606,8 @@ function editHotel(id){
   $("aChildAge").value=x.child_max_age??10;
   $("aSeatPrice").value=x.extra_seat_price??0;
   $("aHighs").value=x.highs_price??"";
+  $("aExtraBusSeat").value=x.extra_bus_seat_price??"";
+  $("aExtraHighsSeat").value=x.extra_highs_seat_price??"";
   $("aLat").value=x.latitude??"";
   $("aLong").value=x.longitude??"";
   $("aMaps").value=x.google_maps_url||"";
@@ -631,6 +635,8 @@ async function saveHotel(){
     child_max_age:+$("aChildAge").value||10,
     extra_seat_price:+$("aSeatPrice").value||0,
     highs_price:+$("aHighs").value||0,
+    extra_bus_seat_price:+$("aExtraBusSeat").value||0,
+    extra_highs_seat_price:+$("aExtraHighsSeat").value||0,
     image_url:$("aImage").value.trim(),
     description:$("aDesc").value.trim(),
     latitude:$("aLat").value?Number($("aLat").value):null,
@@ -922,7 +928,7 @@ $("editModal").addEventListener("click",function(e){ if(e.target === $("editModa
   if (el) el.addEventListener("change", updateMealToggles);
 });
 
-const LABELS={aHotelName:"اسم الفندق",aHotelDest:"الوجهة",aHotelSeries:"نوع الفندق",aSingle:"سعر الغرفة Single (فرد)",aDouble:"سعر الغرفة Double (دبل)",aTriple:"سعر الغرفة Triple (تربل)",aQuad:"سعر الغرفة Quad (رباعي)",aQuint:"سعر الغرفة Quint (خماسي)",aNight:"سعر الليلة (احتياطي)",aChildAge:"أقصى سن للطفل",aSeatPrice:"سعر الباص (لكل فرد)",aHighs:"سعر High S (لكل فرد)",aLat:"خط العرض (lat)",aLong:"خط الطول (lng)",aMaps:"رابط خرائط جوجل",aImage:"رابط الصورة",aDesc:"وصف الفندق",aMealNote:"ملاحظة عن الوجبات",
+const LABELS={aHotelName:"اسم الفندق",aHotelDest:"الوجهة",aHotelSeries:"نوع الفندق",aSingle:"سعر الغرفة Single (فرد)",aDouble:"سعر الغرفة Double (دبل)",aTriple:"سعر الغرفة Triple (تربل)",aQuad:"سعر الغرفة Quad (رباعي)",aQuint:"سعر الغرفة Quint (خماسي)",aNight:"سعر الليلة (احتياطي)",aChildAge:"أقصى سن للطفل",aSeatPrice:"🚌 سعر الباص (لكل فرد)",aHighs:"🚐 سعر High S (لكل فرد)",aExtraBusSeat:"💺 سعر الكرسي الإضافي - Bus",aExtraHighsSeat:"💺 سعر الكرسي الإضافي - High S",aLat:"خط العرض (lat)",aLong:"خط الطول (lng)",aMaps:"رابط خرائط جوجل",aImage:"رابط الصورة",aDesc:"وصف الفندق",aMealNote:"ملاحظة عن الوجبات",
 aTripHotel:"الفندق",aTripDay:"يوم المغادرة",aTripStart:"تاريخ البداية",aTripEnd:"تاريخ النهاية",aTripNights:"الليالي",aTripPrice:"سعر الفرد",aTripSingle:"Single",aTripChild:"سعر الطفل",aTripChildAge:"سن الطفل",aTripSeat:"سعر الكرسي",aTripRooms:"الغرف",aTripSeats:"المقاعد",
 aDestName:"اسم الوجهة",aDestImage:"رابط الصورة",aDestDesc:"وصف الوجهة",aPointName:"اسم نقطة التحرك",aPointPrice:"السعر الإضافي"};
 function addLabels(){
