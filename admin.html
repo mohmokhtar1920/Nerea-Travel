@@ -11,44 +11,32 @@
 body{background:#f0f4f8;color:#172033;min-height:100vh}
 button{border:none;border-radius:10px;padding:11px 18px;background:#d9b45b;color:#0b1f3a;font-weight:bold;cursor:pointer;font-family:inherit;transition:all .2s ease;font-size:14px}
 button:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
-button:active{transform:translateY(0)}
-input,select,textarea{padding:12px;border:2px solid #e5e9f0;border-radius:10px;width:100%;font-family:inherit;font-size:14px;transition:all .2s ease;background:#fff;color:#172033}
+input,select,textarea{padding:12px;border:2px solid #e5e9f0;border-radius:10px;width:100%;font-family:inherit;font-size:14px;background:#fff;color:#172033}
 input:focus,select:focus,textarea:focus{border-color:#176b87;box-shadow:0 0 0 4px rgba(23,107,135,.1);outline:none}
-input[type="checkbox"]{width:auto;cursor:pointer;accent-color:#176b87;width:20px;height:20px}
+input[type="checkbox"]{cursor:pointer;accent-color:#176b87;width:20px;height:20px}
 
-#login{position:fixed;inset:0;background:#f5f7fa;z-index:999;display:flex;align-items:stretch;overflow:hidden;max-width:none;margin:0;padding:0;border-radius:0;box-shadow:none}
+#login{position:fixed;inset:0;background:#f5f7fa;z-index:999;display:flex;align-items:stretch;overflow:hidden}
 .loginLeft{flex:1;background:linear-gradient(135deg,#0b1f3a 0%,#176b87 50%,#0b1f3a 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;position:relative;overflow:hidden}
 .loginLeft::before{content:"";position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(217,180,91,.15) 0%,transparent 70%);top:-100px;right:-100px;animation:floatSlow 8s ease-in-out infinite}
 .loginLeft::after{content:"";position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(101,199,247,.15) 0%,transparent 70%);bottom:-100px;left:-100px;animation:floatSlow 10s ease-in-out infinite reverse}
-.loginLeft img{width:180px;height:auto;margin-bottom:20px;animation:fadeDown .8s ease;filter:drop-shadow(0 10px 30px rgba(0,0,0,.3));position:relative;z-index:2}
-.loginLeft h1{color:#fff;font-size:32px;margin-bottom:10px;animation:fadeDown .9s ease;position:relative;z-index:2}
+.loginLeft img{width:180px;height:auto;margin-bottom:20px;filter:drop-shadow(0 10px 30px rgba(0,0,0,.3));position:relative;z-index:2}
+.loginLeft h1{color:#fff;font-size:32px;margin-bottom:10px;position:relative;z-index:2}
 .loginLeft h1 span{color:#d9b45b}
-.loginLeft p{color:rgba(255,255,255,.7);font-size:15px;text-align:center;animation:fadeDown 1s ease;position:relative;z-index:2}
-.loginRight{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:#fff;position:relative}
-.loginBox{width:100%;max-width:400px;animation:fadeUp .8s ease .2s backwards}
+.loginLeft p{color:rgba(255,255,255,.7);font-size:15px;text-align:center;position:relative;z-index:2}
+.loginRight{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:#fff}
+.loginBox{width:100%;max-width:400px}
 .loginBox h2{font-size:28px;color:#0b1f3a;margin-bottom:8px;text-align:center}
 .loginBox .subTitle{text-align:center;color:#888;font-size:14px;margin-bottom:30px}
 .field{position:relative;margin-bottom:22px}
-.field input{width:100%;padding:22px 16px 8px 16px;border:2px solid #e5e9f0;border-radius:12px;font-size:15px;background:#fff;color:#172033;text-align:right}
-.field input:focus{border-color:#176b87;box-shadow:0 0 0 4px rgba(23,107,135,.1);outline:none}
-.field label{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#999;font-size:15px;pointer-events:none;transition:all .2s ease;background:#fff;padding:0 6px;font-weight:normal;margin:0}
+.field input{width:100%;padding:22px 16px 8px 16px;border:2px solid #e5e9f0;border-radius:12px;font-size:15px;background:#fff;text-align:right}
+.field label{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#999;font-size:15px;pointer-events:none;transition:all .2s ease;background:#fff;padding:0 6px;margin:0}
 .field input:focus + label,
 .field input:not(:placeholder-shown) + label{top:0;font-size:12px;color:#176b87;font-weight:bold}
 .field .togglePw{position:absolute;left:16px;top:50%;transform:translateY(-50%);background:transparent;border:none;cursor:pointer;font-size:18px;padding:4px;color:#999;z-index:3;width:auto}
-.field .togglePw:hover{color:#176b87;transform:translateY(-50%);box-shadow:none}
-.loginBtn{width:100%;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;font-family:inherit}
+.loginBtn{width:100%;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;font-family:inherit}
 .loginBtn:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(11,31,58,.3)}
-.loginBtn::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s ease}
-.loginBtn:hover::before{left:100%}
 #msg{background:#f8d7da;color:#721c24;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;text-align:center;display:none}
 #msg:not(:empty){display:block}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes floatSlow{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,-20px) scale(1.1)}}
-@keyframes slideInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
 @media(max-width:800px){
   #login{flex-direction:column}
   .loginLeft{padding:30px 20px;min-height:200px}
@@ -56,8 +44,10 @@ input[type="checkbox"]{width:auto;cursor:pointer;accent-color:#176b87;width:20px
   .loginLeft h1{font-size:22px}
   .loginLeft p{font-size:13px}
   .loginRight{padding:24px 20px;flex:1}
-  .loginBox h2{font-size:22px}
 }
+@keyframes floatSlow{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,-20px) scale(1.1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 
 header{background:linear-gradient(135deg,#0b1f3a 0%,#176b87 100%);color:#fff;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px rgba(0,0,0,.15);position:sticky;top:0;z-index:100}
 header .logo{font-size:20px;font-weight:bold;color:#fff;display:flex;align-items:center;gap:12px}
@@ -65,7 +55,7 @@ header .logo::before{content:"";width:6px;height:28px;background:linear-gradient
 header .logo span{color:#d9b45b}
 .roleBadge{background:rgba(217,180,91,.2);color:#d9b45b;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;border:1px solid rgba(217,180,91,.4)}
 #outBtn{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);padding:9px 20px;font-size:13px}
-#outBtn:hover{background:rgba(220,53,69,.9);border-color:rgba(220,53,69,.9);box-shadow:0 4px 12px rgba(220,53,69,.3)}
+#outBtn:hover{background:rgba(220,53,69,.9);border-color:rgba(220,53,69,.9)}
 
 #app{display:none;padding:24px 5%;max-width:1600px;margin:0 auto}
 .bar{display:flex;gap:12px;margin-bottom:20px;align-items:center;flex-wrap:wrap;background:#fff;padding:16px 20px;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
@@ -74,14 +64,13 @@ header .logo span{color:#d9b45b}
 .bar #count{margin-right:auto;color:#666;font-size:14px;font-weight:bold;background:#f0f6fa;padding:8px 16px;border-radius:20px}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
-.card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.06);border-right:5px solid #999;transition:all .25s ease;animation:slideInRight .4s ease backwards;position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(217,180,91,.08),transparent 70%);border-radius:50%;pointer-events:none}
+.card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.06);border-right:5px solid #999;transition:all .25s ease;position:relative;overflow:hidden}
 .card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.1)}
-.card h3{margin-bottom:10px;font-size:17px;color:#0b1f3a;padding-bottom:10px;border-bottom:2px solid #f0f4f8;display:flex;align-items:center;gap:8px}
+.card h3{margin-bottom:10px;font-size:17px;color:#0b1f3a;padding-bottom:10px;border-bottom:2px solid #f0f4f8}
 .card p{font-size:13.5px;margin:5px 0;color:#444;line-height:1.6}
 .price{font-size:22px;font-weight:bold;background:linear-gradient(135deg,#176b87,#0b1f3a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:12px 0;padding:8px 0}
 .call{background:linear-gradient(135deg,#fff3cd,#ffe8a3);padding:10px 14px;border-radius:10px;font-size:13px;margin:8px 0;border-right:4px solid #e0a800;font-weight:bold;color:#856404}
-.card a{color:#176b87;font-weight:bold;text-decoration:none;margin-left:10px;padding:5px 10px;background:#e3f2fd;border-radius:6px;font-size:12px;transition:all .2s ease;display:inline-block}
+.card a{color:#176b87;font-weight:bold;text-decoration:none;margin-left:10px;padding:5px 10px;background:#e3f2fd;border-radius:6px;font-size:12px;display:inline-block}
 .card a:hover{background:#176b87;color:#fff}
 .editBtn{width:100%;margin-top:12px;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;padding:12px;font-size:13px}
 .s-Pending{border-right-color:#e0a800}
@@ -91,45 +80,42 @@ header .logo span{color:#d9b45b}
 .s-Waiting{border-right-color:#fd7e14}
 .couponTag{display:inline-block;background:linear-gradient(135deg,#d4edda,#a8e6b5);color:#155724;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:bold;margin:8px 0;border-right:3px solid #28a745}
 .mealTag{display:inline-block;background:linear-gradient(135deg,#fff8e1,#ffe4a1);color:#856404;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin:4px;border-right:3px solid #f5a623}
+.vehicleTag{display:inline-block;background:linear-gradient(135deg,#e3f2fd,#bbdefb);color:#0d47a1;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin:4px;border-right:3px solid #176b87}
 
-.adminPanel{display:none;background:#fff;border-radius:18px;padding:24px;margin-bottom:24px;box-shadow:0 4px 24px rgba(0,0,0,.06);animation:fadeUp .4s ease}
+.adminPanel{display:none;background:#fff;border-radius:18px;padding:24px;margin-bottom:24px;box-shadow:0 4px 24px rgba(0,0,0,.06)}
 .adminPanel h2{color:#0b1f3a;font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:2px solid #f0f4f8}
 .adminPanel h2::before{content:"";width:5px;height:26px;background:linear-gradient(180deg,#d9b45b,#f5d97e);border-radius:3px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #f0f4f8}
-.tabs button{background:#f0f4f8;color:#666;padding:10px 16px;font-size:13px;border-radius:10px;font-weight:600;transition:all .2s ease;border:2px solid transparent}
-.tabs button:hover{background:#e3f2fd;color:#176b87;transform:translateY(-1px)}
+.tabs button{background:#f0f4f8;color:#666;padding:10px 16px;font-size:13px;border-radius:10px;font-weight:600;border:2px solid transparent}
+.tabs button:hover{background:#e3f2fd;color:#176b87}
 .tabs button.active{background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;box-shadow:0 4px 12px rgba(11,31,58,.25)}
 
-.adminForm{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:20px 0;padding:20px;background:#f8fafc;border-radius:14px;border:2px dashed #e5e9f0;animation:fadeUp .3s ease}
+.adminForm{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:20px 0;padding:20px;background:#f8fafc;border-radius:14px;border:2px dashed #e5e9f0}
 .adminForm .full{grid-column:1/-1}
 .adminForm label{display:block;font-size:12px;font-weight:bold;margin-bottom:6px;color:#555}
 .formSection{grid-column:1/-1;background:linear-gradient(135deg,#f0f6fa,#e3f2fd);padding:14px 18px;border-radius:10px;border-right:4px solid #176b87;margin-bottom:6px}
 .formSection h4{color:#0b1f3a;font-size:14px;margin-bottom:4px}
 .formSection p{font-size:12px;color:#666}
 
-.checkRow{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;border:2px solid #e5e9f0;border-radius:10px;cursor:pointer;transition:all .2s ease}
+.checkRow{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;border:2px solid #e5e9f0;border-radius:10px;cursor:pointer}
 .checkRow:hover{border-color:#176b87;background:#f0f6fa}
 .checkRow.checked{border-color:#176b87;background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
 .checkRow input{width:20px;height:20px;cursor:pointer;flex-shrink:0}
 .checkRow label{margin:0;cursor:pointer;font-size:14px;font-weight:600;color:#172033}
 .checkRow .mealIcon{font-size:24px}
-
 .mealGroup{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
-.mealToggle{display:flex;align-items:center;gap:8px;padding:14px;background:#fff;border:2px solid #e5e9f0;border-radius:10px;cursor:pointer;transition:all .2s ease;font-size:14px;font-weight:600}
+.mealToggle{display:flex;align-items:center;gap:8px;padding:14px;background:#fff;border:2px solid #e5e9f0;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600}
 .mealToggle:hover{border-color:#176b87;background:#f0f6fa}
 .mealToggle.checked{border-color:#f5a623;background:linear-gradient(135deg,#fff8e1,#ffe4a1);color:#856404}
 .mealToggle input{margin:0;flex-shrink:0}
 
 .tableWrap{overflow:auto;border-radius:12px;border:1px solid #f0f4f8;max-height:70vh}
 .simpleTable{width:100%;border-collapse:collapse;font-size:13.5px}
-.simpleTable th{background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;padding:14px 12px;text-align:right;font-size:13px;font-weight:600;position:sticky;top:0;z-index:2}
-.simpleTable td{padding:12px;border-bottom:1px solid #f0f4f8;text-align:right;background:#fff;transition:background .15s ease}
+.simpleTable th{background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;padding:14px 12px;text-align:right;font-size:13px;position:sticky;top:0;z-index:2}
+.simpleTable td{padding:12px;border-bottom:1px solid #f0f4f8;text-align:right;background:#fff}
 .simpleTable tr:hover td{background:#f8fafc}
-.simpleTable tr:last-child td{border-bottom:none}
 .danger{background:linear-gradient(135deg,#dc3545,#c82333);color:#fff;padding:7px 14px;font-size:12px;border-radius:8px}
-.danger:hover{box-shadow:0 4px 12px rgba(220,53,69,.3)}
 .secondary{background:#e5e9f0;color:#172033;padding:10px 18px}
-.secondary:hover{background:#d1d8e0}
 .success{background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff}
 .warn{background:linear-gradient(135deg,#fd7e14,#e8590c);color:#fff}
 .simpleTable td button{padding:7px 12px;font-size:12px;margin-left:5px;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff}
@@ -140,12 +126,12 @@ header .logo span{color:#d9b45b}
 .badge-blue{background:#e3f2fd;color:#0d47a1}
 .badge-gray{background:#f0f0f0;color:#666}
 
-.modal{display:none;position:fixed;inset:0;background:rgba(11,31,58,.7);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease}
-.modalBox{background:#fff;width:100%;max-width:850px;max-height:90vh;overflow-y:auto;border-radius:20px;padding:28px;box-shadow:0 25px 80px rgba(0,0,0,.3);animation:fadeUp .3s ease}
+.modal{display:none;position:fixed;inset:0;background:rgba(11,31,58,.7);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:20px}
+.modalBox{background:#fff;width:100%;max-width:850px;max-height:90vh;overflow-y:auto;border-radius:20px;padding:28px}
 .modalHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #f0f4f8}
 .modalHeader h2{margin:0;color:#0b1f3a;font-size:20px}
-.modalHeader button{border:0;background:#f0f4f8;color:#172033;font-size:22px;cursor:pointer;padding:0;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s ease}
-.modalHeader button:hover{background:#dc3545;color:#fff;transform:rotate(90deg)}
+.modalHeader button{border:0;background:#f0f4f8;color:#172033;font-size:22px;cursor:pointer;padding:0;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.modalHeader button:hover{background:#dc3545;color:#fff}
 .formGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .formGrid label{display:block;margin-bottom:6px;font-weight:600;font-size:13px;color:#555}
 .formGrid input,.formGrid select{width:100%;padding:12px;border:2px solid #e5e9f0;border-radius:10px;font-size:14px}
@@ -156,11 +142,8 @@ header .logo span{color:#d9b45b}
 
 @media(max-width:600px){
   .formGrid{grid-template-columns:1fr}
-  .bar{flex-wrap:wrap}
-  .bar select{max-width:none;width:100%}
   .adminForm{grid-template-columns:1fr}
   .mealGroup{grid-template-columns:1fr}
-  header{padding:14px 4%}
   header .logo{font-size:15px}
   .adminPanel{padding:16px}
   .tabs button{padding:8px 12px;font-size:12px}
@@ -173,10 +156,9 @@ header .logo span{color:#d9b45b}
 .follow small{color:#888;display:block;margin-top:8px;font-size:11px;font-style:italic}
 
 .photoGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin:18px 0}
-.ph{position:relative;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .2s ease}
-.ph:hover{transform:scale(1.03)}
+.ph{position:relative;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .ph img{width:100%;height:110px;object-fit:cover;display:block}
-.ph button{width:100%;margin-top:0;padding:8px;font-size:12px;border-radius:0;background:linear-gradient(135deg,#dc3545,#c82333);color:#fff}
+.ph button{width:100%;padding:8px;font-size:12px;border-radius:0;background:linear-gradient(135deg,#dc3545,#c82333);color:#fff}
 
 .proofBox{margin-top:12px;padding:14px;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border-radius:12px;text-align:center;border:2px dashed #bae6fd}
 .proofBox img{max-width:100%;max-height:160px;border-radius:10px;cursor:zoom-in;margin-top:8px;border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.15)}
@@ -186,30 +168,30 @@ header .logo span{color:#d9b45b}
 .reviewComment{background:#f8fafc;padding:10px 12px;border-radius:8px;font-size:13px;color:#555;margin-top:6px;white-space:pre-line;max-width:280px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;border-right:3px solid #176b87}
 
 .reportGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
-.reportCard{background:#fff;border-radius:16px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.06);border-right:5px solid #176b87;transition:all .25s ease;position:relative;overflow:hidden;animation:fadeUp .4s ease backwards}
+.reportCard{background:#fff;border-radius:16px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.06);border-right:5px solid #176b87;position:relative;overflow:hidden}
 .reportCard::before{content:"";position:absolute;top:-40px;left:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(101,199,247,.1),transparent 70%)}
 .reportCard:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.1)}
 .reportCard.green{border-right-color:#28a745}
 .reportCard.gold{border-right-color:#d9b45b}
 .reportCard.orange{border-right-color:#fd7e14}
 .reportCard.red{border-right-color:#dc3545}
-.reportCard .label{font-size:13px;color:#666;margin-bottom:8px;font-weight:600;position:relative;z-index:1}
-.reportCard .value{font-size:26px;font-weight:bold;background:linear-gradient(135deg,#0b1f3a,#176b87);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1}
-.reportCard .sub{font-size:12px;color:#888;margin-top:6px;position:relative;z-index:1}
+.reportCard .label{font-size:13px;color:#666;margin-bottom:8px;font-weight:600}
+.reportCard .value{font-size:26px;font-weight:bold;background:linear-gradient(135deg,#0b1f3a,#176b87);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.reportCard .sub{font-size:12px;color:#888;margin-top:6px}
 
 .chartBox{background:#fff;border-radius:16px;padding:24px;margin:16px 0;box-shadow:0 4px 20px rgba(0,0,0,.06)}
-.chartBox h3{margin-bottom:20px;font-size:17px;color:#0b1f3a;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:2px solid #f0f4f8}
+.chartBox h3{margin-bottom:20px;font-size:17px;color:#0b1f3a;padding-bottom:14px;border-bottom:2px solid #f0f4f8}
 .chartRow{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:13px}
 .chartLabel{min-width:90px;color:#444;font-weight:600}
 .chartBar{flex:1;background:#f0f4f8;border-radius:8px;height:28px;position:relative;overflow:hidden}
-.chartBar .fill{height:100%;background:linear-gradient(90deg,#176b87,#65c7f7);border-radius:8px;transition:width .6s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-weight:bold;font-size:11px;min-width:36px}
+.chartBar .fill{height:100%;background:linear-gradient(90deg,#176b87,#65c7f7);border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-weight:bold;font-size:11px;min-width:36px}
 .chartBar .fill.gold{background:linear-gradient(90deg,#d9b45b,#f5d97e)}
 .chartBar .fill.green{background:linear-gradient(90deg,#28a745,#4cd964)}
 .chartBar .fill.orange{background:linear-gradient(90deg,#fd7e14,#ff9f40)}
 .exportBtn{background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff;padding:10px 20px;font-size:13px}
 .rangeTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
 .rangeTabs button{background:#f0f4f8;color:#0b1f3a;padding:9px 18px;font-size:13px;border:2px solid transparent}
-.rangeTabs button.active{background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;box-shadow:0 4px 12px rgba(11,31,58,.25)}
+.rangeTabs button.active{background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff}
 .emptyReport{text-align:center;padding:50px;color:#999;font-size:14px}
 </style>
 </head>
@@ -239,7 +221,7 @@ header .logo span{color:#d9b45b}
       <div class="field">
         <input type="password" id="pass" placeholder=" " autocomplete="current-password">
         <label for="pass">كلمة السر</label>
-        <button type="button" class="togglePw" onclick="togglePw()" title="إظهار كلمة السر">👁️</button>
+        <button type="button" class="togglePw" onclick="togglePw()">👁️</button>
       </div>
       <button class="loginBtn" id="loginBtn" onclick="login()">دخول</button>
     </div>
@@ -253,66 +235,40 @@ header .logo span{color:#d9b45b}
   <div id="hotelForm" class="adminForm" style="display:none">
     <input type="hidden" id="aHotelId">
     
-    <div class="formSection">
-      <h4>📋 معلومات أساسية</h4>
-      <p>اسم الفندق والوجهة التابع لها</p>
-    </div>
+    <div class="formSection"><h4>📋 معلومات أساسية</h4><p>اسم الفندق والوجهة التابع لها</p></div>
     <input id="aHotelName" placeholder="اسم الفندق">
     <select id="aHotelDest"></select>
     <select id="aHotelSeries"><option value="false">Non-Series (فندق عادي)</option><option value="true">Series (رحلة سيريال)</option></select>
 
-    <div class="formSection">
-      <h4>🍽 الوجبات</h4>
-      <p>اختار الوجبات المتاحة + لو السعر بيشملها</p>
-    </div>
+    <div class="formSection"><h4>🍽 الوجبات</h4><p>اختار الوجبات المتاحة + لو السعر بيشملها</p></div>
     <div class="mealGroup">
-      <label class="mealToggle" id="mealBf">
-        <input type="checkbox" id="aMealBreakfast">
-        <span class="mealIcon">🍳</span>
-        <span>فطار</span>
-      </label>
-      <label class="mealToggle" id="mealLn">
-        <input type="checkbox" id="aMealLunch">
-        <span class="mealIcon">🍽</span>
-        <span>غداء</span>
-      </label>
-      <label class="mealToggle" id="mealDn">
-        <input type="checkbox" id="aMealDinner">
-        <span class="mealIcon">🍴</span>
-        <span>عشاء</span>
-      </label>
+      <label class="mealToggle" id="mealBf"><input type="checkbox" id="aMealBreakfast"><span>🍳 فطار</span></label>
+      <label class="mealToggle" id="mealLn"><input type="checkbox" id="aMealLunch"><span>🍽 غداء</span></label>
+      <label class="mealToggle" id="mealDn"><input type="checkbox" id="aMealDinner"><span>🍴 عشاء</span></label>
     </div>
     <div class="checkRow full" id="mealsIncludedRow" style="grid-column:1/-1">
       <input type="checkbox" id="aMealsIncluded">
       <label for="aMealsIncluded">💰 السعر شامل الوجبات المختارة</label>
     </div>
-    <input class="full" id="aMealNote" placeholder="ملاحظة عن الوجبات (اختياري) — مثال: بوفيه مفتوح">
+    <input class="full" id="aMealNote" placeholder="ملاحظة عن الوجبات (اختياري)">
 
-    <div class="formSection">
-      <h4>🛏 أسعار الغرف (اترك صفر لو النوع مش متاح)</h4>
-      <p>كل نوع غرفة بسعره — هتظهر للعميل الأنواع المتاحة بس</p>
-    </div>
+    <div class="formSection"><h4>🛏 أسعار الغرف (اترك صفر لو النوع مش متاح)</h4><p>هتظهر للعميل الأنواع المتاحة بس</p></div>
     <input id="aSingle" type="number" placeholder="سعر Single (فرد)" min="0">
-    <input id="aDouble" type="number" placeholder="سعر Double (مزدوجة)" min="0">
-    <input id="aTriple" type="number" placeholder="سعر Triple (ثلاثية)" min="0">
-    <input id="aQuad" type="number" placeholder="سعر Quad (رباعية)" min="0">
-    <input id="aQuint" type="number" placeholder="سعر Quint (خماسية)" min="0">
+    <input id="aDouble" type="number" placeholder="سعر Double (دبل)" min="0">
+    <input id="aTriple" type="number" placeholder="سعر Triple (تربل)" min="0">
+    <input id="aQuad" type="number" placeholder="سعر Quad (رباعي)" min="0">
+    <input id="aQuint" type="number" placeholder="سعر Quint (خماسي)" min="0">
     <input id="aNight" type="number" placeholder="سعر الليلة (احتياطي)" min="0">
 
-    <div class="formSection">
-      <h4>👶 الأطفال والانتقالات</h4>
-      <p>سن الطفل المجاني وسعر الكرسي الإضافي</p>
-    </div>
+    <div class="formSection"><h4>👶 الأطفال والانتقالات</h4><p>سن الطفل المجاني + أسعار الباص والـ High S للفرد</p></div>
     <input id="aChildAge" type="number" placeholder="أقصى سن للطفل (مجانًا)">
-    <input id="aSeatPrice" type="number" placeholder="سعر الكرسي الإضافي" min="0">
+    <input id="aSeatPrice" type="number" placeholder="سعر الباص (لكل فرد)" min="0">
+    <input id="aHighs" type="number" placeholder="سعر High S (لكل فرد)" min="0">
 
-    <div class="formSection">
-      <h4>📍 الموقع والصور</h4>
-      <p>الإحداثيات أو رابط خرائط جوجل + الصورة الرئيسية</p>
-    </div>
+    <div class="formSection"><h4>📍 الموقع والصور</h4><p>الإحداثيات أو رابط خرائط جوجل + الصورة الرئيسية</p></div>
     <input id="aLat" type="number" step="any" placeholder="خط العرض (lat)">
     <input id="aLong" type="number" step="any" placeholder="خط الطول (lng)">
-    <input class="full" id="aMaps" placeholder="رابط خرائط جوجل (بديل عن الإحداثيات)">
+    <input class="full" id="aMaps" placeholder="رابط خرائط جوجل (بديل)">
     <input class="full" id="aImage" placeholder="رابط الصورة الرئيسية">
     <input class="full" id="aDesc" placeholder="وصف الفندق">
 
@@ -323,13 +279,13 @@ header .logo span{color:#d9b45b}
   </div>
   <div class="tableWrap">
     <table class="simpleTable">
-      <thead><tr><th>الفندق</th><th>الوجهة</th><th>النوع</th><th>أنواع الغرف</th><th>الوجبات</th><th>الموقع</th><th>إجراء</th></tr></thead>
+      <thead><tr><th>الفندق</th><th>الوجهة</th><th>النوع</th><th>الغرف</th><th>الوجبات</th><th>الانتقالات</th><th>الموقع</th><th>إجراء</th></tr></thead>
       <tbody id="hotelRows"></tbody>
     </table>
   </div>
 </div>
 
-<div id="tab-trips" style="display:none"><button onclick="newTrip()">➕ إضافة رحلة</button><div id="tripForm" class="adminForm" style="display:none"><input type="hidden" id="aTripId"><select id="aTripHotel"></select><select id="aTripDay"><option>Thursday</option><option>Sunday</option></select><input type="date" id="aTripStart"><input type="date" id="aTripEnd"><input type="number" id="aTripNights" placeholder="الليالي"><input type="number" id="aTripPrice" placeholder="سعر الفرد"><input type="number" id="aTripSingle" placeholder="Single"><input type="number" id="aTripChild" placeholder="سعر الطفل"><input type="number" id="aTripChildAge" value="10" placeholder="سن الطفل"><input type="number" id="aTripSeat" placeholder="سعر الكرسي"><input type="number" id="aTripRooms" placeholder="الغرف"><input type="number" id="aTripSeats" placeholder="المقاعد"><button onclick="saveTrip()">حفظ</button><button class="secondary" onclick="cancelTrip()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الفندق</th><th>اليوم</th><th>التاريخ</th><th>السعر</th><th>إجراء</th></tr></thead><tbody id="tripRows"></tbody></table></div></div><div id="tab-destinations" style="display:none"><button onclick="newDest()">➕ إضافة وجهة</button><div id="destForm" class="adminForm" style="display:none"><input type="hidden" id="aDestId"><input id="aDestName" placeholder="اسم الوجهة"><input id="aDestImage" placeholder="رابط الصورة"><input class="full" id="aDestDesc" placeholder="الوصف"><button onclick="saveDest()">حفظ</button><button class="secondary" onclick="cancelDest()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><tbody id="destRows"></tbody></table></div></div><div id="tab-points" style="display:none"><button onclick="newPoint()">➕ إضافة نقطة تحرك</button><div id="pointForm" class="adminForm" style="display:none"><input type="hidden" id="aPointId"><input id="aPointName" placeholder="اسم نقطة التحرك"><input type="number" id="aPointPrice" placeholder="السعر الإضافي"><button onclick="savePoint()">حفظ</button><button class="secondary" onclick="cancelPoint()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><tbody id="pointRows"></tbody></table></div></div><div id="tab-coupons" style="display:none"><button onclick="newCoupon()">➕ إضافة كوبون</button><div id="couponForm" class="adminForm" style="display:none"><input type="hidden" id="aCouponId"><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الكود</label><input id="aCouponCode" placeholder="WELCOME10" style="text-transform:uppercase"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">النوع</label><select id="aCouponType"><option value="percent">نسبة %</option><option value="fixed">مبلغ ثابت</option></select></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">القيمة (10 = 10% أو 200 جنيه)</label><input type="number" id="aCouponValue" min="0" step="1"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الحد الأدنى للحجز</label><input type="number" id="aCouponMin" min="0" value="0"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">أقصى عدد استخدامات</label><input type="number" id="aCouponMaxUses" min="1" placeholder="اتركه فاضي = غير محدود"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">تاريخ الانتهاء</label><input type="date" id="aCouponExpires"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الحالة</label><select id="aCouponActive"><option value="true">مفعّل</option><option value="false">موقوف</option></select></div><div style="grid-column:1/-1;display:flex;gap:10px"><button onclick="saveCoupon()">حفظ</button><button class="secondary" onclick="cancelCoupon()">إلغاء</button></div></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الكود</th><th>النوع</th><th>القيمة</th><th>الحد الأدنى</th><th>الاستخدام</th><th>الانتهاء</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="couponRows"></tbody></table></div></div><div id="tab-reviews" style="display:none"><button onclick="loadReviews()">🔄 تحديث</button><div class="tableWrap" style="margin-top:12px"><table class="simpleTable"><thead><tr><th>الفندق</th><th>العميل</th><th>التقييم</th><th>التعليق</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="reviewRows"></tbody></table></div></div><div id="tab-reports" style="display:none"><div class="rangeTabs"><button class="active" data-range="30" onclick="setReportRange(30,this)">آخر 30 يوم</button><button data-range="90" onclick="setReportRange(90,this)">آخر 90 يوم</button><button data-range="365" onclick="setReportRange(365,this)">آخر سنة</button><button data-range="all" onclick="setReportRange('all',this)">كل الفترات</button><button class="exportBtn" style="margin-right:auto" onclick="exportBookingsCSV()">⬇️ تصدير CSV</button></div><div class="reportGrid" id="reportCards"></div><div class="chartBox"><h3>📅 الإيرادات شهريًا</h3><div id="monthlyChart"></div></div><div class="chartBox"><h3>🏨 أكثر الفنادق حجزًا</h3><div id="topHotelsChart"></div></div><div class="chartBox"><h3>📍 نقاط التحرك الأكثر استخدامًا</h3><div id="topPointsChart"></div></div><div class="chartBox"><h3>📋 الحجوزات حسب الحالة</h3><div id="statusChart"></div></div></div><div id="tab-staff" style="display:none"><button onclick="loadStaff()">🔄 تحديث</button><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الموظف</th><th>الدور</th><th>آخر دخول</th><th>آخر نشاط</th><th>الحالة</th></tr></thead><tbody id="staffRows"></tbody></table></div><h3 style="margin:20px 0 12px;color:#0b1f3a;font-size:16px">📜 سجل الدخول (آخر 50)</h3><div class="tableWrap"><table class="simpleTable"><tbody id="loginRows"></tbody></table></div></div><div id="tab-stats" style="display:none"><select id="statDays" onchange="loadStats()" style="max-width:200px;margin-bottom:18px"><option value="1">اليوم</option><option value="7" selected>آخر 7 أيام</option><option value="30">آخر 30 يوم</option></select><div class="grid" id="statCards"></div><div class="adminForm"><div class="full" id="statRates" style="background:#f0f6fa;padding:18px;border-radius:12px;border-right:4px solid #176b87"></div><div><b style="display:block;margin-bottom:10px;color:#0b1f3a">🔍 أكثر الوجهات بحثًا</b><table class="simpleTable"><tbody id="statDest"></tbody></table></div><div><b style="display:block;margin-bottom:10px;color:#0b1f3a">🏨 أكثر الفنادق مشاهدة</b><table class="simpleTable"><tbody id="statHotels"></tbody></table></div><div class="full"><b style="display:block;margin-bottom:10px;color:#0b1f3a">📅 الزوار يوميًا</b><table class="simpleTable"><tbody id="statDays2"></tbody></table></div></div></div></div>
+<div id="tab-trips" style="display:none"><button onclick="newTrip()">➕ إضافة رحلة</button><div id="tripForm" class="adminForm" style="display:none"><input type="hidden" id="aTripId"><select id="aTripHotel"></select><select id="aTripDay"><option>Thursday</option><option>Sunday</option></select><input type="date" id="aTripStart"><input type="date" id="aTripEnd"><input type="number" id="aTripNights" placeholder="الليالي"><input type="number" id="aTripPrice" placeholder="سعر الفرد"><input type="number" id="aTripSingle" placeholder="Single"><input type="number" id="aTripChild" placeholder="سعر الطفل"><input type="number" id="aTripChildAge" value="10" placeholder="سن الطفل"><input type="number" id="aTripSeat" placeholder="سعر الكرسي"><input type="number" id="aTripRooms" placeholder="الغرف"><input type="number" id="aTripSeats" placeholder="المقاعد"><button onclick="saveTrip()">حفظ</button><button class="secondary" onclick="cancelTrip()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الفندق</th><th>اليوم</th><th>التاريخ</th><th>السعر</th><th>إجراء</th></tr></thead><tbody id="tripRows"></tbody></table></div></div><div id="tab-destinations" style="display:none"><button onclick="newDest()">➕ إضافة وجهة</button><div id="destForm" class="adminForm" style="display:none"><input type="hidden" id="aDestId"><input id="aDestName" placeholder="اسم الوجهة"><input id="aDestImage" placeholder="رابط الصورة"><input class="full" id="aDestDesc" placeholder="الوصف"><button onclick="saveDest()">حفظ</button><button class="secondary" onclick="cancelDest()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><tbody id="destRows"></tbody></table></div></div><div id="tab-points" style="display:none"><button onclick="newPoint()">➕ إضافة نقطة تحرك</button><div id="pointForm" class="adminForm" style="display:none"><input type="hidden" id="aPointId"><input id="aPointName" placeholder="اسم نقطة التحرك"><input type="number" id="aPointPrice" placeholder="السعر الإضافي"><button onclick="savePoint()">حفظ</button><button class="secondary" onclick="cancelPoint()">إلغاء</button></div><div class="tableWrap"><table class="simpleTable"><tbody id="pointRows"></tbody></table></div></div><div id="tab-coupons" style="display:none"><button onclick="newCoupon()">➕ إضافة كوبون</button><div id="couponForm" class="adminForm" style="display:none"><input type="hidden" id="aCouponId"><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الكود</label><input id="aCouponCode" placeholder="WELCOME10" style="text-transform:uppercase"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">النوع</label><select id="aCouponType"><option value="percent">نسبة %</option><option value="fixed">مبلغ ثابت</option></select></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">القيمة</label><input type="number" id="aCouponValue" min="0"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الحد الأدنى</label><input type="number" id="aCouponMin" min="0" value="0"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">أقصى استخدامات</label><input type="number" id="aCouponMaxUses" min="1" placeholder="غير محدود"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">تاريخ الانتهاء</label><input type="date" id="aCouponExpires"></div><div><label style="display:block;font-size:13px;font-weight:bold;margin-bottom:5px">الحالة</label><select id="aCouponActive"><option value="true">مفعّل</option><option value="false">موقوف</option></select></div><div style="grid-column:1/-1;display:flex;gap:10px"><button onclick="saveCoupon()">حفظ</button><button class="secondary" onclick="cancelCoupon()">إلغاء</button></div></div><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الكود</th><th>النوع</th><th>القيمة</th><th>الحد الأدنى</th><th>الاستخدام</th><th>الانتهاء</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="couponRows"></tbody></table></div></div><div id="tab-reviews" style="display:none"><button onclick="loadReviews()">🔄 تحديث</button><div class="tableWrap" style="margin-top:12px"><table class="simpleTable"><thead><tr><th>الفندق</th><th>العميل</th><th>التقييم</th><th>التعليق</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="reviewRows"></tbody></table></div></div><div id="tab-reports" style="display:none"><div class="rangeTabs"><button class="active" data-range="30" onclick="setReportRange(30,this)">آخر 30 يوم</button><button data-range="90" onclick="setReportRange(90,this)">آخر 90 يوم</button><button data-range="365" onclick="setReportRange(365,this)">آخر سنة</button><button data-range="all" onclick="setReportRange('all',this)">كل الفترات</button><button class="exportBtn" style="margin-right:auto" onclick="exportBookingsCSV()">⬇️ تصدير CSV</button></div><div class="reportGrid" id="reportCards"></div><div class="chartBox"><h3>📅 الإيرادات شهريًا</h3><div id="monthlyChart"></div></div><div class="chartBox"><h3>🏨 أكثر الفنادق حجزًا</h3><div id="topHotelsChart"></div></div><div class="chartBox"><h3>📍 نقاط التحرك الأكثر استخدامًا</h3><div id="topPointsChart"></div></div><div class="chartBox"><h3>📋 الحجوزات حسب الحالة</h3><div id="statusChart"></div></div></div><div id="tab-staff" style="display:none"><button onclick="loadStaff()">🔄 تحديث</button><div class="tableWrap"><table class="simpleTable"><thead><tr><th>الموظف</th><th>الدور</th><th>آخر دخول</th><th>آخر نشاط</th><th>الحالة</th></tr></thead><tbody id="staffRows"></tbody></table></div><h3 style="margin:20px 0 12px;color:#0b1f3a;font-size:16px">📜 سجل الدخول</h3><div class="tableWrap"><table class="simpleTable"><tbody id="loginRows"></tbody></table></div></div><div id="tab-stats" style="display:none"><select id="statDays" onchange="loadStats()" style="max-width:200px;margin-bottom:18px"><option value="1">اليوم</option><option value="7" selected>آخر 7 أيام</option><option value="30">آخر 30 يوم</option></select><div class="grid" id="statCards"></div><div class="adminForm"><div class="full" id="statRates" style="background:#f0f6fa;padding:18px;border-radius:12px;border-right:4px solid #176b87"></div><div><b>🔍 أكثر الوجهات بحثًا</b><table class="simpleTable"><tbody id="statDest"></tbody></table></div><div><b>🏨 أكثر الفنادق مشاهدة</b><table class="simpleTable"><tbody id="statHotels"></tbody></table></div><div class="full"><b>📅 الزوار يوميًا</b><table class="simpleTable"><tbody id="statDays2"></tbody></table></div></div></div></div>
 
 <div id="app">
   <div class="bar">
@@ -353,6 +309,7 @@ header .logo span{color:#d9b45b}
       <div><label>عدد الأطفال</label><input type="number" id="eChildren" min="0"></div>
       <div><label>عدد الغرف</label><input type="number" id="eRooms" min="1"></div>
       <div><label>نوع الغرفة</label><select id="eRoomType"><option value="Single">Single - فرد</option><option value="Double">Double - دبل</option><option value="Triple">Triple - تربل</option><option value="Quad">Quad - رباعي</option><option value="Quint">Quint - خماسي</option></select></div>
+      <div><label>نوع الانتقالات</label><select id="eVehicle"><option value="">بدون انتقالات</option><option value="bus">Bus</option><option value="highs">High S</option></select></div>
       <div><label>نقطة التحرك</label><select id="eDeparture"></select></div>
       <div><label>عدد كراسي الباص</label><input type="number" id="eSeats" min="0"></div>
       <div><label>الإجمالي</label><input type="number" id="eTotal" min="0"></div>
@@ -393,7 +350,6 @@ const fmtNum = n => Number(n||0).toLocaleString("en-EG");
 
 $("filter").innerHTML += ST.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
 
-/* ============ Meal Helper ============ */
 function getMealBadges(h) {
   const meals = [];
   if (h.meal_breakfast) meals.push("🍳 فطار");
@@ -401,10 +357,9 @@ function getMealBadges(h) {
   if (h.meal_dinner) meals.push("🍴 عشاء");
   if (!meals.length) return "";
   const included = h.meals_included !== false;
-  return meals.map(m => `<span class="mealTag">${m}${included ? " ✓ مشمول" : ""}</span>`).join("");
+  return meals.map(m => `<span class="mealTag">${m}${included ? " ✓" : ""}</span>`).join("");
 }
 
-/* ============ Meal Toggle UI ============ */
 function updateMealToggles() {
   ["mealBf","mealLn","mealDn"].forEach((id,i) => {
     const checkbox = ["aMealBreakfast","aMealLunch","aMealDinner"][i];
@@ -419,8 +374,7 @@ async function start(){
   const {data,error}=await db.auth.getSession();
   if(error)console.error(error);
   const ok=!!data.session;
-  if(ok){ $('login').style.display='none'; }
-  else{ $('login').style.display='flex'; }
+  $('login').style.display=ok?'none':'flex';
   $('app').style.display=ok?'block':'none';
   $('outBtn').style.display=ok?'block':'none';
   if(!ok)return;
@@ -490,6 +444,9 @@ function render(){
     const wa = String(b.customer_phone || "").replace(/\D/g,"").replace(/^0/,"20");
     const hotelName = hotels[String(b.hotel_id)] || "غير محدد";
     const tripType = b.Series_Trips_id ? "Series" : "Non-Series";
+    let vehicleLine = "";
+    if (b.vehicle_type === "highs") vehicleLine = `<span class="vehicleTag">🚐 High S</span>`;
+    else if (b.vehicle_type === "bus") vehicleLine = `<span class="vehicleTag">🚌 Bus</span>`;
     return `
       <div class="card ${cls(b.status)}">
         <h3>#${esc(b.id)} - ${esc(b.customer_name)}</h3>
@@ -500,6 +457,7 @@ function render(){
         <p>📍 مكان التحرك: <b>${esc((departurePoints.find(x=>String(x.id)===String(b.departure_points_id))||{}).name||"—")}</b></p>
         <p>🗓 تاريخ التحرك: <b>${depDate(b)}</b></p>
         <p>🚌 ${Number(b.bus_seats||0)>0?esc(b.bus_seats)+" كراسي":"بدون انتقالات"}</p>
+        ${vehicleLine}
         ${b.coupon_code && Number(b.discount_amount||0) > 0 ? `<div class="couponTag">🎟️ ${esc(b.coupon_code)} • خصم ${Number(b.discount_amount).toLocaleString()} جنيه</div>` : ""}
         <div class="price">${Number(b.total_price || 0).toLocaleString()} جنيه</div>
         ${b.customer_service_call ? `<div class="call">📞 يريد مكالمة (${esc(b.preferred_call_time || "")})</div>` : ""}
@@ -530,18 +488,18 @@ function editBooking(id){
   $("eChildren").value = Number(b.children ?? 0);
   $("eRooms").value = Number(b.number_of_rooms ?? 1);
   $("eRoomType").value = b.room_type || "Double";
+  $("eVehicle").value = b.vehicle_type || "";
   $("eSeats").value = Number(b.bus_seats ?? 0);
   $("eTotal").value = Number(b.total_price ?? 0);
   $("eDeparture").innerHTML=`<option value="">بدون انتقالات</option>`+departurePoints.map(x=>`<option value="${esc(x.id)}" ${String(x.id)===String(b.departure_points_id)?"selected":""}>${esc(x.name)} (+${Number(x.extra_price||0).toLocaleString()} جنيه)</option>`).join("");
   const hotelSelect = $("eHotel");
   const hotelOptions = Object.entries(hotels);
-  if(hotelOptions.length === 0){ hotelSelect.innerHTML = `<option value="">لا توجد فنادق</option>`; }
-  else{
-    hotelSelect.innerHTML = hotelOptions.map(([id,name]) => {
-      const selected = String(id) === String(b.hotel_id) ? "selected" : "";
-      return `<option value="${esc(id)}" ${selected}>${esc(name)}</option>`;
-    }).join("");
-  }
+  hotelSelect.innerHTML = hotelOptions.length === 0
+    ? `<option value="">لا توجد فنادق</option>`
+    : hotelOptions.map(([id,name]) => {
+        const selected = String(id) === String(b.hotel_id) ? "selected" : "";
+        return `<option value="${esc(id)}" ${selected}>${esc(name)}</option>`;
+      }).join("");
   $("editModal").style.display = "flex";
 }
 
@@ -557,6 +515,7 @@ async function saveEdit(){
   const rooms = Number($("eRooms").value) || 1;
   const seats = Number($("eSeats").value) || 0;
   const total = Number($("eTotal").value) || 0;
+  const vehicle = $("eVehicle").value || null;
   if(!name){ alert("اكتب اسم العميل"); return; }
   if(!phone){ alert("اكتب رقم الهاتف"); return; }
   if(!hotelId){ alert("اختر الفندق"); return; }
@@ -570,7 +529,8 @@ async function saveEdit(){
     number_of_people: adults + children,
     number_of_rooms: rooms,
     room_type: $("eRoomType").value,
-    bus_seats: seats, total_price: total
+    bus_seats: seats, total_price: total,
+    vehicle_type: vehicle
   };
   const { error } = await db.from("bookings").update(updateData).eq("id",editingId);
   if(error){ console.error(error); alert("حدث خطأ أثناء حفظ التعديل:\n" + error.message); return; }
@@ -599,8 +559,13 @@ async function loadAdminData(){
     if(Number(x.price_quad||0)>0) rooms.push('<span class="badge badge-blue">Q</span>');
     if(Number(x.price_quint||0)>0) rooms.push('<span class="badge badge-blue">Q5</span>');
     const roomsTag=rooms.length?rooms.join(" "):'<span class="badge badge-gray">-</span>';
-    const mealsTag = getMealBadges(x) || '<span class="badge badge-gray">بدون وجبات</span>';
-    return `<tr><td><b>${esc(x.Name)}</b></td><td>${esc((destinations.find(d=>d.id==x.Destination_id)||{}).Name||"-")}</td><td>${x.is_series?"✈️ Series":"🏨 عادي"}</td><td>${roomsTag}</td><td style="max-width:220px">${mealsTag}</td><td>${mapTag}</td><td><button onclick="openPhotos(${x.id})">📷</button> <button onclick="editHotel(${x.id})">✏️</button> <button class="danger" onclick="delHotel(${x.id})">🗑</button></td></tr>`;
+    const mealsTag = getMealBadges(x) || '<span class="badge badge-gray">بدون</span>';
+    const busP = Number(x.extra_seat_price||0);
+    const highP = Number(x.highs_price||0);
+    const transTag = (busP>0||highP>0)
+      ? `${busP>0?'<span class="badge badge-blue">🚌 '+busP+'</span>':''} ${highP>0?'<span class="badge badge-gold">🚐 '+highP+'</span>':''}`
+      : '<span class="badge badge-gray">-</span>';
+    return `<tr><td><b>${esc(x.Name)}</b></td><td>${esc((destinations.find(d=>d.id==x.Destination_id)||{}).Name||"-")}</td><td>${x.is_series?"✈️":"🏨"}</td><td>${roomsTag}</td><td style="max-width:200px">${mealsTag}</td><td>${transTag}</td><td>${mapTag}</td><td><button onclick="openPhotos(${x.id})">📷</button> <button onclick="editHotel(${x.id})">✏️</button> <button class="danger" onclick="delHotel(${x.id})">🗑</button></td></tr>`;
   }).join("");
   
   $("tripRows").innerHTML=trips.map(x=>`<tr><td>${esc((adminHotels.find(h=>h.id==x.hotel_id)||{}).Name||"-")}</td><td>${esc(x.departure_day||"")}</td><td>${esc(x.start_date||"")}</td><td>${Number(x.price_per_person||0).toLocaleString()}</td><td><button onclick="editTrip(${x.id})">✏️</button> <button class="danger" onclick="delTrip(${x.id})">🗑</button></td></tr>`).join("");
@@ -611,7 +576,7 @@ async function loadAdminData(){
 function newHotel(){
   $("hotelForm").style.display="grid";
   $("aHotelId").value="";
-  ["aHotelName","aSingle","aDouble","aTriple","aQuad","aQuint","aNight","aImage","aDesc","aLat","aLong","aMaps","aMealNote"].forEach(i=>$(i).value="");
+  ["aHotelName","aSingle","aDouble","aTriple","aQuad","aQuint","aNight","aImage","aDesc","aLat","aLong","aMaps","aMealNote","aHighs"].forEach(i=>$(i).value="");
   $("aHotelSeries").value="false";
   $("aChildAge").value=10;
   $("aSeatPrice").value=0;
@@ -638,6 +603,7 @@ function editHotel(id){
   $("aNight").value=x.price_per_night??"";
   $("aChildAge").value=x.child_max_age??10;
   $("aSeatPrice").value=x.extra_seat_price??0;
+  $("aHighs").value=x.highs_price??"";
   $("aLat").value=x.latitude??"";
   $("aLong").value=x.longitude??"";
   $("aMaps").value=x.google_maps_url||"";
@@ -664,6 +630,7 @@ async function saveHotel(){
     price_per_night:+$("aNight").value||0,
     child_max_age:+$("aChildAge").value||10,
     extra_seat_price:+$("aSeatPrice").value||0,
+    highs_price:+$("aHighs").value||0,
     image_url:$("aImage").value.trim(),
     description:$("aDesc").value.trim(),
     latitude:$("aLat").value?Number($("aLat").value):null,
@@ -727,12 +694,12 @@ function loadReports() {
   const avgBooking = data.length ? data.reduce((s,b) => s + Number(b.total_price||0), 0) / data.length : 0;
   const convRate = data.length ? Math.round(paid.length * 100 / data.length) : 0;
   $("reportCards").innerHTML = `
-    <div class="reportCard green"><div class="label">💰 إجمالي الإيرادات المحصلة</div><div class="value">${fmtNum(totalRevenue)} <span style="font-size:14px">جنيه</span></div><div class="sub">من ${paid.length} حجز مدفوع</div></div>
+    <div class="reportCard green"><div class="label">💰 إجمالي الإيرادات</div><div class="value">${fmtNum(totalRevenue)} <span style="font-size:14px">جنيه</span></div><div class="sub">من ${paid.length} حجز مدفوع</div></div>
     <div class="reportCard gold"><div class="label">🏦 إجمالي العربون</div><div class="value">${fmtNum(totalDeposits)} <span style="font-size:14px">جنيه</span></div><div class="sub">${totalRevenue > 0 ? Math.round(totalDeposits*100/totalRevenue) : 0}% من الإيرادات</div></div>
-    <div class="reportCard orange"><div class="label">⏳ قيمة حجوزات مؤكدة (لم تُدفع)</div><div class="value">${fmtNum(totalPending)} <span style="font-size:14px">جنيه</span></div><div class="sub">${confirmed.length} حجز مؤكد</div></div>
-    <div class="reportCard"><div class="label">📋 إجمالي الحجوزات</div><div class="value">${fmtNum(data.length)}</div><div class="sub">متوسط: ${fmtNum(Math.round(avgBooking))} جنيه</div></div>
-    <div class="reportCard red"><div class="label">🎟️ إجمالي الخصومات</div><div class="value">${fmtNum(totalDisc)} <span style="font-size:14px">جنيه</span></div><div class="sub">على ${data.filter(b=>Number(b.discount_amount||0)>0).length} حجز بكوبون</div></div>
-    <div class="reportCard"><div class="label">✅ نسبة تأكيد الدفع</div><div class="value">${convRate}%</div><div class="sub">${paid.length} مدفوع من ${data.length}</div></div>
+    <div class="reportCard orange"><div class="label">⏳ حجوزات مؤكدة</div><div class="value">${fmtNum(totalPending)} <span style="font-size:14px">جنيه</span></div><div class="sub">${confirmed.length} حجز</div></div>
+    <div class="reportCard"><div class="label">📋 إجمالي الحجوزات</div><div class="value">${fmtNum(data.length)}</div><div class="sub">متوسط: ${fmtNum(Math.round(avgBooking))}</div></div>
+    <div class="reportCard red"><div class="label">🎟️ إجمالي الخصومات</div><div class="value">${fmtNum(totalDisc)} <span style="font-size:14px">جنيه</span></div><div class="sub">${data.filter(b=>Number(b.discount_amount||0)>0).length} حجز</div></div>
+    <div class="reportCard"><div class="label">✅ نسبة التأكيد</div><div class="value">${convRate}%</div><div class="sub">${paid.length}/${data.length}</div></div>
   `;
   renderMonthlyChart(data);
   renderTopChart(data, "hotel_id", hotels, "topHotelsChart", "حجز", "gold");
@@ -751,7 +718,7 @@ function renderMonthlyChart(data) {
     months[key].count += 1;
   });
   const keys = Object.keys(months).sort();
-  if (!keys.length) { $("monthlyChart").innerHTML = '<p class="emptyReport">مفيش بيانات في الفترة دي</p>'; return; }
+  if (!keys.length) { $("monthlyChart").innerHTML = '<p class="emptyReport">مفيش بيانات</p>'; return; }
   const maxVal = Math.max(...keys.map(k => months[k].total), 1);
   const monthNames = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
   $("monthlyChart").innerHTML = keys.map(k => {
@@ -790,10 +757,10 @@ function renderStatusChart(data) {
 function exportBookingsCSV() {
   const data = getReportData();
   if (!data.length) { alert("مفيش حجوزات في الفترة دي"); return; }
-  const headers = ["رقم الحجز","العميل","الموبايل","الفندق","الدخول","الخروج","عدد الأفراد","الغرف","نوع الغرفة","الإجمالي","العربون","حالة الدفع","الحالة","كود الخصم","قيمة الخصم","تاريخ الإنشاء"];
+  const headers = ["رقم الحجز","العميل","الموبايل","الفندق","الدخول","الخروج","عدد الأفراد","الغرف","نوع الغرفة","نوع الانتقالات","الإجمالي","العربون","حالة الدفع","الحالة","كود الخصم","قيمة الخصم","تاريخ الإنشاء"];
   const lines = data.map(b => {
     const hotelName = hotels[String(b.hotel_id)] || "";
-    return [b.booking_ref || b.id, b.customer_name || "", b.customer_phone || "", hotelName, b.check_in || "", b.check_out || "", (b.adults||0) + "+" + (b.children||0), b.number_of_rooms || 0, b.room_type || "", Number(b.total_price||0), Number(b.deposit_amount||0), b.payment_status || "Not Paid", b.status || "", b.coupon_code || "", Number(b.discount_amount||0), b.created_at ? new Date(b.created_at).toLocaleDateString("en-CA") : ""].map(v => { const s = String(v).replace(/"/g, '""'); return /[,"\n]/.test(s) ? '"' + s + '"' : s; }).join(",");
+    return [b.booking_ref || b.id, b.customer_name || "", b.customer_phone || "", hotelName, b.check_in || "", b.check_out || "", (b.adults||0) + "+" + (b.children||0), b.number_of_rooms || 0, b.room_type || "", b.vehicle_type || "", Number(b.total_price||0), Number(b.deposit_amount||0), b.payment_status || "Not Paid", b.status || "", b.coupon_code || "", Number(b.discount_amount||0), b.created_at ? new Date(b.created_at).toLocaleDateString("en-CA") : ""].map(v => { const s = String(v).replace(/"/g, '""'); return /[,"\n]/.test(s) ? '"' + s + '"' : s; }).join(",");
   });
   const csv = "\uFEFF" + headers.join(",") + "\n" + lines.join("\n");
   const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
@@ -858,7 +825,7 @@ async function delPhoto(id){
 
 const addD=(d,n)=>{const [y,m,x]=d.split("-").map(Number);return new Date(Date.UTC(y,m-1,x+n)).toISOString().slice(0,10)};
 function nightsOf(b){if(!b.check_in||!b.check_out)return "-";const n=Math.round((new Date(b.check_out)-new Date(b.check_in))/86400000);return n>0?n:"-";}
-function depDate(b){if(!b.check_in)return "—";if(b.Series_Trips_id)return addD(b.check_in,-1);return b.departure_points_id?addD(b.check_in,-1):"—";}
+function depDate(b){if(!b.check_in)return "—";return b.departure_points_id?addD(b.check_in,-1):"—";}
 async function ping(login){
   const u=(await db.auth.getUser()).data.user;if(!u)return;
   const now=new Date().toISOString();
@@ -871,34 +838,34 @@ const fmt=x=>x?new Date(x).toLocaleString("ar-EG"):"—";
 async function loadStaff(){
   if(role!=="admin")return;
   const [p,a,l]=await Promise.all([db.from("staff_profiles").select("*"),db.from("staff_activity").select("*"),db.from("staff_logins").select("*").order("logged_at",{ascending:false}).limit(50)]);
-  if(p.error||a.error||l.error){alert("تعذر تحميل بيانات الموظفين: "+((p.error||a.error||l.error).message));return;}
+  if(p.error||a.error||l.error){alert("تعذر تحميل بيانات الموظفين");return;}
   $("staffRows").innerHTML=(p.data||[]).map(x=>{
     const v=(a.data||[]).find(y=>y.user_id===x.user_id)||{};
     const on=v.last_seen&&(Date.now()-new Date(v.last_seen).getTime())<180000;
-    return `<tr><td>${esc(v.email||x.name||"—")}</td><td>${x.role==="admin"?"👑 Admin":"🎧 خدمة العملاء"}</td><td>${esc(fmt(v.last_login))}</td><td>${esc(fmt(v.last_seen))}</td><td>${on?"🟢 نشط":"⚫"}</td></tr>`;
+    return `<tr><td>${esc(v.email||x.name||"—")}</td><td>${x.role==="admin"?"👑":"🎧"}</td><td>${esc(fmt(v.last_login))}</td><td>${esc(fmt(v.last_seen))}</td><td>${on?"🟢":"⚫"}</td></tr>`;
   }).join("");
-  $("loginRows").innerHTML=(l.data||[]).map(x=>`<tr><td>${esc(x.email)}</td><td>${x.role==="admin"?"👑 Admin":"🎧 خدمة العملاء"}</td><td>${esc(fmt(x.logged_at))}</td></tr>`).join("")||"<tr><td colspan='3' style='text-align:center;padding:20px;color:#999'>لا يوجد</td></tr>";
+  $("loginRows").innerHTML=(l.data||[]).map(x=>`<tr><td>${esc(x.email)}</td><td>${x.role==="admin"?"👑":"🎧"}</td><td>${esc(fmt(x.logged_at))}</td></tr>`).join("")||"<tr><td colspan='3' style='text-align:center;padding:20px;color:#999'>لا يوجد</td></tr>";
 }
 
 function paymentHtml(b){
   const paid=b.payment_status==="Paid";
-  let html = `<div class="call" style="background:${paid?'linear-gradient(135deg,#d4edda,#a8e6b5);color:#155724':'linear-gradient(135deg,#e3f2fd,#bbdefb);color:#0d47a1'}">🆔 ${esc(b.booking_ref||"—")} • العربون: ${Number(b.deposit_amount||0).toLocaleString()} جنيه • ${paid?"✅ مدفوع":"⏳ لم يُدفع"}</div>`;
+  let html = `<div class="call" style="background:${paid?'#d4edda':'#e8f1ff'};color:${paid?'#155724':'#0d47a1'}">🆔 ${esc(b.booking_ref||"—")} • العربون: ${Number(b.deposit_amount||0).toLocaleString()} جنيه • ${paid?"✅ مدفوع":"⏳ لم يُدفع"}</div>`;
   if (b.payment_proof_url) {
-    html += `<div class="proofBox"><div style="font-size:13px;color:#28a745;font-weight:bold;margin-bottom:8px">📷 صورة التحويل مرفوعة</div><img src="${esc(b.payment_proof_url)}" onclick="showProof('${esc(b.payment_proof_url)}')" alt="إثبات التحويل"><button type="button" class="editBtn" style="background:linear-gradient(135deg,#176b87,#0b1f3a);margin-top:10px" onclick="showProof('${esc(b.payment_proof_url)}')">🔍 عرض بحجم كامل</button></div>`;
+    html += `<div class="proofBox"><div style="font-size:13px;color:#28a745;font-weight:bold;margin-bottom:8px">📷 صورة التحويل مرفوعة</div><img src="${esc(b.payment_proof_url)}" onclick="showProof('${esc(b.payment_proof_url)}')"><button type="button" class="editBtn" style="background:#176b87;margin-top:10px" onclick="showProof('${esc(b.payment_proof_url)}')">🔍 عرض بحجم كامل</button></div>`;
   }
-  html += (role==="admin"&&!paid?`<button type="button" class="editBtn" style="background:linear-gradient(135deg,#28a745,#1e7e34)" onclick="markPaid(${Number(b.id)})">💰 تم استلام العربون</button>`:"");
-  html += (b.invoice_number?`<button type="button" class="editBtn" onclick="showInvoice(${Number(b.id)})">🧾 عرض الفاتورة</button>`:"");
+  html += (role==="admin"&&!paid?`<button type="button" class="editBtn" style="background:#28a745" onclick="markPaid(${Number(b.id)})">💰 تم استلام العربون</button>`:"");
+  html += (b.invoice_number?`<button type="button" class="editBtn" onclick="showInvoice(${Number(b.id)})">🧾 الفاتورة</button>`:"");
   return html;
 }
 function showProof(url) {
   let ov = document.getElementById("proofOv");
   if (!ov) {
     ov = document.createElement("div"); ov.id = "proofOv";
-    ov.style.cssText = "position:fixed;inset:0;background:rgba(11,31,58,.95);backdrop-filter:blur(6px);z-index:25000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:16px;cursor:zoom-out";
+    ov.style.cssText = "position:fixed;inset:0;background:rgba(11,31,58,.95);z-index:25000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:16px";
     ov.onclick = function(e){ if(e.target===ov) ov.remove(); };
     document.body.appendChild(ov);
   }
-  ov.innerHTML = `<img src="${url}" style="max-width:95%;max-height:80vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.8)" onclick="event.stopPropagation()"><div style="display:flex;gap:12px"><a href="${url}" download target="_blank" style="padding:12px 24px;background:linear-gradient(135deg,#d9b45b,#f5d97e);color:#0b1f3a;border-radius:10px;text-decoration:none;font-weight:bold">⬇️ تحميل</a><button type="button" style="padding:12px 24px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:10px;cursor:pointer;font-weight:bold" onclick="document.getElementById('proofOv').remove()">✕ إغلاق</button></div>`;
+  ov.innerHTML = `<img src="${url}" style="max-width:95%;max-height:80vh;border-radius:16px"><div style="display:flex;gap:12px"><a href="${url}" download target="_blank" style="padding:12px 24px;background:#d9b45b;color:#0b1f3a;border-radius:10px;text-decoration:none;font-weight:bold">⬇️ تحميل</a><button type="button" style="padding:12px 24px;background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:bold" onclick="document.getElementById('proofOv').remove()">✕ إغلاق</button></div>`;
 }
 async function markPaid(id){
   const b=rows.find(x=>x.id==id);if(!b)return;
@@ -916,16 +883,16 @@ function showInvoice(id){
   const dp=(departurePoints.find(x=>String(x.id)===String(b.departure_points_id))||{}).name||"بدون انتقالات";
   const tr=(l,v)=>`<tr><td>${l}</td><td>${esc(v)}</td></tr>`;
   const disc=Number(b.discount_amount||0);
-  const rowsArr=[tr("العميل",b.customer_name),tr("الموبايل",b.customer_phone),tr("رقم الحجز",b.booking_ref||b.id),tr("الفندق",hotels[String(b.hotel_id)]||"-"),tr("الدخول",b.check_in||"-"),tr("الخروج",b.check_out||"-"),tr("عدد الليالي",nightsOf(b)),tr("الأفراد",(b.adults??b.number_of_people)+" كبار"+(b.children?" + "+b.children+" أطفال":"")),tr("الغرف",(b.number_of_rooms||0)+" "+(b.room_type||"")),tr("مكان التحرك",dp)];
+  const rowsArr=[tr("العميل",b.customer_name),tr("الموبايل",b.customer_phone),tr("رقم الحجز",b.booking_ref||b.id),tr("الفندق",hotels[String(b.hotel_id)]||"-"),tr("الدخول",b.check_in||"-"),tr("الخروج",b.check_out||"-"),tr("عدد الليالي",nightsOf(b)),tr("الأفراد",(b.adults??b.number_of_people)+" كبار"+(b.children?" + "+b.children+" أطفال":"")),tr("الغرف",(b.number_of_rooms||0)+" "+(b.room_type||"")),tr("مكان التحرك",dp),tr("نوع الانتقالات",b.vehicle_type==="highs"?"High S":b.vehicle_type==="bus"?"Bus":"—")];
   if(disc>0 && b.coupon_code) rowsArr.push(tr("كود الخصم",b.coupon_code+" (-"+disc.toLocaleString()+" جنيه)"));
   rowsArr.push(tr("إجمالي الحجز",tot.toLocaleString()+" جنيه"));
   rowsArr.push(tr("المدفوع (عربون)",paid.toLocaleString()+" جنيه"));
   rowsArr.push(tr("المتبقي",Math.max(tot-paid,0).toLocaleString()+" جنيه"));
   const rowsHtml=rowsArr.join("");
-  const html=`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>${esc(b.invoice_number)}</title><style>body{font-family:'Segoe UI',Arial;max-width:700px;margin:30px auto;padding:20px;color:#172033}h1{color:#0b1f3a}table{width:100%;border-collapse:collapse;margin:20px 0}td{padding:12px;border-bottom:1px solid #eee}td:first-child{color:#666;width:38%}.hd{display:flex;justify-content:space-between;border-bottom:3px solid #d9b45b;padding-bottom:15px}button{padding:12px 24px;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold}@media print{button{display:none}}</style></head><body><div class="hd"><h1>Nerea Travel</h1><div><b>فاتورة ${esc(b.invoice_number)}</b><br>${esc(new Date(b.paid_at||b.created_at).toLocaleDateString("ar-EG"))}</div></div><table>${rowsHtml}</table><button onclick="window.print()">🖨 طباعة</button></body></html>`;
+  const html=`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>${esc(b.invoice_number)}</title><style>body{font-family:'Segoe UI',Arial;max-width:700px;margin:30px auto;padding:20px;color:#172033}h1{color:#0b1f3a}table{width:100%;border-collapse:collapse;margin:20px 0}td{padding:12px;border-bottom:1px solid #eee}td:first-child{color:#666;width:38%}.hd{display:flex;justify-content:space-between;border-bottom:3px solid #d9b45b;padding-bottom:15px}button{padding:12px 24px;background:#0b1f3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold}@media print{button{display:none}}</style></head><body><div class="hd"><h1>Nerea Travel</h1><div><b>فاتورة ${esc(b.invoice_number)}</b><br>${esc(new Date(b.paid_at||b.created_at).toLocaleDateString("ar-EG"))}</div></div><table>${rowsHtml}</table><button onclick="window.print()">🖨 طباعة</button></body></html>`;
   let ov=$("invOv");
-  if(!ov){ov=document.createElement("div");ov.id="invOv";ov.style.cssText="position:fixed;inset:0;background:rgba(11,31,58,.7);backdrop-filter:blur(4px);z-index:20000;display:flex;flex-direction:column;align-items:center;padding:20px;gap:12px";document.body.appendChild(ov);}
-  ov.innerHTML=`<div style="display:flex;gap:12px"><button type="button" onclick="document.getElementById('invFrame').contentWindow.print()" style="background:linear-gradient(135deg,#d9b45b,#f5d97e);color:#0b1f3a;padding:12px 24px">🖨 طباعة / حفظ PDF</button><button type="button" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:12px 24px" onclick="document.getElementById('invOv').remove()">✕ إغلاق</button></div><iframe id="invFrame" style="width:100%;max-width:760px;flex:1;background:#fff;border:0;border-radius:16px"></iframe>`;
+  if(!ov){ov=document.createElement("div");ov.id="invOv";ov.style.cssText="position:fixed;inset:0;background:rgba(11,31,58,.7);z-index:20000;display:flex;flex-direction:column;align-items:center;padding:20px;gap:12px";document.body.appendChild(ov);}
+  ov.innerHTML=`<div style="display:flex;gap:12px"><button type="button" onclick="document.getElementById('invFrame').contentWindow.print()" style="background:#d9b45b;color:#0b1f3a;padding:12px 24px">🖨 طباعة / حفظ PDF</button><button type="button" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:12px 24px" onclick="document.getElementById('invOv').remove()">✕ إغلاق</button></div><iframe id="invFrame" style="width:100%;max-width:760px;flex:1;background:#fff;border:0;border-radius:16px"></iframe>`;
   $("invFrame").srcdoc=html;
 }
 
@@ -940,7 +907,7 @@ async function loadStats(){
   const V=uniq("page_view")||uniq(),S=uniq("search"),H=uniq("hotel_view"),B=uniq("booking");
   const pct=(a,b)=>b?Math.round(a*100/b)+"%":"—";
   const card=(t,v)=>`<div class="reportCard" style="border-color:#d9b45b"><div class="label">${t}</div><div class="value">${v}</div></div>`;
-  $("statCards").innerHTML=[card("👤 زوار فريدون",V),card("📄 مشاهدات الصفحة",cnt("page_view")),card("🔎 عمليات بحث",cnt("search")),card("🏨 مشاهدات فنادق",cnt("hotel_view")),card("📷 فتح الألبوم",cnt("gallery_open")),card("📝 طلبات حجز",cnt("booking")),card("💬 ضغطات واتساب",cnt("whatsapp_click"))].join("");
+  $("statCards").innerHTML=[card("👤 زوار فريدون",V),card("📄 مشاهدات",cnt("page_view")),card("🔎 عمليات بحث",cnt("search")),card("🏨 مشاهدات فنادق",cnt("hotel_view")),card("📷 فتح الألبوم",cnt("gallery_open")),card("📝 طلبات حجز",cnt("booking")),card("💬 ضغطات واتساب",cnt("whatsapp_click"))].join("");
   $("statRates").innerHTML=[`زوار بحثوا: <b>${pct(S,V)}</b>`,`شاهدوا فندق: <b>${pct(H,S)}</b>`,`أرسلوا حجز: <b>${pct(B,H)}</b>`,`نسبة التحويل: <b>${pct(B,V)}</b>`].map(x=>`<p style="margin:8px 0;font-size:14px">${x}</p>`).join("");
   const top=(n,k)=>{const m={};ev.filter(e=>e.event===n&&e.meta&&e.meta[k]).forEach(e=>m[e.meta[k]]=(m[e.meta[k]]||0)+1);return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([a,b])=>`<tr><td>${esc(a)}</td><td>${b}</td></tr>`).join("")||"<tr><td colspan='2' style='text-align:center;padding:20px;color:#999'>—</td></tr>";};
   $("statDest").innerHTML=top("search","destination");$("statHotels").innerHTML=top("hotel_view","hotel");
@@ -950,14 +917,13 @@ async function loadStats(){
 
 $("editModal").addEventListener("click",function(e){ if(e.target === $("editModal")){ closeEdit(); } });
 
-/* Meal toggle listeners */
 ["aMealBreakfast","aMealLunch","aMealDinner","aMealsIncluded"].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener("change", updateMealToggles);
 });
 
-const LABELS={aHotelName:"اسم الفندق",aHotelDest:"الوجهة",aHotelSeries:"نوع الفندق",aSingle:"سعر الغرفة Single (فرد)",aDouble:"سعر الغرفة Double (دبل)",aTriple:"سعر الغرفة Triple (تربل)",aQuad:"سعر الغرفة Quad (رباعية)",aQuint:"سعر الغرفة Quint (خماسية)",aNight:"سعر الليلة (احتياطي)",aChildAge:"أقصى سن للطفل (مجانًا)",aSeatPrice:"سعر الكرسي الإضافي",aLat:"خط العرض (lat)",aLong:"خط الطول (lng)",aMaps:"رابط خرائط جوجل (بديل)",aImage:"رابط الصورة",aDesc:"وصف الفندق",aMealNote:"ملاحظة عن الوجبات (اختياري)",
-aTripHotel:"الفندق",aTripDay:"يوم المغادرة",aTripStart:"تاريخ البداية",aTripEnd:"تاريخ النهاية",aTripNights:"عدد الليالي",aTripPrice:"سعر الفرد",aTripSingle:"سعر Single",aTripChild:"سعر الطفل",aTripChildAge:"أقصى سن للطفل",aTripSeat:"سعر الكرسي",aTripRooms:"عدد الغرف",aTripSeats:"عدد المقاعد",
+const LABELS={aHotelName:"اسم الفندق",aHotelDest:"الوجهة",aHotelSeries:"نوع الفندق",aSingle:"سعر الغرفة Single (فرد)",aDouble:"سعر الغرفة Double (دبل)",aTriple:"سعر الغرفة Triple (تربل)",aQuad:"سعر الغرفة Quad (رباعي)",aQuint:"سعر الغرفة Quint (خماسي)",aNight:"سعر الليلة (احتياطي)",aChildAge:"أقصى سن للطفل",aSeatPrice:"سعر الباص (لكل فرد)",aHighs:"سعر High S (لكل فرد)",aLat:"خط العرض (lat)",aLong:"خط الطول (lng)",aMaps:"رابط خرائط جوجل",aImage:"رابط الصورة",aDesc:"وصف الفندق",aMealNote:"ملاحظة عن الوجبات",
+aTripHotel:"الفندق",aTripDay:"يوم المغادرة",aTripStart:"تاريخ البداية",aTripEnd:"تاريخ النهاية",aTripNights:"الليالي",aTripPrice:"سعر الفرد",aTripSingle:"Single",aTripChild:"سعر الطفل",aTripChildAge:"سن الطفل",aTripSeat:"سعر الكرسي",aTripRooms:"الغرف",aTripSeats:"المقاعد",
 aDestName:"اسم الوجهة",aDestImage:"رابط الصورة",aDestDesc:"وصف الوجهة",aPointName:"اسم نقطة التحرك",aPointPrice:"السعر الإضافي"};
 function addLabels(){
   Object.keys(LABELS).forEach(id=>{
