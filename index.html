@@ -30,7 +30,8 @@ button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:
 .card:hover{transform:translateY(-3px)}
 .card-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:65px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover;position:relative}
 .card-img .badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:bold;display:flex;align-items:center;gap:4px}
-.card-img .breakfast-badge{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#f5a623,#ff9500);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;box-shadow:0 4px 12px rgba(245,166,35,.4)}
+.card-img .meal-badge{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#f5a623,#ff9500);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;box-shadow:0 4px 12px rgba(245,166,35,.4);max-width:70%}
+.card-img .meal-badge.included{background:linear-gradient(135deg,#28a745,#1e7e34);box-shadow:0 4px 12px rgba(40,167,69,.4)}
 .card-content{padding:20px}
 .card-content h3{margin-bottom:8px}
 .card-content p{margin-bottom:12px;color:#555}
@@ -61,11 +62,14 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .payBox{background:#fff3cd;padding:15px;border-radius:10px;margin-top:12px;border-right:4px solid #e0a800}
 .payBox p{margin:6px 0;font-size:14px}
 
-/* Breakfast inside modal */
-.breakfastInfo{background:linear-gradient(135deg,#fff8e1,#ffe4a1);padding:12px 15px;border-radius:10px;margin-bottom:12px;font-size:14px;border-right:4px solid #f5a623;display:flex;align-items:center;gap:10px}
-.breakfastInfo .bIcon{font-size:24px}
-.breakfastInfo b{color:#856404}
-.breakfastInfo small{display:block;color:#7a5a00;margin-top:4px;font-size:12px}
+/* Meal box in modal */
+.mealBox{padding:14px 16px;border-radius:12px;margin-bottom:12px;font-size:14px;display:flex;align-items:flex-start;gap:12px;animation:fadeUp .4s ease}
+.mealBox.included{background:linear-gradient(135deg,#d4edda,#a8e6b5);border-right:4px solid #28a745;color:#155724}
+.mealBox.available{background:linear-gradient(135deg,#fff8e1,#ffe4a1);border-right:4px solid #f5a623;color:#856404}
+.mealBox .mIcon{font-size:28px;line-height:1}
+.mealBox .mContent b{display:block;margin-bottom:4px;font-size:15px}
+.mealBox .mContent small{font-size:12px;opacity:.85}
+.mealBox .mContent .mealList{font-weight:600;margin-top:4px;display:block}
 
 /* Departure info */
 .depInfo{background:linear-gradient(135deg,#e3f2fd,#bbdefb);padding:10px 14px;border-radius:8px;margin:8px 0;font-size:13px;border-right:4px solid #176b87;color:#0d47a1;font-weight:bold}
@@ -78,7 +82,6 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .resultCount b{color:#176b87}
 .clearFilters{background:#dc3545;color:#fff;padding:8px 14px;font-size:12px;margin-top:6px;width:100%}
 
-/* Reviews & Stars */
 .stars{display:inline-flex;gap:2px;color:#ddd;font-size:16px}
 .stars .on{color:#f5a623}
 .rating{display:flex;align-items:center;gap:6px;font-size:13px;color:#666;margin-bottom:6px}
@@ -94,7 +97,6 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .mapsBtn{display:inline-block;background:#4285f4;color:#fff;text-decoration:none;font-weight:bold;padding:10px 16px;border-radius:8px;margin-top:10px;font-size:14px}
 .mapsBtn:hover{background:#3367d6}
 
-/* Review form */
 .reviewForm{background:#f9fafb;border-radius:10px;padding:14px;margin-top:12px}
 .ratingInput{display:flex;gap:6px;font-size:30px;cursor:pointer;justify-content:center;margin:10px 0}
 .ratingInput span{color:#ddd;transition:color .15s}
@@ -103,7 +105,6 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .reviewBtn{display:block;width:100%;margin-top:12px;background:#f5a623;color:#fff;font-weight:bold;padding:12px;border-radius:8px;cursor:pointer;border:none;font-size:14px}
 .reviewBtn:hover{background:#e5951a}
 
-/* Coupon */
 .couponRow{display:flex;gap:8px;margin-top:8px}
 .couponRow input{margin:0;flex:1}
 .couponRow button{padding:13px 18px;background:#0b1f3a;color:#fff;white-space:nowrap;font-size:14px}
@@ -114,25 +115,21 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .discountBox{background:#d4edda;color:#155724;padding:10px 14px;border-radius:8px;margin:10px 0;font-size:14px;font-weight:bold;display:none;border-right:4px solid #28a745}
 .discountBox.show{display:block}
 
-/* Upload proof */
 .uploadBtn{display:block;text-align:center;background:#25d366;color:#fff;font-weight:bold;padding:14px;border-radius:8px;cursor:pointer;user-select:none;margin-top:12px;transition:background .2s}
 .uploadBtn:hover{background:#1ea855}
 .uploadBtn.loading{background:#ffc107;color:#333;cursor:wait}
 .proofPreview{margin-top:12px;text-align:center;animation:fadeUp .4s ease}
 .proofPreview img{max-width:100%;max-height:250px;border-radius:10px;border:2px solid #28a745;background:#fff}
 
-/* Cancel */
 .cancelBtn{display:block;width:100%;margin-top:10px;background:#dc3545;color:#fff;font-weight:bold;padding:12px;border-radius:8px;cursor:pointer;border:none;font-size:14px}
 .cancelBtn:hover{background:#b02a37}
 
-/* Toast */
 #toastBox{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:90%}
 .toast{background:#fff;color:#172033;padding:14px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.15);font-size:14px;font-weight:bold;min-width:220px;border-right:5px solid #176b87;animation:slideIn .3s ease}
 .toast.ok{border-color:#28a745;background:#d4edda;color:#155724}
 .toast.err{border-color:#dc3545;background:#f8d7da;color:#721c24}
 .toast.info{border-color:#176b87;background:#e3f2fd;color:#0d47a1}
 
-/* Dark Mode */
 body.dark{background:#0f172a;color:#e2e8f0}
 body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select,body.dark .filtersBar{background:#1e293b;color:#e2e8f0;border-color:#334155}
 body.dark .info,body.dark .stBox{background:#1e293b;color:#cbd5e1}
@@ -158,14 +155,12 @@ body.dark .reviewItem .comment,body.dark .reviewItem .date{color:#94a3b8}
 body.dark .reviewForm textarea{background:#0f172a;color:#e2e8f0;border-color:#334155}
 body.dark .rating{color:#94a3b8}
 body.dark .rating b{color:#e2e8f0}
-body.dark .breakfastInfo{background:linear-gradient(135deg,#3a2f0f,#4a3a15);border-color:#f5a623;color:#ffe4a1}
-body.dark .breakfastInfo b{color:#f5d97e}
-body.dark .breakfastInfo small{color:#d4a83a}
-body.dark .depInfo{background:linear-gradient(135deg,#1e3a5f,#2a4a6f);border-color:#5eb8d6;color:#bbdefb}
+body.dark .mealBox.included{background:linear-gradient(135deg,#14532d,#166534);color:#bbf7d0}
+body.dark .mealBox.available{background:linear-gradient(135deg,#3a2f0f,#4a3a15);color:#ffe4a1}
+body.dark .depInfo{background:linear-gradient(135deg,#1e3a5f,#2a4a6f);color:#bbdefb}
 
 @media(max-width:800px){.filtersBar{grid-template-columns:1fr 1fr}.filtersBar>div:nth-child(3),.filtersBar>div:nth-child(4){grid-column:span 1}}
 
-/* Animations */
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -276,7 +271,7 @@ body.dark .depInfo{background:linear-gradient(135deg,#1e3a5f,#2a4a6f);border-col
 <div class="himg" id="mImg" style="cursor:pointer" onclick="openGallery(sel.h.id)">🏨</div>
 <h2 id="mName"></h2>
 <div id="mRating"></div>
-<div id="mBreakfast"></div>
+<div id="mMeals"></div>
 <p id="mDesc" style="margin:8px 0;color:#555"></p>
 <div class="info" id="mInfo" style="white-space:pre-line"></div>
 <div id="mMaps"></div>
@@ -350,6 +345,42 @@ const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); ret
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
+/* ============ Meals Helper ============ */
+function getMealsList(h) {
+  const meals = [];
+  if (h.meal_breakfast) meals.push("فطار");
+  if (h.meal_lunch) meals.push("غداء");
+  if (h.meal_dinner) meals.push("عشاء");
+  return meals;
+}
+
+function getMealBadgeShort(h) {
+  const meals = getMealsList(h);
+  if (!meals.length) return "";
+  const inc = h.meals_included !== false;
+  let label;
+  if (meals.length === 3) label = inc ? "شامل الوجبات" : "وجبات متاحة";
+  else label = meals.join(" و ") + (inc ? " مشمول" : " متاح");
+  return "🍽 " + label;
+}
+
+function renderMealBox(h) {
+  const meals = getMealsList(h);
+  if (!meals.length) return "";
+  const inc = h.meals_included !== false;
+  const icon = meals.length === 1 && meals[0] === "فطار" ? "🍳" : "🍽";
+  const title = inc ? "الوجبات مشمولة في السعر" : "الوجبات متاحة (بسعر إضافي)";
+  const note = h.meal_note ? `<small>${esc(h.meal_note)}</small>` : "";
+  return `<div class="mealBox ${inc ? 'included' : 'available'}">
+    <span class="mIcon">${icon}</span>
+    <div class="mContent">
+      <b>${title}</b>
+      <span class="mealList">• ${meals.join(" • ")}</span>
+      ${note}
+    </div>
+  </div>`;
+}
+
 /* ============ Room Types ============ */
 const ROOM_TYPES = [
   {key: "single", price: "price_single", label: "Single - فرد"},
@@ -377,13 +408,11 @@ function renderRoomOptions() {
   const h = sel.h, t = sel.t;
   let opts = [];
   if (t) {
-    // Series: single + double/others (shared)
     opts.push({key: "Double", label: "Double - دبل"});
     opts.push({key: "Triple", label: "Triple - تربل"});
-    opts.push({key: "Single", label: "Single - فرد", price: N(t.price_single)});
-    // Show double/triple/quad/quint all pointing to price_per_person
     opts.push({key: "Quad", label: "Quad - رباعي"});
     opts.push({key: "Quint", label: "Quint - خماسي"});
+    if (N(t.price_single) > 0) opts.push({key: "Single", label: "Single - فرد"});
   } else {
     const avail = getAvailableRoomTypes(h);
     if (!avail.length) {
@@ -398,10 +427,8 @@ function renderRoomOptions() {
   $("roomType").innerHTML = opts.map(o => `<option value="${esc(o.key)}">${esc(o.label)}</option>`).join("");
 }
 
-/* ============ Helpers ============ */
 function priceOf(o) {
   if (o.t) return N(o.t.price_per_person);
-  // Cheapest available room type
   const avail = getAvailableRoomTypes(o.h);
   if (!avail.length) return N(o.h.price_per_night) || 0;
   let min = Infinity;
@@ -519,7 +546,6 @@ async function submitReview() {
   if (box) box.outerHTML = `<div class="reviewCard" style="text-align:center;background:#d4edda;color:#155724">✅ تم إرسال تقييمك، شكرًا لك!</div>`;
 }
 
-/* ============ Filters ============ */
 function clearFilters() {
   $("sortBy").value = "";
   $("minRating").value = "0";
@@ -563,11 +589,12 @@ function renderHotelList() {
     const rating = hotelRatings[String(o.h.id)];
     const ratingBadge = rating && rating.count > 0 ? `<span class="badge">★ ${rating.avg} (${rating.count})</span>` : "";
     const ratingLine = rating && rating.count > 0 ? `<div class="rating">${starsHtml(rating.avg)} <b>${rating.avg}</b> <span>(${rating.count} تقييم)</span></div>` : "";
-    const breakfastBadge = o.h.has_breakfast ? `<span class="breakfast-badge">🍳 فطار مشمول</span>` : "";
-    // أنواع الغرف المتاحة
+    const mealBadgeText = getMealBadgeShort(o.h);
+    const mealIncluded = o.h.meals_included !== false;
+    const mealBadge = mealBadgeText ? `<span class="meal-badge ${mealIncluded ? 'included' : ''}">${mealBadgeText}</span>` : "";
     let roomsLine = "";
     if (o.t) {
-      roomsLine = `<p style="font-size:12px;color:#176b87;margin-top:6px">🛏 متوفر: Double / Triple / Single</p>`;
+      roomsLine = `<p style="font-size:12px;color:#176b87;margin-top:6px">🛏 متوفر: Double / Triple / Quad / Quint</p>`;
     } else {
       const avail = getAvailableRoomTypes(o.h);
       if (avail.length) {
@@ -576,7 +603,7 @@ function renderHotelList() {
       }
     }
     return `<div class="card">
-      <div class="card-img" style="cursor:pointer;${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}" onclick="openGallery(${o.h.id})">${img(o.h) ? '' : '🏨'}${ratingBadge}${breakfastBadge}</div>
+      <div class="card-img" style="cursor:pointer;${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}" onclick="openGallery(${o.h.id})">${img(o.h) ? '' : '🏨'}${ratingBadge}${mealBadge}</div>
       <div class="card-content">
         ${(imgs[o.h.id] || []).length > 1 ? `<p style="font-size:12px;color:#888;margin-bottom:6px">📷 اضغط على الصورة لعرض ${imgs[o.h.id].length} صور</p>` : ""}
         <h3>${o.h.Name || "فندق بدون اسم"}</h3>
@@ -590,7 +617,6 @@ function renderHotelList() {
   }).join("") : '<p class="note">لا توجد نتائج مطابقة للفلاتر</p>';
 }
 
-/* ============ Coupon ============ */
 async function applyCoupon() {
   const code = $("couponCode").value.trim();
   const msg = $("couponMsg");
@@ -609,7 +635,6 @@ async function applyCoupon() {
   calc();
 }
 
-/* ============ Upload Payment Proof ============ */
 function resizeImage(file, maxSize) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -757,17 +782,12 @@ function showHotel(i) {
   const r = hotelRatings[String(h.id)];
   $("mRating").innerHTML = r && r.count > 0 ? `<div style="margin:6px 0;display:flex;align-items:center;gap:8px">${starsHtml(r.avg)} <b>${r.avg}</b> <span style="color:#888;font-size:13px">(${r.count} تقييم)</span></div>` : "";
 
-  // Breakfast Info
-  if (h.has_breakfast) {
-    $("mBreakfast").innerHTML = `<div class="breakfastInfo"><span class="bIcon">🍳</span><div><b>الفطار مشمول في السعر</b>${h.breakfast_note ? `<small>${esc(h.breakfast_note)}</small>` : ""}</div></div>`;
-  } else {
-    $("mBreakfast").innerHTML = "";
-  }
+  // Meals box
+  $("mMeals").innerHTML = renderMealBox(h);
 
   // Render room types
   renderRoomOptions();
 
-  // Maps
   let mapsHtml = "";
   const mapsUrl = h.google_maps_url || (h.latitude && h.longitude ? `https://www.google.com/maps?q=${h.latitude},${h.longitude}` : "");
   if (mapsUrl) mapsHtml = `<a class="mapsBtn" href="${esc(mapsUrl)}" target="_blank" onclick="track('maps_click',{hotel:'${esc(h.Name)}'})">📍 موقع الفندق على خرائط جوجل</a>`;
@@ -828,7 +848,6 @@ function calc() {
     }
   }
 
-  // Departure date info for non-series with transport
   if (!t && needT && $("cin").value) {
     const depDate = addDays($("cin").value, -1);
     $("depInfo").style.display = "block";
@@ -865,13 +884,9 @@ async function sendBooking() {
   const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
 
-  // Departure date
   let departureDate = null;
-  if (t) {
-    departureDate = t.start_date;
-  } else if (needT && $("cin").value) {
-    departureDate = addDays($("cin").value, -1);
-  }
+  if (t) departureDate = t.start_date;
+  else if (needT && $("cin").value) departureDate = addDays($("cin").value, -1);
 
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
@@ -915,7 +930,11 @@ async function sendBooking() {
     "الانتقالات: " + (needT ? "نعم (" + saved.bus_seats + " كراسي)" : "لا"),
     "مكان التحرك: " + depName
   ];
-  if (sel.h.has_breakfast) msgLines.push("🍳 الفطار مشمول" + (sel.h.breakfast_note ? " (" + sel.h.breakfast_note + ")" : ""));
+  const mealsList = getMealsList(sel.h);
+  if (mealsList.length) {
+    const inc = sel.h.meals_included !== false;
+    msgLines.push("🍽 الوجبات: " + mealsList.join("، ") + (inc ? " (مشمولة)" : " (متاحة)") + (sel.h.meal_note ? " — " + sel.h.meal_note : ""));
+  }
   if (disc > 0 && saved.coupon_code) msgLines.push("كود الخصم: " + saved.coupon_code + " (-" + disc.toLocaleString() + " جنيه)");
   msgLines.push("الإجمالي: " + finalTotal.toLocaleString() + " جنيه");
   msgLines.push("العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه");
@@ -937,7 +956,6 @@ async function sendBooking() {
   $("doneBox").style.display = "block";
 }
 
-/* ============ متابعة الحجز ============ */
 const ST_LABELS = {
   "Pending Confirmation":  {label:"قيد التأكيد",        color:"#e0a800", icon:"⏳"},
   "Waiting Confirmation":  {label:"في انتظار التأكيد",   color:"#e0a800", icon:"⏳"},
