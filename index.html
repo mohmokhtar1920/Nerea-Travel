@@ -324,7 +324,6 @@ const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); ret
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-/* ============ Meals Helper ============ */
 function getMealsList(h) {
   const meals = [];
   if (h.meal_breakfast) meals.push("فطار");
@@ -360,7 +359,6 @@ function renderMealBox(h) {
   </div>`;
 }
 
-/* ============ Room Types ============ */
 const ROOM_TYPES = [
   {key: "single", price: "price_single", label: "Single - فرد"},
   {key: "double", price: "price_double", label: "Double - دبل"},
@@ -423,7 +421,6 @@ function starsHtml(rating) {
   return html;
 }
 
-/* ============ Vehicle Selection ============ */
 function selectVehicle(v) {
   selectedVehicle = v;
   document.querySelectorAll(".vehicleOpt").forEach(el => {
@@ -436,7 +433,6 @@ function renderVehicleOptions() {
   const h = sel.h;
   const busP = N(h.extra_seat_price);
   const highP = N(h.highs_price);
-  // لو مفيش high S، نخفي الاختيار
   const highOpt = document.querySelector('[data-v="highs"]');
   const busOpt = document.querySelector('[data-v="bus"]');
   if (highOpt) highOpt.style.display = highP > 0 ? "" : "none";
@@ -445,14 +441,12 @@ function renderVehicleOptions() {
   $("busPrice").innerText = busP > 0 ? busP.toLocaleString() + " ج / فرد" : "";
   $("highsPrice").innerText = highP > 0 ? highP.toLocaleString() + " ج / فرد" : "";
   
-  // reset selection
   selectedVehicle = busP > 0 ? "bus" : "highs";
   document.querySelectorAll(".vehicleOpt").forEach(el => {
     el.classList.toggle("selected", el.dataset.v === selectedVehicle);
   });
 }
 
-/* ============ Toast ============ */
 function toast(msg, type, dur) {
   type = type || "info"; dur = dur || 3000;
   let box = $("toastBox");
@@ -467,7 +461,6 @@ function toast(msg, type, dur) {
   }, dur);
 }
 
-/* ============ Dark Mode ============ */
 function toggleDark() {
   const isDark = document.body.classList.toggle("dark");
   try { localStorage.setItem("nt_dark", isDark ? "1" : "0"); } catch (e) {}
@@ -844,11 +837,17 @@ function calc() {
   const needT = !!t || $("transChk").checked, seats = a + x;
   const d = deps.find(y => y.id == $("dep").value), dep = d ? N(d.extra_price) : 0;
 
-  // سعر المركبة
-  let vehiclePrice = 0;
+  // سعر البالغ + سعر الكرسي الإضافي (حسب المركبة المختارة)
+  let adultPrice = 0;
+  let extraSeatPrice = 0;
   if (needT) {
-    if (selectedVehicle === "highs") vehiclePrice = N(h.highs_price);
-    else vehiclePrice = N(h.extra_seat_price);
+    if (selectedVehicle === "highs") {
+      adultPrice = N(h.highs_price);
+      extraSeatPrice = N(h.extra_highs_seat_price);
+    } else {
+      adultPrice = N(h.extra_seat_price);
+      extraSeatPrice = N(h.extra_bus_seat_price);
+    }
   }
   $("seatInfo").innerText = needT ? `كراسي: ${seats} (${a} بالغين + ${x} إضافي) • ${selectedVehicle === "highs" ? "High S" : "Bus"}` : "";
   total = 0;
@@ -863,7 +862,7 @@ function calc() {
     const rp = getRoomPrice(h, type, null);
     if (n > 0) {
       total = rp * r * n;
-      if (needT) total += seats * (vehiclePrice + dep);
+      if (needT) total += a * adultPrice + x * extraSeatPrice + seats * dep;
     }
   }
 
