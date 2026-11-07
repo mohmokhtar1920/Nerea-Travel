@@ -1,0 +1,23 @@
+{
+  "name": "Nerea Admin",
+  "short_name": "Nerea Admin",
+  "description": "لوحة تحكم Nerea Travel",
+  "start_url": "./admin.html",
+  "display": "standalone",
+  "background_color": "#0b1f3a",
+  "theme_color": "#0b1f3a",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "icon-admin-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-admin-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
