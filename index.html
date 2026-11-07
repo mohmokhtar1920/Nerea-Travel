@@ -8,6 +8,15 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b1f3a">
+
+<!-- SEO & Open Graph (للمشاركة على السوشيال ميديا) -->
+<meta name="description" content="Nerea Travel - اكتشف أجمل الوجهات والرحلات واحجز فندقك بسهولة مع أفضل الأسعار. رحلتك تبدأ من هنا.">
+<meta property="og:title" content="Nerea Travel | احجز رحلتك بسهولة">
+<meta property="og:description" content="اكتشف أجمل الوجهات والرحلات مع Nerea Travel. أسعار تنافسية وخدمة احترافية.">
+<meta property="og:image" content="https://mohmokhtar1920.github.io/Nerea-Travel/logo.png">
+<meta property="og:url" content="https://mohmokhtar1920.github.io/Nerea-Travel/">
+<meta property="og:type" content="website">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#f5f7fa;color:#172033;transition:background .3s,color .3s}
@@ -25,7 +34,7 @@ button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:
 .section{padding:55px 7%}
 .section h2{text-align:center;margin-bottom:20px;font-size:30px}
 .trips{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
-.card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08)}
+.card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08);transition:background .3s,transform .3s}
 .card:hover{transform:translateY(-3px)}
 .card-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:65px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover;position:relative}
 .card-img .badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:bold}
@@ -39,12 +48,19 @@ button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:
 .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center}
 .feature{background:#fff;padding:30px 20px;border-radius:15px}
 .feature-icon{font-size:40px;margin-bottom:15px}
-footer{background:#0b1f3a;color:#fff;text-align:center;padding:30px}
+footer{background:#0b1f3a;color:#fff;text-align:center;padding:40px 20px}
+footer .social-links{margin:15px 0}
+footer .social-links a{color:#d9b45b;text-decoration:none;margin:0 10px;font-size:15px}
+footer .legal-links{margin-top:15px;font-size:13px;color:#8899a6}
+footer .legal-links a{color:#8899a6;text-decoration:none;margin:0 8px;cursor:pointer}
+footer .legal-links a:hover{color:#fff}
+
+/* About Section */
+.about-content{max-width:800px;margin:auto;text-align:center;line-height:1.8;font-size:16px;color:#444;background:#fff;padding:30px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.05)}
+
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);justify-content:center;align-items:center;z-index:1000;overflow:auto}
-.modal-box{background:#fff;width:92%;max-width:520px;max-height:92vh;overflow:auto;padding:25px;border-radius:15px}
-.modal-box input,.modal-box select{margin-bottom:10px}
+.modal-box{background:#fff;width:92%;max-width:520px;max-height:92vh;overflow:auto;padding:25px;border-radius:15px;animation:fadeUp .3s ease}
 .close{float:left;font-size:28px;cursor:pointer}
-.himg{height:160px;border-radius:10px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:60px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover}
 .info{background:#f0f6fa;padding:10px;border-radius:8px;margin-bottom:10px;font-size:14px}
 label{display:block;font-size:13px;margin:4px 0;color:#555}
 .chk{display:flex;align-items:center;gap:8px;margin:8px 0}
@@ -52,8 +68,20 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .total{font-size:20px;font-weight:bold;color:#176b87;margin:10px 0}
 .note{text-align:center;color:#777;grid-column:1/-1}
 .wa{display:block;text-align:center;background:#25d366;color:#fff;text-decoration:none;font-weight:bold;padding:14px;border-radius:8px;margin-top:15px}
-@media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}header{justify-content:center;padding:14px 7%}.logo img{height:150px}.darkToggle{position:absolute;top:14px;left:14px;margin:0}}
-.gal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:3000;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:15px}#galMain{max-width:100%;max-height:68vh;border-radius:10px}.gthumbs{display:flex;gap:6px;overflow:auto}.gthumbs img{height:56px;border-radius:6px;opacity:.55;cursor:pointer}.gthumbs img.on{opacity:1;outline:2px solid #d9b45b}.gnav{display:flex;gap:14px;align-items:center;color:#fff}.gnav button{background:rgba(255,255,255,.15);color:#fff;border:none;padding:10px 18px;border-radius:50%;font-size:20px;cursor:pointer}.gx{position:absolute;top:12px;left:18px;color:#fff;font-size:34px;cursor:pointer;background:transparent;padding:0}
+
+/* Loading Spinner */
+.spinner-container{display:flex;justify-content:center;align-items:center;padding:80px 0;width:100%;grid-column:1/-1}
+.spinner{width:60px;height:60px;border:6px solid #e5e9f0;border-top:6px solid #176b87;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+/* Floating WhatsApp */
+.float-wa{position:fixed;bottom:25px;right:25px;background:#25d366;color:#fff;border-radius:50%;width:60px;height:60px;display:flex;justify-content:center;align-items:center;font-size:32px;box-shadow:0 4px 15px rgba(37,211,102,.4);z-index:999;text-decoration:none;transition:transform .2s}
+.float-wa:hover{transform:scale(1.1)}
+
+@media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}header{justify-content:center;padding:14px 7%}.logo img{height:150px}.darkToggle{position:absolute;top:14px;left:14px;margin:0}.float-wa{width:50px;height:50px;font-size:26px;bottom:15px;right:15px}}
+
+/* بقية الستايلات زي ما هي */
+.gal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:3000;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:15px}#galMain{max-width:100%;max-height:68vh;border-radius:10px}.gthumbs{display:flex;gap:6px;overflow:auto;max-width:100%}.gthumbs img{height:56px;border-radius:6px;opacity:.55;cursor:pointer}.gthumbs img.on{opacity:1;outline:2px solid #d9b45b}.gnav{display:flex;gap:14px;align-items:center;color:#fff}.gnav button{background:rgba(255,255,255,.15);color:#fff;border:none;padding:10px 18px;border-radius:50%;font-size:20px;cursor:pointer}.gx{position:absolute;top:12px;left:18px;color:#fff;font-size:34px;cursor:pointer;background:transparent;padding:0}
 .fab{position:fixed;bottom:22px;left:22px;background:#0b1f3a;color:#fff;border:none;border-radius:30px;padding:14px 22px;font-weight:bold;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:500;font-size:15px}
 .fab:hover{background:#176b87}
 .stBox{background:#f0f6fa;padding:14px;border-radius:10px;margin-bottom:12px;white-space:pre-line;font-size:14px;line-height:1.7}
@@ -117,9 +145,9 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .toast.err{border-color:#dc3545;background:#f8d7da;color:#721c24}
 .toast.info{border-color:#176b87;background:#e3f2fd;color:#0d47a1}
 body.dark{background:#0f172a;color:#e2e8f0}
-body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select,body.dark .filtersBar,body.dark .vehicleOpt{background:#1e293b;color:#e2e8f0;border-color:#334155}
+body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select,body.dark .filtersBar,body.dark .vehicleOpt,body.dark .about-content{background:#1e293b;color:#e2e8f0;border-color:#334155}
 body.dark .info,body.dark .stBox{background:#1e293b;color:#cbd5e1}
-body.dark .card-content p,body.dark label{color:#94a3b8}
+body.dark .card-content p,body.dark label,body.dark .about-content p{color:#94a3b8}
 body.dark .section h2{color:#e2e8f0}
 body.dark .price,body.dark .total{color:#5eb8d6}
 body.dark .mealBox.included{background:linear-gradient(135deg,#14532d,#166534);color:#bbf7d0}
@@ -134,7 +162,7 @@ body.dark .vehicleOpt.selected{background:linear-gradient(135deg,#1e3a5f,#2a4a6f
 </head>
 <body>
 <header><div class="logo"><img src="logo.png?v=2" alt="Nerea Travel"></div>
-<nav><a href="#trips">الرحلات</a><a href="#services">خدماتنا</a><a href="#contact">تواصل معنا</a></nav>
+<nav><a href="#trips">الرحلات</a><a href="#services">خدماتنا</a><a href="#about">من نحن</a><a href="#contact">تواصل معنا</a></nav>
 <button class="darkToggle" id="darkBtn" onclick="toggleDark()">🌙</button></header>
 
 <section class="hero">
@@ -195,9 +223,42 @@ body.dark .vehicleOpt.selected{background:linear-gradient(135deg,#1e3a5f,#2a4a6f
 </div>
 </section>
 
-<footer id="contact"><h3>Nerea Travel</h3><p>رحلتك تبدأ من هنا ✈️</p><p>© 2026 Nerea Travel</p></footer>
+<!-- قسم من نحن -->
+<section class="section" id="about" style="background:#e3f2fd">
+<h2>من نحن</h2>
+<div class="about-content">
+  <p><b>Nerea Travel</b> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية.</p>
+  <p>نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة.</p>
+</div>
+</section>
+
+<footer id="contact">
+  <h3>Nerea Travel</h3>
+  <p>رحلتك تبدأ من هنا ✈️</p>
+  <div class="social-links">
+    <a href="https://wa.me/201012853009" target="_blank">واتساب</a> | 
+    <a href="tel:01012853009">اتصل بنا</a>
+  </div>
+  <p>© 2026 Nerea Travel. جميع الحقوق محفوظة.</p>
+  <div class="legal-links">
+    <a onclick="showLegal('terms')">الشروط والأحكام</a> | 
+    <a onclick="showLegal('privacy')">سياسة الخصوصية</a>
+  </div>
+</footer>
+
+<!-- زرار واتساب عائم -->
+<a href="https://wa.me/201012853009" class="float-wa" target="_blank" title="تواصل معنا عبر واتساب">💬</a>
 
 <button class="fab" onclick="openTrack()">📋 متابعة الحجز</button>
+
+<!-- Modal الشروط والأحكام -->
+<div class="modal" id="legalModal">
+  <div class="modal-box">
+    <span class="close" onclick="closeLegal()">×</span>
+    <h2 id="legalTitle" style="margin-bottom:10px; color:#0b1f3a"></h2>
+    <div id="legalContent" style="font-size:14px; line-height:1.8; color:#444"></div>
+  </div>
+</div>
 
 <div class="modal" id="trackModal">
   <div class="modal-box">
@@ -324,6 +385,24 @@ const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); ret
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
+/* ---------- الدوال الجديدة (من نحن - الخصوصية - سبينر) ---------- */
+function showLegal(type) {
+  const title = type === 'terms' ? 'الشروط والأحكام' : 'سياسة الخصوصية';
+  const content = type === 'terms' 
+    ? `<h3>1. الحجز والدفع</h3><p>يتم تأكيد الحجز فقط بعد سداد العربون المتفق عليه وإرسال صورة التحويل.</p>
+       <h3>2. الإلغاء والاسترداد</h3><p>يمكن إلغاء الحجز قبل موعد السفر بـ 3 أيام على الأقل. في حالات أخرى، يرجى التواصل مع خدمة العملاء.</p>
+       <h3>3. المسؤولية</h3><p>الشركة غير مسؤولة عن أي ظروف خارجة عن إرادتها (طقس، قرارات حكومية، إلخ).</p>`
+    : `<h3>1. جمع البيانات</h3><p>نحن نجمع فقط اسمك ورقم هاتفك لغرض إتمام الحجز والتواصل معك.</p>
+       <h3>2. حماية البيانات</h3><p>بياناتك محفوظة بشكل آمن ولا يتم مشاركتها مع أي طرف ثالث.</p>
+       <h3>3. ملفات تعريف الارتباط (Cookies)</h3><p>الموقع يستخدم التخزين المحلي (Local Storage) لتذكر تفضيلاتك وتحسين تجربتك.</p>`;
+  
+  $("legalTitle").innerText = title;
+  $("legalContent").innerHTML = content;
+  $("legalModal").style.display = "flex";
+}
+function closeLegal() { $("legalModal").style.display = "none"; }
+
+/* ---------- Meals Helper ---------- */
 function getMealsList(h) {
   const meals = [];
   if (h.meal_breakfast) meals.push("فطار");
@@ -699,22 +778,41 @@ async function cancelBooking(ref, phone) {
 
 async function init() {
   initDark();
+  
+  // تحديث زرار الواتساب العائم بالرقم الفعلي
+  const waFloat = document.querySelector('.float-wa');
+  if(waFloat) waFloat.href = "https://wa.me/" + salesPhone;
+
+  // حفظ حالة البحث (الوجهة والتاريخ)
+  const savedDest = localStorage.getItem("nt_saved_dest");
+  const savedDate = localStorage.getItem("nt_saved_date");
+
   const d = await db.from("destinations").select("*").order("id");
   if (d.error) { console.error(d.error); return; }
   dests = d.data || [];
   $("destination").innerHTML = '<option value="">إلى أين تريد الذهاب؟</option>' + dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
+  
+  // استرجاع البيانات المحفوظة
+  if(savedDest) $("destination").value = savedDest;
+  if(savedDate) $("date").value = savedDate;
+
   $("dynamicTrips").innerHTML = dests.map(x => `
     <div class="card">
       <div class="card-img" style="${img(x) ? `background-image:url('${img(x)}')` : ''}">${img(x) ? '' : '🏖️'}</div>
       <div class="card-content"><h3>${x.Name}</h3><p>${x.Description || ''}</p>
       <button onclick="pickDest(${x.id})">اختر الفندق</button></div>
     </div>`).join("");
+  
   const p = await db.from("departure_points").select("*").order("id");
   deps = p.data || [];
   $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
+  
   const s = await db.from("settings").select("key,value");
   (s.data || []).forEach(r => {
-    if (r.key === "sales_phone") salesPhone = String(r.value).replace(/\D/g, "");
+    if (r.key === "sales_phone") {
+      salesPhone = String(r.value).replace(/\D/g, "");
+      if(waFloat) waFloat.href = "https://wa.me/" + salesPhone;
+    }
     if (r.key === "instapay_address") pay.insta = r.value;
     if (r.key === "vodafone_cash") pay.voda = r.value;
     if (r.key === "deposit_percent") pay.pct = N(r.value) || 25;
@@ -731,6 +829,17 @@ async function searchTrips() {
   const destId = $("destination").value, date = $("date").value;
   if (!destId || !date) { toast("اختر الوجهة والتاريخ", "info"); return; }
   if (date < new Date().toISOString().slice(0, 10)) { toast("اختر تاريخًا من اليوم فصاعدًا", "info"); return; }
+
+  // حفظ حالة البحث
+  localStorage.setItem("nt_saved_dest", destId);
+  localStorage.setItem("nt_saved_date", date);
+
+  // إظهار شاشة التحميل (Spinner)
+  $("hotelsTitle").innerText = "جاري البحث...";
+  $("hotelList").innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+  $("hotels").style.display = "block";
+  $("hotels").scrollIntoView({behavior: "smooth"});
+
   const h = await db.from("Hotels").select("*").eq("Destination_id", destId).order("Name", {ascending: true});
   if (h.error) { console.error("Hotels error:", h.error); toast("تعذر تحميل الفنادق", "err"); return; }
   const hotels = h.data || [];
@@ -750,10 +859,14 @@ async function searchTrips() {
   }
   const dest = dests.find(x => String(x.id) === String(destId));
   $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + (dest ? dest.Name : "");
+  
+  // رندرة النتائج (أو مسح السبينر لو مفيش نتايج)
   clearFilters();
-  $("hotels").style.display = "block";
-  $("hotels").scrollIntoView({behavior: "smooth"});
+  
   if (list.length) toast("تم العثور على " + list.length + " نتيجة", "ok");
+  else {
+    $("hotelList").innerHTML = '<p class="note" style="margin-top:30px">لا توجد فنادق متاحة لهذه الوجهة في هذا التاريخ.</p>';
+  }
 }
 
 function showHotel(i) {
@@ -823,7 +936,7 @@ function openGallery(id) {
 function showGal() {
   $("galMain").src = galImgs[galIdx];
   $("galCount").innerText = (galIdx + 1) + " / " + galImgs.length;
-  $("galThumbs").innerHTML = galImgs.map((u, i) => `<img src="${u}" class="${i === galIdx ? "on" : ""}" onclick="galIdx=${i};showGal()">`).join("");
+  $("galThumbs").innerHTML = galImgs.map((u, i) => `<img loading="lazy" src="${u}" class="${i === galIdx ? "on" : ""}" onclick="galIdx=${i};showGal()">`).join("");
 }
 function galNav(d) { galIdx = (galIdx + d + galImgs.length) % galImgs.length; showGal(); }
 function closeGal() { $("gal").style.display = "none"; }
@@ -1081,21 +1194,6 @@ document.addEventListener("keydown", e => {
 
 init();
 track("page_view");
-</script>
-
-<!-- كود تسجيل الـ Service Worker (تمت إضافته لجعل التطبيق قابلاً للتثبيت) -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(registration => {
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        })
-        .catch(error => {
-          console.log('ServiceWorker registration failed: ', error);
-        });
-    });
-  }
 </script>
 </body>
 </html>
