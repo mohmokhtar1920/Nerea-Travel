@@ -9,13 +9,32 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b1f3a">
 
-<!-- SEO & Open Graph (للمشاركة على السوشيال ميديا) -->
+<!-- SEO -->
 <meta name="description" content="Nerea Travel - اكتشف أجمل الوجهات والرحلات واحجز فندقك بسهولة مع أفضل الأسعار. رحلتك تبدأ من هنا.">
+<meta name="keywords" content="Nerea Travel, حجز فنادق, رحلات سياحية, حجز رحلات مصر, فنادق الغردقة, فنادق شرم الشيخ, رحلات عائلية">
+<meta name="author" content="Nerea Travel">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://mohmokhtar1920.github.io/Nerea-Travel/">
+
+<!-- Open Graph / Facebook / WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nerea Travel">
 <meta property="og:title" content="Nerea Travel | احجز رحلتك بسهولة">
 <meta property="og:description" content="اكتشف أجمل الوجهات والرحلات مع Nerea Travel. أسعار تنافسية وخدمة احترافية.">
-<meta property="og:image" content="https://mohmokhtar1920.github.io/Nerea-Travel/logo.png">
+<meta property="og:image" content="https://mohmokhtar1920.github.io/Nerea-Travel/logo-og.png">
+<meta property="og:image:secure_url" content="https://mohmokhtar1920.github.io/Nerea-Travel/logo-og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nerea Travel - احجز رحلتك">
 <meta property="og:url" content="https://mohmokhtar1920.github.io/Nerea-Travel/">
-<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_EG">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nerea Travel | احجز رحلتك بسهولة">
+<meta name="twitter:description" content="اكتشف أجمل الوجهات والرحلات مع Nerea Travel.">
+<meta name="twitter:image" content="https://mohmokhtar1920.github.io/Nerea-Travel/logo-og.png">
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
@@ -36,7 +55,7 @@ button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:
 .trips{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
 .card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08);transition:background .3s,transform .3s}
 .card:hover{transform:translateY(-3px)}
-.card-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:65px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover;position:relative}
+.card-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:65px;background:linear-gradient(135deg,#65c7f7,#0052d4) center/cover;position:relative;overflow:hidden}
 .card-img .badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:bold}
 .card-img .meal-badge{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#f5a623,#ff9500);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;max-width:70%}
 .card-img .meal-badge.included{background:linear-gradient(135deg,#28a745,#1e7e34)}
@@ -69,7 +88,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .note{text-align:center;color:#777;grid-column:1/-1}
 .wa{display:block;text-align:center;background:#25d366;color:#fff;text-decoration:none;font-weight:bold;padding:14px;border-radius:8px;margin-top:15px}
 
-/* Loading Spinner */
+/* Loading Spinner (احتياطي) */
 .spinner-container{display:flex;justify-content:center;align-items:center;padding:80px 0;width:100%;grid-column:1/-1}
 .spinner{width:60px;height:60px;border:6px solid #e5e9f0;border-top:6px solid #176b87;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
@@ -158,6 +177,33 @@ body.dark .vehicleOpt.selected{background:linear-gradient(135deg,#1e3a5f,#2a4a6f
 @keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes slideOut{to{transform:translateX(120%);opacity:0}}
+
+/* === Footer Contact === */
+.footer-contact{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:15px 0;font-size:14px}
+.footer-contact a{color:#d9b45b;text-decoration:none;transition:color .2s}
+.footer-contact a:hover{color:#fff}
+
+/* === Skeleton Loading === */
+.skeleton-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;grid-column:1/-1;width:100%}
+.skel-card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08)}
+.skel-img{height:180px;background:linear-gradient(90deg,#e5e9f0 25%,#f0f4f8 50%,#e5e9f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+.skel-line{height:14px;margin:12px 20px;border-radius:6px;background:linear-gradient(90deg,#e5e9f0 25%,#f0f4f8 50%,#e5e9f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+.skel-line.short{width:55%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+body.dark .skel-card{background:#1e293b}
+body.dark .skel-img,body.dark .skel-line{background:linear-gradient(90deg,#1e293b 25%,#334155 50%,#1e293b 75%);background-size:200% 100%}
+
+/* === Lazy Image inside card-img === */
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+
+/* === Hotel Modal Image === */
+.himg{height:200px;display:flex;align-items:center;justify-content:center;font-size:60px;background:#f0f6fa;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.himg img{width:100%;height:100%;object-fit:cover;display:block}
+
+@media(max-width:800px){
+  .skeleton-grid{grid-template-columns:1fr}
+  .footer-contact{flex-direction:column;gap:8px}
+}
 </style>
 </head>
 <body>
@@ -235,13 +281,23 @@ body.dark .vehicleOpt.selected{background:linear-gradient(135deg,#1e3a5f,#2a4a6f
 <footer id="contact">
   <h3>Nerea Travel</h3>
   <p>رحلتك تبدأ من هنا ✈️</p>
-  <div class="social-links">
-    <a href="https://wa.me/201012853009" target="_blank">واتساب</a> | 
-    <a href="tel:01012853009">اتصل بنا</a>
+
+  <div class="footer-contact">
+    <p>📞 <a href="tel:01012853009">01012853009</a></p>
+    <p>✉️ <a href="mailto:info@nereatravel.com">info@nereatravel.com</a></p>
+    <p>📍 القاهرة، مصر</p>
   </div>
+
+  <div class="social-links">
+    <a href="https://wa.me/201012853009" target="_blank" rel="noopener">واتساب</a>
+    <a href="https://www.facebook.com/" target="_blank" rel="noopener">فيسبوك</a>
+    <a href="https://www.instagram.com/" target="_blank" rel="noopener">إنستجرام</a>
+    <a href="https://www.tiktok.com/" target="_blank" rel="noopener">تيك توك</a>
+  </div>
+
   <p>© 2026 Nerea Travel. جميع الحقوق محفوظة.</p>
   <div class="legal-links">
-    <a onclick="showLegal('terms')">الشروط والأحكام</a> | 
+    <a onclick="showLegal('terms')">الشروط والأحكام</a> |
     <a onclick="showLegal('privacy')">سياسة الخصوصية</a>
   </div>
 </footer>
@@ -385,17 +441,29 @@ const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); ret
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-/* ---------- الدوال الجديدة (من نحن - الخصوصية - سبينر) ---------- */
+/* ---------- Skeleton Loading ---------- */
+function showSkeleton() {
+  $("hotelList").innerHTML = '<div class="skeleton-grid">' +
+    Array(6).fill(0).map(() => `
+      <div class="skel-card">
+        <div class="skel-img"></div>
+        <div class="skel-line"></div>
+        <div class="skel-line short"></div>
+        <div class="skel-line short"></div>
+      </div>`).join('') + '</div>';
+}
+
+/* ---------- الدوال (من نحن - الخصوصية) ---------- */
 function showLegal(type) {
   const title = type === 'terms' ? 'الشروط والأحكام' : 'سياسة الخصوصية';
-  const content = type === 'terms' 
+  const content = type === 'terms'
     ? `<h3>1. الحجز والدفع</h3><p>يتم تأكيد الحجز فقط بعد سداد العربون المتفق عليه وإرسال صورة التحويل.</p>
        <h3>2. الإلغاء والاسترداد</h3><p>يمكن إلغاء الحجز قبل موعد السفر بـ 3 أيام على الأقل. في حالات أخرى، يرجى التواصل مع خدمة العملاء.</p>
        <h3>3. المسؤولية</h3><p>الشركة غير مسؤولة عن أي ظروف خارجة عن إرادتها (طقس، قرارات حكومية، إلخ).</p>`
     : `<h3>1. جمع البيانات</h3><p>نحن نجمع فقط اسمك ورقم هاتفك لغرض إتمام الحجز والتواصل معك.</p>
        <h3>2. حماية البيانات</h3><p>بياناتك محفوظة بشكل آمن ولا يتم مشاركتها مع أي طرف ثالث.</p>
        <h3>3. ملفات تعريف الارتباط (Cookies)</h3><p>الموقع يستخدم التخزين المحلي (Local Storage) لتذكر تفضيلاتك وتحسين تجربتك.</p>`;
-  
+
   $("legalTitle").innerText = title;
   $("legalContent").innerHTML = content;
   $("legalModal").style.display = "flex";
@@ -516,10 +584,10 @@ function renderVehicleOptions() {
   const busOpt = document.querySelector('[data-v="bus"]');
   if (highOpt) highOpt.style.display = highP > 0 ? "" : "none";
   if (busOpt) busOpt.style.display = busP > 0 ? "" : "none";
-  
+
   $("busPrice").innerText = busP > 0 ? busP.toLocaleString() + " ج / فرد" : "";
   $("highsPrice").innerText = highP > 0 ? highP.toLocaleString() + " ج / فرد" : "";
-  
+
   selectedVehicle = busP > 0 ? "bus" : "highs";
   document.querySelectorAll(".vehicleOpt").forEach(el => {
     el.classList.toggle("selected", el.dataset.v === selectedVehicle);
@@ -685,7 +753,10 @@ function renderHotelList() {
       }
     }
     return `<div class="card">
-      <div class="card-img" style="cursor:pointer;${img(o.h) ? `background-image:url('${img(o.h)}')` : ''}" onclick="openGallery(${o.h.id})">${img(o.h) ? '' : '🏨'}${ratingBadge}${mealBadge}</div>
+      <div class="card-img" style="cursor:pointer" onclick="openGallery(${o.h.id})">
+        ${img(o.h) ? `<img loading="lazy" src="${img(o.h)}" alt="${esc(o.h.Name || '')}">` : '🏨'}
+        ${ratingBadge}${mealBadge}
+      </div>
       <div class="card-content">
         ${(imgs[o.h.id] || []).length > 1 ? `<p style="font-size:12px;color:#888;margin-bottom:6px">📷 اضغط على الصورة لعرض ${imgs[o.h.id].length} صور</p>` : ""}
         <h3>${o.h.Name || "فندق بدون اسم"}</h3>
@@ -778,12 +849,10 @@ async function cancelBooking(ref, phone) {
 
 async function init() {
   initDark();
-  
-  // تحديث زرار الواتساب العائم بالرقم الفعلي
+
   const waFloat = document.querySelector('.float-wa');
   if(waFloat) waFloat.href = "https://wa.me/" + salesPhone;
 
-  // حفظ حالة البحث (الوجهة والتاريخ)
   const savedDest = localStorage.getItem("nt_saved_dest");
   const savedDate = localStorage.getItem("nt_saved_date");
 
@@ -791,22 +860,21 @@ async function init() {
   if (d.error) { console.error(d.error); return; }
   dests = d.data || [];
   $("destination").innerHTML = '<option value="">إلى أين تريد الذهاب؟</option>' + dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
-  
-  // استرجاع البيانات المحفوظة
+
   if(savedDest) $("destination").value = savedDest;
   if(savedDate) $("date").value = savedDate;
 
   $("dynamicTrips").innerHTML = dests.map(x => `
     <div class="card">
-      <div class="card-img" style="${img(x) ? `background-image:url('${img(x)}')` : ''}">${img(x) ? '' : '🏖️'}</div>
+      <div class="card-img">${img(x) ? `<img loading="lazy" src="${img(x)}" alt="${esc(x.Name)}">` : '🏖️'}</div>
       <div class="card-content"><h3>${x.Name}</h3><p>${x.Description || ''}</p>
       <button onclick="pickDest(${x.id})">اختر الفندق</button></div>
     </div>`).join("");
-  
+
   const p = await db.from("departure_points").select("*").order("id");
   deps = p.data || [];
   $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
-  
+
   const s = await db.from("settings").select("key,value");
   (s.data || []).forEach(r => {
     if (r.key === "sales_phone") {
@@ -830,13 +898,11 @@ async function searchTrips() {
   if (!destId || !date) { toast("اختر الوجهة والتاريخ", "info"); return; }
   if (date < new Date().toISOString().slice(0, 10)) { toast("اختر تاريخًا من اليوم فصاعدًا", "info"); return; }
 
-  // حفظ حالة البحث
   localStorage.setItem("nt_saved_dest", destId);
   localStorage.setItem("nt_saved_date", date);
 
-  // إظهار شاشة التحميل (Spinner)
   $("hotelsTitle").innerText = "جاري البحث...";
-  $("hotelList").innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+  showSkeleton();
   $("hotels").style.display = "block";
   $("hotels").scrollIntoView({behavior: "smooth"});
 
@@ -859,10 +925,9 @@ async function searchTrips() {
   }
   const dest = dests.find(x => String(x.id) === String(destId));
   $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + (dest ? dest.Name : "");
-  
-  // رندرة النتائج (أو مسح السبينر لو مفيش نتايج)
+
   clearFilters();
-  
+
   if (list.length) toast("تم العثور على " + list.length + " نتيجة", "ok");
   else {
     $("hotelList").innerHTML = '<p class="note" style="margin-top:30px">لا توجد فنادق متاحة لهذه الوجهة في هذا التاريخ.</p>';
@@ -892,8 +957,9 @@ function showHotel(i) {
 
   $("mName").innerText = h.Name;
   $("mDesc").innerText = h.description || "";
-  $("mImg").style.backgroundImage = img(h) ? `url('${img(h)}')` : "";
-  $("mImg").innerText = img(h) ? "" : "🏨";
+  $("mImg").innerHTML = img(h)
+    ? `<img loading="lazy" src="${img(h)}" alt="${esc(h.Name)}">`
+    : "🏨";
 
   const r = hotelRatings[String(h.id)];
   $("mRating").innerHTML = r && r.count > 0 ? `<div style="margin:6px 0;display:flex;align-items:center;gap:8px">${starsHtml(r.avg)} <b>${r.avg}</b> <span style="color:#888;font-size:13px">(${r.count} تقييم)</span></div>` : "";
