@@ -1444,4 +1444,51 @@ ${currentLang === 'ar' ? "العربون" : "Deposit"}: ${Number(d.deposit_amoun
     const waHref = "https://wa.me/" + String(s.sales_phone||"").replace(/\D/g,"") + "?text=" + encodeURIComponent((currentLang === 'ar' ? "تحويل عربون حجز " : "Deposit transfer for booking ") + d.booking_ref);
     html += `<div class="payBox"><h3 style="margin-bottom:10px">💳 ${currentLang === 'ar' ? "يرجى إتمام الدفع" : "Please Complete Payment"}</h3><p>${currentLang === 'ar' ? "حوّل العربون" : "Transfer deposit"} <b>${Number(d.deposit_amount||0).toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}</b> ${currentLang === 'ar' ? "على" : "to"}:</p><p>• ${currentLang === 'ar' ? "إنستاباي" : "InstaPay"}: <b>${s.instapay_address||"-"}</b></p><p>• ${currentLang === 'ar' ? "فودافون كاش" : "Vodafone Cash"}: <b>${s.vodafone_cash||"-"}</b></p><p style="margin-top:10px;color:#666;font-size:13px">${currentLang === 'ar' ? "المبلغ المتبقي" : "Remaining amount"}: ${remaining.toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}</p></div>`;
     if (d.payment_proof_url) {
-      html += `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">${currentLang === 'ar' ? "✅ تم رفع صورة التحويل" : "✅
+      html += `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">${currentLang === 'ar' ? "✅ تم رفع صورة التحويل" : "✅ Transfer screenshot uploaded"}</p><img src="${d.payment_proof_url}" alt="Proof"></div>`;
+    } else {
+      html += `<div id="trackUploadArea"><p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">${currentLang === 'ar' ? "ارفع صورة التحويل:" : "Upload transfer screenshot:"}</p><label class="uploadBtn">${t('uploadBtn')}<input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)"></label></div>`;
+    }
+    html += `<a class="wa" href="${waHref}" target="_blank" onclick="track('whatsapp_click')">${currentLang === 'ar' ? "إرسال صورة التحويل على واتساب" : "Send screenshot on WhatsApp"}</a>`;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  const canReview = (d.status === "Paid" || d.status === "Confirmed" || d.payment_status === "Paid") && d.check_out && d.check_out <= today;
+  if (canReview) html += `<button class="reviewBtn" onclick="openReviewForm()">⭐ ${currentLang === 'ar' ? "قيّم رحلتك" : "Rate your trip"}</button>`;
+  if (d.status !== "Cancelled" && d.status !== "Paid") html += `<button class="cancelBtn" onclick="cancelBooking('${d.booking_ref}', '${lastBooking.phone}')">❌ ${currentLang === 'ar' ? "إلغاء الحجز" : "Cancel Booking"}</button>`;
+  html += `<button style="width:100%;margin-top:10px;background:#ddd;color:#172033" onclick="closeTrack()">${currentLang === 'ar' ? "إغلاق" : "Close"}</button>`;
+  $("trackResult").innerHTML = html;
+}
+
+document.addEventListener("click", e => {
+  const tm = $("trackModal");
+  if (tm && e.target === tm) closeTrack();
+});
+
+document.addEventListener("keydown", e => {
+  const g = $("gal");
+  if (!g || g.style.display !== "flex") return;
+  if (e.key === "ArrowLeft") galNav(1);
+  else if (e.key === "ArrowRight") galNav(-1);
+  else if (e.key === "Escape") closeGal();
+});
+
+(function initSwipe() {
+  let x0 = null;
+  document.addEventListener("touchstart", e => {
+    const g = $("gal");
+    if (!g || g.style.display !== "flex") return;
+    x0 = e.touches[0].clientX;
+  }, {passive: true});
+  document.addEventListener("touchend", e => {
+    const g = $("gal");
+    if (!g || g.style.display !== "flex" || x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) galNav(dx > 0 ? -1 : 1);
+    x0 = null;
+  }, {passive: true});
+})();
+
+init();
+track("page_view");
+</script>
+</body>
+</html>
