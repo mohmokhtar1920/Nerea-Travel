@@ -1,25 +1,23 @@
 {
-  "name": "Nerea Travel",
-  "short_name": "Nerea",
-  "description": "لوحة التحكم - إدارة الحجوزات والعملاء",
-  "start_url": "./",
-  "scope": "./",
+  "name": "Nerea Admin",
+  "short_name": "Nerea Admin",
+  "description": "لوحة تحكم Nerea Travel",
+  "start_url": "./admin.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a2a3a",
-  "orientation": "portrait-primary",
+  "background_color": "#0b1f3a",
+  "theme_color": "#0b1f3a",
+  "lang": "ar",
+  "dir": "rtl",
   "icons": [
     {
-      "src": "icon-192x192.png",
-      "type": "image/png",
+      "src": "./logo.png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "icon-512x512.png",
-      "type": "image/png",
+      "src": "./logo.png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
