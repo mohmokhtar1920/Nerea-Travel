@@ -43,7 +43,11 @@ header{background:#0b1f3a;color:#fff;padding:18px 7%;display:flex;justify-conten
 .logo{font-size:26px;font-weight:bold;color:#d9b45b}
 .logo img{height:115px;width:auto;object-fit:contain;display:block}
 nav a{color:#fff;text-decoration:none;margin-right:20px}
-.darkToggle{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:18px;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-right:15px}
+.header-actions{display:flex;align-items:center;gap:10px;margin-right:15px}
+.darkToggle,.langToggle{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:16px;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:background .2s}
+.darkToggle:hover,.langToggle:hover{background:rgba(255,255,255,.2)}
+.langToggle{font-size:14px;font-weight:bold;width:auto;padding:0 15px;border-radius:20px}
+
 .hero{min-height:420px;padding:70px 7%;background:linear-gradient(135deg,#0b1f3a,#176b87);color:#fff;text-align:center}
 .hero h1{font-size:42px;margin-bottom:15px}
 .hero p{font-size:19px;margin-bottom:35px}
@@ -75,7 +79,12 @@ footer .legal-links a{color:#8899a6;text-decoration:none;margin:0 8px;cursor:poi
 footer .legal-links a:hover{color:#fff}
 
 /* About Section */
-.about-content{max-width:800px;margin:auto;text-align:center;line-height:1.8;font-size:16px;color:#444;background:#fff;padding:30px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.05)}
+.about-content{max-width:800px;margin:auto;text-align:center;line-height:1.8;font-size:16px;color:#444;background:#fff;padding:30px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.05);margin-bottom: 30px;}
+.about-stats {display: grid;grid-template-columns: repeat(3, 1fr);gap: 20px;max-width: 800px;margin: 0 auto;}
+.stat-item {background: #fff;padding: 25px 15px;border-radius: 15px;text-align: center;box-shadow: 0 4px 15px rgba(0,0,0,.05);transition: transform .3s ease;border-bottom: 4px solid #176b87;}
+.stat-item:hover {transform: translateY(-5px);}
+.stat-number {font-size: 34px;font-weight: bold;color: #176b87;margin-bottom: 8px;}
+.stat-label {font-size: 15px;color: #555;font-weight: bold;}
 
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);justify-content:center;align-items:center;z-index:1000;overflow:auto}
 .modal-box{background:#fff;width:92%;max-width:520px;max-height:92vh;overflow:auto;padding:25px;border-radius:15px;animation:fadeUp .3s ease}
@@ -97,7 +106,7 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .float-wa{position:fixed;bottom:25px;right:25px;background:#25d366;color:#fff;border-radius:50%;width:60px;height:60px;display:flex;justify-content:center;align-items:center;font-size:32px;box-shadow:0 4px 15px rgba(37,211,102,.4);z-index:999;text-decoration:none;transition:transform .2s;border:none;cursor:pointer;padding:0}
 .float-wa:hover{transform:scale(1.1)}
 
-@media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}header{justify-content:center;padding:14px 7%}.logo img{height:150px}.darkToggle{position:absolute;top:14px;left:14px;margin:0}.float-wa{width:50px;height:50px;font-size:26px;bottom:15px;right:15px}}
+@media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}header{justify-content:center;padding:14px 7%}.logo img{height:150px}.header-actions{position:absolute;top:14px;left:14px;margin:0}.float-wa{width:50px;height:50px;font-size:26px;bottom:15px;right:15px}.about-stats {grid-template-columns: 1fr; gap: 12px;}.stat-item {padding: 15px;}.stat-number {font-size: 28px;}}
 
 /* بقية الستايلات زي ما هي */
 .gal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:3000;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:15px}#galMain{max-width:100%;max-height:68vh;border-radius:10px}.gthumbs{display:flex;gap:6px;overflow:auto;max-width:100%}.gthumbs img{height:56px;border-radius:6px;opacity:.55;cursor:pointer}.gthumbs img.on{opacity:1;outline:2px solid #d9b45b}.gnav{display:flex;gap:14px;align-items:center;color:#fff}.gnav button{background:rgba(255,255,255,.15);color:#fff;border:none;padding:10px 18px;border-radius:50%;font-size:20px;cursor:pointer}.gx{position:absolute;top:12px;left:18px;color:#fff;font-size:34px;cursor:pointer;background:transparent;padding:0}
@@ -164,11 +173,11 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .toast.err{border-color:#dc3545;background:#f8d7da;color:#721c24}
 .toast.info{border-color:#176b87;background:#e3f2fd;color:#0d47a1}
 body.dark{background:#0f172a;color:#e2e8f0}
-body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select,body.dark .filtersBar,body.dark .vehicleOpt,body.dark .about-content{background:#1e293b;color:#e2e8f0;border-color:#334155}
+body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select,body.dark .filtersBar,body.dark .vehicleOpt,body.dark .about-content,body.dark .stat-item{background:#1e293b;color:#e2e8f0;border-color:#334155}
 body.dark .info,body.dark .stBox{background:#1e293b;color:#cbd5e1}
-body.dark .card-content p,body.dark label,body.dark .about-content p{color:#94a3b8}
+body.dark .card-content p,body.dark label,body.dark .about-content p,body.dark .stat-label{color:#94a3b8}
 body.dark .section h2{color:#e2e8f0}
-body.dark .price,body.dark .total{color:#5eb8d6}
+body.dark .price,body.dark .total,body.dark .stat-number{color:#5eb8d6}
 body.dark .mealBox.included{background:linear-gradient(135deg,#14532d,#166534);color:#bbf7d0}
 body.dark .mealBox.available{background:linear-gradient(135deg,#3a2f0f,#4a3a15);color:#ffe4a1}
 body.dark .depInfo{background:linear-gradient(135deg,#1e3a5f,#2a4a6f);color:#bbdefb}
@@ -224,56 +233,89 @@ body.dark .wa-item small{color:#94a3b8}
   .skeleton-grid{grid-template-columns:1fr}
   .footer-contact{flex-direction:column;gap:8px}
 }
+
+/* === LTR (English) Overrides === */
+[dir="ltr"] .float-wa { right: auto; left: 25px; }
+[dir="ltr"] .fab { left: auto; right: 22px; }
+[dir="ltr"] .wa-menu { justify-content: flex-end; }
+[dir="ltr"] .wa-menu-box { margin: 0 20px 95px auto; }
+[dir="ltr"] .close { float: right; }
+[dir="ltr"] .mealBox { border-right: none; border-left: 4px solid #28a745; }
+[dir="ltr"] .mealBox.available { border-left-color: #f5a623; }
+[dir="ltr"] .depInfo { border-right: none; border-left: 4px solid #176b87; }
+[dir="ltr"] .payBox { border-right: none; border-left: 4px solid #e0a800; }
+[dir="ltr"] .card-img .badge { right: auto; left: 10px; }
+[dir="ltr"] .card-img .meal-badge { left: auto; right: 10px; }
+[dir="ltr"] .discountBox { border-right: none; border-left: 4px solid #28a745; }
+[dir="ltr"] .wa-item small { text-align: left; }
+[dir="ltr"] .search-box { text-align: left; }
+[dir="ltr"] .hero h1 { font-family: 'Arial', sans-serif; }
+@media(max-width:800px){
+  [dir="ltr"] .float-wa { left: 15px; right: auto; bottom: 15px; }
+  [dir="ltr"] .fab { right: auto; left: 22px; bottom: 22px; }
+  [dir="ltr"] .wa-menu-box { margin: 0 auto 95px 20px; }
+  [dir="ltr"] .header-actions { left: auto; right: 14px; }
+}
 </style>
 </head>
 <body>
-<header><div class="logo"><img src="logo.png?v=2" alt="Nerea Travel"></div>
-<nav><a href="#trips">الرحلات</a><a href="#services">خدماتنا</a><a href="#about">من نحن</a><a href="#contact">تواصل معنا</a></nav>
-<button class="darkToggle" id="darkBtn" onclick="toggleDark()">🌙</button></header>
+<header>
+  <div class="logo"><img src="logo.png?v=2" alt="Nerea Travel"></div>
+  <nav>
+    <a href="#trips" class="tr" data-ar="الرحلات" data-en="Trips">الرحلات</a>
+    <a href="#services" class="tr" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
+    <a href="#about" class="tr" data-ar="من نحن" data-en="About Us">من نحن</a>
+    <a href="#contact" class="tr" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
+  </nav>
+  <div class="header-actions">
+    <button class="langToggle" id="langBtn" onclick="toggleLang()">EN</button>
+    <button class="darkToggle" id="darkBtn" onclick="toggleDark()">🌙</button>
+  </div>
+</header>
 
 <section class="hero">
-<h1>احجز رحلتك بسهولة</h1>
-<p>اكتشف أجمل الوجهات والرحلات مع Nerea Travel</p>
-<div class="search-box">
-<div><label style="color:#555">الوجهة</label><select id="destination"><option value="">إلى أين تريد الذهاب؟</option></select></div>
-<div><label style="color:#555">التاريخ</label><input type="date" id="date"></div>
-<div><label style="color:#555">كبار</label><select id="sAdults"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
-<div><label style="color:#555">أطفال</label><select id="sChildren"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
-<button onclick="searchTrips()">بحث</button>
-</div>
+  <h1 id="heroTitle" class="tr" data-ar="احجز رحلتك بسهولة" data-en="Book Your Trip Easily">احجز رحلتك بسهولة</h1>
+  <p id="heroSub" class="tr" data-ar="اكتشف أجمل الوجهات والرحلات مع Nerea Travel" data-en="Discover the most beautiful destinations with Nerea Travel">اكتشف أجمل الوجهات والرحلات مع Nerea Travel</p>
+  <div class="search-box">
+    <div><label id="lblDest" class="tr" data-ar="الوجهة" data-en="Destination" style="color:#555">الوجهة</label><select id="destination"><option value="" data-ar="إلى أين تريد الذهاب؟" data-en="Where to go?">إلى أين تريد الذهاب؟</option></select></div>
+    <div><label id="lblDate" class="tr" data-ar="التاريخ" data-en="Date" style="color:#555">التاريخ</label><input type="date" id="date"></div>
+    <div><label id="lblAdults" class="tr" data-ar="كبار" data-en="Adults" style="color:#555">كبار</label><select id="sAdults"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+    <div><label id="lblChildren" class="tr" data-ar="أطفال" data-en="Children" style="color:#555">أطفال</label><select id="sChildren"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+    <button id="btnSearch" class="tr" data-ar="بحث" data-en="Search" onclick="searchTrips()">بحث</button>
+  </div>
 </section>
 
-<section class="section" id="trips"><h2>الوجهات المميزة</h2><div class="trips" id="dynamicTrips"></div></section>
+<section class="section" id="trips"><h2 id="tripsTitle" class="tr" data-ar="الوجهات المميزة" data-en="Featured Destinations">الوجهات المميزة</h2><div class="trips" id="dynamicTrips"></div></section>
 <section class="section" id="hotels" style="display:none">
   <h2 id="hotelsTitle">الفنادق المتاحة</h2>
   <div class="filtersBar">
     <div>
-      <label>الترتيب</label>
+      <label class="tr" data-ar="الترتيب" data-en="Sort by">الترتيب</label>
       <select id="sortBy" onchange="applyFilters()">
-        <option value="">الافتراضي</option>
-        <option value="price_asc">السعر: الأقل أولاً</option>
-        <option value="price_desc">السعر: الأعلى أولاً</option>
-        <option value="rating">الأعلى تقييمًا</option>
-        <option value="name">الاسم (أ - ي)</option>
+        <option value="" class="tr" data-ar="الافتراضي" data-en="Default">الافتراضي</option>
+        <option value="price_asc" class="tr" data-ar="السعر: الأقل أولاً" data-en="Price: Low to High">السعر: الأقل أولاً</option>
+        <option value="price_desc" class="tr" data-ar="السعر: الأعلى أولاً" data-en="Price: High to Low">السعر: الأعلى أولاً</option>
+        <option value="rating" class="tr" data-ar="الأعلى تقييمًا" data-en="Top Rated">الأعلى تقييمًا</option>
+        <option value="name" class="tr" data-ar="الاسم (أ - ي)" data-en="Name (A - Z)">الاسم (أ - ي)</option>
       </select>
     </div>
     <div>
-      <label>أقل تقييم</label>
+      <label class="tr" data-ar="أقل تقييم" data-en="Min Rating">أقل تقييم</label>
       <select id="minRating" onchange="applyFilters()">
-        <option value="0">الكل</option>
-        <option value="3">3 نجوم فأكثر ⭐</option>
-        <option value="4">4 نجوم فأكثر ⭐⭐</option>
-        <option value="4.5">4.5 نجمة فأكثر ⭐⭐⭐</option>
+        <option value="0" class="tr" data-ar="الكل" data-en="All">الكل</option>
+        <option value="3" class="tr" data-ar="3 نجوم فأكثر ⭐" data-en="3 Stars & up ⭐">3 نجوم فأكثر ⭐</option>
+        <option value="4" class="tr" data-ar="4 نجوم فأكثر ⭐⭐" data-en="4 Stars & up ⭐⭐">4 نجوم فأكثر ⭐⭐</option>
+        <option value="4.5" class="tr" data-ar="4.5 نجمة فأكثر ⭐⭐⭐" data-en="4.5 Stars & up ⭐⭐⭐">4.5 نجمة فأكثر ⭐⭐⭐</option>
       </select>
     </div>
     <div>
-      <label>السعر من</label>
-      <input type="number" id="priceMin" placeholder="أقل سعر" min="0" oninput="applyFilters()">
+      <label class="tr" data-ar="السعر من" data-en="Price from">السعر من</label>
+      <input type="number" id="priceMin" placeholder="Min" min="0" oninput="applyFilters()">
     </div>
     <div>
-      <label>السعر إلى</label>
-      <input type="number" id="priceMax" placeholder="أعلى سعر" min="0" oninput="applyFilters()">
-      <button class="clearFilters" onclick="clearFilters()">✕ مسح الفلاتر</button>
+      <label class="tr" data-ar="السعر إلى" data-en="Price to">السعر إلى</label>
+      <input type="number" id="priceMax" placeholder="Max" min="0" oninput="applyFilters()">
+      <button class="clearFilters tr" data-ar="✕ مسح الفلاتر" data-en="✕ Clear Filters" onclick="clearFilters()">✕ مسح الفلاتر</button>
     </div>
   </div>
   <div class="resultCount" id="resultCount"></div>
@@ -281,41 +323,60 @@ body.dark .wa-item small{color:#94a3b8}
 </section>
 
 <section class="section" id="services">
-<h2>ليه تحجز مع Nerea Travel؟</h2>
+<h2 class="tr" data-ar="ليه تحجز مع Nerea Travel؟" data-en="Why book with Nerea Travel?">ليه تحجز مع Nerea Travel؟</h2>
 <div class="features">
-<div class="feature"><div class="feature-icon">🏨</div><h3>فنادق متنوعة</h3><p>اختيارات إقامة تناسب ميزانيتك.</p></div>
-<div class="feature"><div class="feature-icon">🚌</div><h3>انتقالات</h3><p>تنظيم الانتقالات من وإلى الوجهة.</p></div>
-<div class="feature"><div class="feature-icon">📞</div><h3>دعم العملاء</h3><p>نساعدك قبل وأثناء الرحلة.</p></div>
+<div class="feature"><div class="feature-icon">🏨</div><h3 class="tr" data-ar="فنادق متنوعة" data-en="Diverse Hotels">فنادق متنوعة</h3><p class="tr" data-ar="اختيارات إقامة تناسب ميزانيتك." data-en="Accommodation options for every budget.">اختيارات إقامة تناسب ميزانيتك.</p></div>
+<div class="feature"><div class="feature-icon">🚌</div><h3 class="tr" data-ar="انتقالات" data-en="Transfers">انتقالات</h3><p class="tr" data-ar="تنظيم الانتقالات من وإلى الوجهة." data-en="Organized transfers to and from your destination.">تنظيم الانتقالات من وإلى الوجهة.</p></div>
+<div class="feature"><div class="feature-icon">📞</div><h3 class="tr" data-ar="دعم العملاء" data-en="Customer Support">دعم العملاء</h3><p class="tr" data-ar="نساعدك قبل وأثناء الرحلة." data-en="We help you before and during your trip.">نساعدك قبل وأثناء الرحلة.</p></div>
 </div>
 </section>
 
 <!-- قسم من نحن -->
 <section class="section" id="about" style="background:#e3f2fd">
-<h2>من نحن</h2>
+<h2 class="tr" data-ar="من نحن" data-en="About Us">من نحن</h2>
 <div class="about-content">
-  <p><b>Nerea Travel</b> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية.</p>
-  <p>نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة.</p>
+  <p class="tr" data-ar="<b>Nerea Travel</b> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية." data-en="<b>Nerea Travel</b> is a leading company in organizing internal and external tourist trips. We aim to provide an exceptional travel experience combining comfort, fun, and competitive prices.">
+    <b>Nerea Travel</b> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية.
+  </p>
+  <p class="tr" data-ar="نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة." data-en="We work with the best hotels and tour operators to ensure an unforgettable vacation, whether you are looking for a desert adventure, beach relaxation, or a fun family trip.">
+    نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة.
+  </p>
+</div>
+
+<div class="about-stats">
+  <div class="stat-item">
+    <div class="stat-number">+10</div>
+    <div class="stat-label tr" data-ar="سنوات خبرة" data-en="Years of Experience">سنوات خبرة</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">+5000</div>
+    <div class="stat-label tr" data-ar="عميل سعيد" data-en="Happy Clients">عميل سعيد</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">+50</div>
+    <div class="stat-label tr" data-ar="وجهة سياحية" data-en="Destinations">وجهة سياحية</div>
+  </div>
 </div>
 </section>
 
 <footer id="contact">
   <h3>Nerea Travel</h3>
-  <p>رحلتك تبدأ من هنا ✈️</p>
+  <p class="tr" data-ar="رحلتك تبدأ من هنا ✈️" data-en="Your journey starts here ✈️">رحلتك تبدأ من هنا ✈️</p>
 
   <div class="footer-contact">
     <p>📞 <a href="tel:01012853009">01012853009</a></p>
-    <p>📍 القاهرة، مصر</p>
+    <p class="tr" data-ar="📍 القاهرة، مصر" data-en="📍 Cairo, Egypt">📍 القاهرة، مصر</p>
   </div>
 
     <div class="social-links">
-    <a href="https://www.facebook.com/share/1DoG6Xcybd/" target="_blank" rel="noopener">فيسبوك</a>
-    <a href="https://www.instagram.com/nerea_travel1" target="_blank" rel="noopener">إنستجرام</a>
-    <a href="https://www.tiktok.com/@nerea_travel" target="_blank" rel="noopener">تيك توك</a>
+    <a href="https://www.facebook.com/share/1DoG6Xcybd/" target="_blank" rel="noopener" class="tr" data-ar="فيسبوك" data-en="Facebook">فيسبوك</a>
+    <a href="https://www.instagram.com/nerea_travel1" target="_blank" rel="noopener" class="tr" data-ar="إنستجرام" data-en="Instagram">إنستجرام</a>
+    <a href="https://www.tiktok.com/@nerea_travel" target="_blank" rel="noopener" class="tr" data-ar="تيك توك" data-en="TikTok">تيك توك</a>
   </div>
-  <p>© 2026 Nerea Travel. جميع الحقوق محفوظة.</p>
+  <p class="tr" data-ar="© 2026 Nerea Travel. جميع الحقوق محفوظة." data-en="© 2026 Nerea Travel. All rights reserved.">© 2026 Nerea Travel. جميع الحقوق محفوظة.</p>
   <div class="legal-links">
-    <a onclick="showLegal('terms')">الشروط والأحكام</a> |
-    <a onclick="showLegal('privacy')">سياسة الخصوصية</a>
+    <a onclick="showLegal('terms')" class="tr" data-ar="الشروط والأحكام" data-en="Terms & Conditions">الشروط والأحكام</a> |
+    <a onclick="showLegal('privacy')" class="tr" data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</a>
   </div>
 </footer>
 
@@ -326,27 +387,27 @@ body.dark .wa-item small{color:#94a3b8}
 <div class="wa-menu" id="waMenu" onclick="if(event.target===this)closeWaMenu()">
   <div class="wa-menu-box">
     <div class="wa-menu-header">
-      <h3>تواصل معنا على واتساب</h3>
+      <h3 class="tr" data-ar="تواصل معنا على واتساب" data-en="Contact us on WhatsApp">تواصل معنا على واتساب</h3>
       <span class="wa-close" onclick="closeWaMenu()">×</span>
     </div>
     <a href="https://wa.me/201212188719" class="wa-item" target="_blank" onclick="track('wa_click',{type:'customer_service'})">
       <span class="wa-icon">💬</span>
       <div>
-        <b>خدمة العملاء</b>
+        <b class="tr" data-ar="خدمة العملاء" data-en="Customer Service">خدمة العملاء</b>
         <small>01212188719</small>
       </div>
     </a>
     <a href="https://wa.me/201012853009" class="wa-item" target="_blank" onclick="track('wa_click',{type:'complaints'})">
       <span class="wa-icon">📞</span>
       <div>
-        <b>الشكاوي</b>
+        <b class="tr" data-ar="الشكاوي" data-en="Complaints">الشكاوي</b>
         <small>01012853009</small>
       </div>
     </a>
   </div>
 </div>
 
-<button class="fab" onclick="openTrack()">📋 متابعة الحجز</button>
+<button class="fab" onclick="openTrack()" id="fabTrack" class="tr" data-ar="📋 متابعة الحجز" data-en="📋 Track Booking">📋 متابعة الحجز</button>
 
 <!-- Modal الشروط والأحكام -->
 <div class="modal" id="legalModal">
@@ -361,13 +422,13 @@ body.dark .wa-item small{color:#94a3b8}
   <div class="modal-box">
     <span class="close" onclick="closeTrack()">×</span>
     <div id="trackForm">
-      <h2 style="margin-bottom:15px">متابعة الحجز</h2>
-      <p style="color:#666;margin-bottom:15px;font-size:14px">اكتب رقم الحجز ورقم الموبايل اللي حجزت بيه</p>
-      <label>رقم الحجز</label>
+      <h2 style="margin-bottom:15px" class="tr" data-ar="متابعة الحجز" data-en="Track Booking">متابعة الحجز</h2>
+      <p style="color:#666;margin-bottom:15px;font-size:14px" class="tr" data-ar="اكتب رقم الحجز ورقم الموبايل اللي حجزت بيه" data-en="Enter your booking reference and phone number">اكتب رقم الحجز ورقم الموبايل اللي حجزت بيه</p>
+      <label class="tr" data-ar="رقم الحجز" data-en="Booking Ref">رقم الحجز</label>
       <input type="text" id="tRef" placeholder="NT-00001">
-      <label>رقم الموبايل</label>
+      <label class="tr" data-ar="رقم الموبايل" data-en="Phone Number">رقم الموبايل</label>
       <input type="tel" id="tPhone" placeholder="01xxxxxxxxx">
-      <button style="width:100%" onclick="checkBooking(this)">عرض حالة الحجز</button>
+      <button style="width:100%" onclick="checkBooking(this)" class="tr" data-ar="عرض حالة الحجز" data-en="View Booking Status">عرض حالة الحجز</button>
       <div id="tError" style="color:#c00;margin-top:10px;font-size:14px;text-align:center"></div>
     </div>
     <div id="trackResult" style="display:none"></div>
@@ -379,12 +440,12 @@ body.dark .wa-item small{color:#94a3b8}
 
 <div id="doneBox" style="display:none;text-align:center;padding:20px 0">
 <div style="font-size:50px">✅</div>
-<h2 style="margin:10px 0">تم تسجيل طلب الحجز</h2>
+<h2 style="margin:10px 0" class="tr" data-ar="تم تسجيل طلب الحجز" data-en="Booking Request Registered">تم تسجيل طلب الحجز</h2>
 <div class="info" id="payInfo" style="text-align:right;white-space:pre-line;margin:12px 0"></div>
-<a id="waLink" class="wa" href="#" target="_blank" onclick="track('whatsapp_click')">إرسال الحجز وصورة التحويل على واتساب</a>
+<a id="waLink" class="wa" href="#" target="_blank" onclick="track('whatsapp_click')" class="tr" data-ar="إرسال الحجز وصورة التحويل على واتساب" data-en="Send booking & transfer screenshot on WhatsApp">إرسال الحجز وصورة التحويل على واتساب</a>
 <div id="uploadArea">
-  <p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">أو ارفع صورة التحويل مباشرة هنا:</p>
-  <label class="uploadBtn" id="uploadBtn">📷 ارفع صورة التحويل
+  <p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center" class="tr" data-ar="أو ارفع صورة التحويل مباشرة هنا:" data-en="Or upload transfer screenshot here:">أو ارفع صورة التحويل مباشرة هنا:</p>
+  <label class="uploadBtn" id="uploadBtn"><span class="tr" data-ar="📷 ارفع صورة التحويل" data-en="📷 Upload Transfer Screenshot">📷 ارفع صورة التحويل</span>
     <input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)">
   </label>
 </div>
@@ -404,15 +465,15 @@ body.dark .wa-item small{color:#94a3b8}
 <label>Check-out</label><input type="date" id="cout" onchange="calc()">
 </div>
 
-<label>عدد البالغين</label><input type="number" id="adults" min="1" value="1" oninput="calc()">
-<label>عدد الأطفال <span id="childAge"></span></label><input type="number" id="children" min="0" value="0" oninput="calc()">
-<label>عدد الغرف (الطفل لا يحتاج غرفة)</label><input type="number" id="rooms" min="1" value="1" oninput="calc()">
-<label>نوع الغرفة</label>
+<label class="tr" data-ar="عدد البالغين" data-en="Adults">عدد البالغين</label><input type="number" id="adults" min="1" value="1" oninput="calc()">
+<label class="tr" data-ar="عدد الأطفال" data-en="Children">عدد الأطفال <span id="childAge"></span></label><input type="number" id="children" min="0" value="0" oninput="calc()">
+<label class="tr" data-ar="عدد الغرف (الطفل لا يحتاج غرفة)" data-en="Rooms (Child doesn't need a room)">عدد الغرف (الطفل لا يحتاج غرفة)</label><input type="number" id="rooms" min="1" value="1" oninput="calc()">
+<label class="tr" data-ar="نوع الغرفة" data-en="Room Type">نوع الغرفة</label>
 <select id="roomType" onchange="calc()"></select>
 
-<div class="chk" id="transRow"><input type="checkbox" id="transChk" onchange="toggleTrans()"><label style="margin:0">محتاج انتقالات؟</label></div>
+<div class="chk" id="transRow"><input type="checkbox" id="transChk" onchange="toggleTrans()"><label style="margin:0" class="tr" data-ar="محتاج انتقالات؟" data-en="Need transport?">محتاج انتقالات؟</label></div>
 <div id="transBox">
-<label>نوع الانتقالات</label>
+<label class="tr" data-ar="نوع الانتقالات" data-en="Transport Type">نوع الانتقالات</label>
 <div class="vehicleOptions" id="vehicleOptions">
   <div class="vehicleOpt" data-v="bus" onclick="selectVehicle('bus')">
     <span class="vIcon">🚌</span>
@@ -425,17 +486,17 @@ body.dark .wa-item small{color:#94a3b8}
     <span class="vPrice" id="highsPrice"></span>
   </div>
 </div>
-<label style="margin-top:10px">نقطة التحرك</label><select id="dep" onchange="calc()"></select>
-<label>كرسي إضافي (اختياري، بسعره)</label><input type="number" id="extraSeats" min="0" value="0" oninput="calc()">
+<label style="margin-top:10px" class="tr" data-ar="نقطة التحرك" data-en="Departure Point">نقطة التحرك</label><select id="dep" onchange="calc()"></select>
+<label class="tr" data-ar="كرسي إضافي (اختياري، بسعره)" data-en="Extra Seat (Optional, with price)">كرسي إضافي (اختياري، بسعره)</label><input type="number" id="extraSeats" min="0" value="0" oninput="calc()">
 <div class="info" id="seatInfo"></div>
 <div id="depInfo" class="depInfo" style="display:none"></div>
 </div>
 
 <div style="margin-top:12px">
-  <label>كود الخصم (اختياري)</label>
+  <label class="tr" data-ar="كود الخصم (اختياري)" data-en="Coupon Code (Optional)">كود الخصم (اختياري)</label>
   <div class="couponRow">
-    <input type="text" id="couponCode" placeholder="مثال: WELCOME10">
-    <button type="button" onclick="applyCoupon()">تطبيق</button>
+    <input type="text" id="couponCode" placeholder="WELCOME10">
+    <button type="button" onclick="applyCoupon()" class="tr" data-ar="تطبيق" data-en="Apply">تطبيق</button>
   </div>
   <div id="couponMsg" class="couponMsg"></div>
 </div>
@@ -444,11 +505,16 @@ body.dark .wa-item small{color:#94a3b8}
 
 <div class="total" id="total"></div>
 
-<label>الاسم بالكامل</label><input type="text" id="name">
-<label>رقم الموبايل</label><input type="tel" id="phone">
-<div class="chk"><input type="checkbox" id="callMe"><label style="margin:0">أريد مكالمة من خدمة العملاء</label></div>
-<select id="callTime"><option>في أي وقت</option><option>صباحًا</option><option>ظهرًا</option><option>مساءً</option></select>
-<button style="width:100%" onclick="sendBooking()">إرسال طلب الحجز</button>
+<label class="tr" data-ar="الاسم بالكامل" data-en="Full Name">الاسم بالكامل</label><input type="text" id="name">
+<label class="tr" data-ar="رقم الموبايل" data-en="Phone Number">رقم الموبايل</label><input type="tel" id="phone">
+<div class="chk"><input type="checkbox" id="callMe"><label style="margin:0" class="tr" data-ar="أريد مكالمة من خدمة العملاء" data-en="I want a call from customer service">أريد مكالمة من خدمة العملاء</label></div>
+<select id="callTime">
+  <option class="tr" data-ar="في أي وقت" data-en="Anytime">في أي وقت</option>
+  <option class="tr" data-ar="صباحًا" data-en="Morning">صباحًا</option>
+  <option class="tr" data-ar="ظهرًا" data-en="Afternoon">ظهرًا</option>
+  <option class="tr" data-ar="مساءً" data-en="Evening">مساءً</option>
+</select>
+<button style="width:100%" onclick="sendBooking()" class="tr" data-ar="إرسال طلب الحجز" data-en="Send Booking Request">إرسال طلب الحجز</button>
 </div>
 
 <div id="mReviews"></div>
@@ -471,6 +537,8 @@ let appliedCoupon = null;
 let hotelRatings = {};
 let currentReviewRating = 0;
 let selectedVehicle = "bus";
+let currentLang = localStorage.getItem("nt_lang") || "ar";
+
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
 const vid = (() => { try { let v = localStorage.getItem("nt_vid"); if (!v) { v = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)); localStorage.setItem("nt_vid", v); } return v; } catch (e) { return "anon"; } })();
@@ -482,25 +550,130 @@ const dayKey = r => { const s = String(r.departure_day || "").toLowerCase(); ret
 const img = x => x["Image_-url"] || x.Image_url || x.image_url || "";
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-/* ---------- WhatsApp Menu ---------- */
-function openWaMenu() {
-  $("waMenu").classList.add("show");
-  track("wa_menu_open");
-}
-function closeWaMenu() {
-  $("waMenu").classList.remove("show");
-}
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") {
-    const m = $("waMenu");
-    if (m && m.classList.contains("show")) closeWaMenu();
+/* ---------- Language (i18n) ---------- */
+const dict = {
+  ar: {
+    trips: "الرحلات", services: "خدماتنا", about: "من نحن", contact: "تواصل معنا",
+    heroTitle: "احجز رحلتك بسهولة", heroSub: "اكتشف أجمل الوجهات والرحلات مع Nerea Travel",
+    dest: "الوجهة", date: "التاريخ", adults: "كبار", children: "أطفال", search: "بحث",
+    whereTo: "إلى أين تريد الذهاب؟", featured: "الوجهات المميزة", availableHotels: "الفنادق والرحلات المتاحة في",
+    searchTitle: "جاري البحث...", noHotels: "لا توجد فنادق متاحة لهذه الوجهة في هذا التاريخ.",
+    results: "عدد النتائج:", of: "(من أصل", sort: "الترتيب", def: "الافتراضي", priceAsc: "السعر: الأقل أولاً", priceDesc: "السعر: الأعلى أولاً", topRated: "الأعلى تقييمًا", nameAZ: "الاسم (أ - ي)",
+    minRating: "أقل تقييم", all: "الكل", stars3: "3 نجوم فأكثر ⭐", stars4: "4 نجوم فأكثر ⭐⭐", stars45: "4.5 نجمة فأكثر ⭐⭐⭐",
+    priceFrom: "السعر من", priceTo: "السعر إلى", clearFilters: "✕ مسح الفلاتر", noResults: "لا توجد نتائج مطابقة للفلاتر",
+    viewDetails: "عرض التفاصيل", chooseHotel: "اختر الفندق", night: "الليلة", person: "للفرد", nights: "ليالي", days: "أيام",
+    dep: "المغادرة", hotelIn: "دخول الفندق", return: "الرجوع", priceIncl: "✅ السعر شامل الإقامة والانتقالات",
+    noName: "فندق بدون اسم", noPrice: "السعر غير محدد", photos: "📷 اضغط على الصورة لعرض", photos2: "صور", available: "🛏 متوفر:",
+    reviews: "تقييم", reviewsTitle: "⭐ تقييمات العملاء", showFirst5: "يظهر أول 5 تقييمات من أصل",
+    whyBook: "ليه تحجز مع Nerea Travel؟", feat1: "فنادق متنوعة", feat1d: "اختيارات إقامة تناسب ميزانيتك.",
+    feat2: "انتقالات", feat2d: "تنظيم الانتقالات من وإلى الوجهة.",
+    feat3: "دعم العملاء", feat3d: "نساعدك قبل وأثناء الرحلة.",
+    aboutTitle: "من نحن", aboutP1: "<b>Nerea Travel</b> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية.",
+    aboutP2: "نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة.",
+    stats1: "سنوات خبرة", stats2: "عميل سعيد", stats3: "وجهة سياحية",
+    footerTagline: "رحلتك تبدأ من هنا ✈️", footerLoc: "📍 القاهرة، مصر", footerRights: "© 2026 Nerea Travel. جميع الحقوق محفوظة.",
+    terms: "الشروط والأحكام", privacy: "سياسة الخصوصية", trackBooking: "📋 متابعة الحجز",
+    trackTitle: "متابعة الحجز", trackDesc: "اكتب رقم الحجز ورقم الموبايل اللي حجزت بيه", trackRef: "رقم الحجز", trackPhone: "رقم الموبايل", trackBtn: "عرض حالة الحجز",
+    waContact: "تواصل معنا على واتساب", waCS: "خدمة العملاء", waComp: "الشكاوي",
+    doneTitle: "تم تسجيل طلب الحجز", uploadDesc: "أو ارفع صورة التحويل مباشرة هنا:", uploadBtn: "📷 ارفع صورة التحويل", sendWa: "إرسال الحجز وصورة التحويل على واتساب",
+    numAdults: "عدد البالغين", numChildren: "عدد الأطفال", numRooms: "عدد الغرف (الطفل لا يحتاج غرفة)", roomType: "نوع الغرفة",
+    needTransport: "محتاج انتقالات؟", transportType: "نوع الانتقالات", depPoint: "نقطة التحرك", extraSeat: "كرسي إضافي (اختياري، بسعره)",
+    couponCode: "كود الخصم (اختياري)", apply: "تطبيق", fullName: "الاسم بالكامل", phoneNum: "رقم الموبايل",
+    wantCall: "أريد مكالمة من خدمة العملاء", anyTime: "في أي وقت", morning: "صباحًا", afternoon: "ظهرًا", evening: "مساءً", sendBooking: "إرسال طلب الحجز",
+    totalStr: "الإجمالي:", chooseData: "اختر البيانات المطلوبة", afterDiscount: "(بعد الخصم)", totalWord: "الإجمالي", discount: "خصم",
+    err: { noDestDate: "اختر الوجهة والتاريخ", futureDate: "اختر تاريخًا من اليوم فصاعدًا", errHotels: "تعذر تحميل الفنادق", datePlaceholder: "اختر تاريخ السفر أولاً ثم اضغط بحث", namePhone: "اكتب الاسم ورقم الموبايل", invalidDate: "اختر تاريخ الدخول والخروج", invalidPhone: "رقم الموبايل غير صحيح — اكتبه بالشكل 01xxxxxxxxx" }
+  },
+  en: {
+    trips: "Trips", services: "Services", about: "About Us", contact: "Contact",
+    heroTitle: "Book Your Trip Easily", heroSub: "Discover the most beautiful destinations with Nerea Travel",
+    dest: "Destination", date: "Date", adults: "Adults", children: "Children", search: "Search",
+    whereTo: "Where to go?", featured: "Featured Destinations", availableHotels: "Available Hotels & Trips in",
+    searchTitle: "Searching...", noHotels: "No hotels available for this destination on this date.",
+    results: "Results:", of: "(of", sort: "Sort by", def: "Default", priceAsc: "Price: Low to High", priceDesc: "Price: High to Low", topRated: "Top Rated", nameAZ: "Name (A - Z)",
+    minRating: "Min Rating", all: "All", stars3: "3 Stars & up ⭐", stars4: "4 Stars & up ⭐⭐", stars45: "4.5 Stars & up ⭐⭐⭐",
+    priceFrom: "Price from", priceTo: "Price to", clearFilters: "✕ Clear Filters", noResults: "No results match the filters",
+    viewDetails: "View Details", chooseHotel: "Choose Hotel", night: "night", person: "person", nights: "nights", days: "days",
+    dep: "Departure", hotelIn: "Hotel Check-in", return: "Return", priceIncl: "✅ Price includes accommodation & transport",
+    noName: "Unnamed Hotel", noPrice: "Price not specified", photos: "📷 Click to view", photos2: "photos", available: "🛏 Available:",
+    reviews: "reviews", reviewsTitle: "⭐ Customer Reviews", showFirst5: "Showing first 5 reviews out of",
+    whyBook: "Why book with Nerea Travel?", feat1: "Diverse Hotels", feat1d: "Accommodation options for every budget.",
+    feat2: "Transfers", feat2d: "Organized transfers to and from your destination.",
+    feat3: "Customer Support", feat3d: "We help you before and during your trip.",
+    aboutTitle: "About Us", aboutP1: "<b>Nerea Travel</b> is a leading company in organizing internal and external tourist trips. We aim to provide an exceptional travel experience combining comfort, fun, and competitive prices.",
+    aboutP2: "We work with the best hotels and tour operators to ensure an unforgettable vacation, whether you are looking for a desert adventure, beach relaxation, or a fun family trip.",
+    stats1: "Years of Experience", stats2: "Happy Clients", stats3: "Destinations",
+    footerTagline: "Your journey starts here ✈️", footerLoc: "📍 Cairo, Egypt", footerRights: "© 2026 Nerea Travel. All rights reserved.",
+    terms: "Terms & Conditions", privacy: "Privacy Policy", trackBooking: "📋 Track Booking",
+    trackTitle: "Track Booking", trackDesc: "Enter your booking reference and phone number", trackRef: "Booking Ref", trackPhone: "Phone Number", trackBtn: "View Booking Status",
+    waContact: "Contact us on WhatsApp", waCS: "Customer Service", waComp: "Complaints",
+    doneTitle: "Booking Request Registered", uploadDesc: "Or upload transfer screenshot here:", uploadBtn: "📷 Upload Transfer Screenshot", sendWa: "Send booking & transfer screenshot on WhatsApp",
+    numAdults: "Adults", numChildren: "Children", numRooms: "Rooms (Child doesn't need a room)", roomType: "Room Type",
+    needTransport: "Need transport?", transportType: "Transport Type", depPoint: "Departure Point", extraSeat: "Extra Seat (Optional, with price)",
+    couponCode: "Coupon Code (Optional)", apply: "Apply", fullName: "Full Name", phoneNum: "Phone Number",
+    wantCall: "I want a call from customer service", anyTime: "Anytime", morning: "Morning", afternoon: "Afternoon", evening: "Evening", sendBooking: "Send Booking Request",
+    totalStr: "Total:", chooseData: "Choose required data", afterDiscount: "(after discount)", totalWord: "Total", discount: "Discount",
+    err: { noDestDate: "Choose destination and date", futureDate: "Choose a date from today onwards", errHotels: "Failed to load hotels", datePlaceholder: "Choose travel date first then click search", namePhone: "Enter name and phone number", invalidDate: "Choose check-in and check-out dates", invalidPhone: "Invalid phone number — format 01xxxxxxxxx" }
   }
-});
+};
+
+function t(key) {
+  return dict[currentLang][key] || key;
+}
+function te(key) {
+  return dict[currentLang].err[key] || key;
+}
+
+function applyLanguage() {
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+  $("langBtn").innerText = currentLang === 'ar' ? 'EN' : 'عربي';
+  
+  document.querySelectorAll('.tr').forEach(el => {
+    const ar = el.dataset.ar;
+    const en = el.dataset.en;
+    if (ar && en) {
+      el.innerHTML = currentLang === 'ar' ? ar : en;
+    }
+  });
+
+  // Update placeholders
+  $("couponCode").placeholder = currentLang === 'ar' ? "مثال: WELCOME10" : "e.g. WELCOME10";
+  $("priceMin").placeholder = currentLang === 'ar' ? "أقل سعر" : "Min";
+  $("priceMax").placeholder = currentLang === 'ar' ? "أعلى سعر" : "Max";
+
+  // Re-render dynamic content if needed
+  if (dests.length) {
+    $("destination").innerHTML = `<option value="">${t('whereTo')}</option>` + dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
+    if(localStorage.getItem("nt_saved_dest")) $("destination").value = localStorage.getItem("nt_saved_dest");
+  }
+  if (deps.length) {
+    $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
+  }
+  if (list.length) {
+    $("hotelsTitle").innerText = t('availableHotels') + " " + (dests.find(x => String(x.id) === String($("destination").value))?.Name || "");
+    applyFilters();
+  }
+  if ($("hotelModal").style.display === "flex" && sel) {
+    renderRoomOptions();
+    calc();
+  }
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+  localStorage.setItem("nt_lang", currentLang);
+  applyLanguage();
+  track("lang_switch", { lang: currentLang });
+}
+
+/* ---------- WhatsApp Menu ---------- */
+function openWaMenu() { $("waMenu").classList.add("show"); track("wa_menu_open"); }
+function closeWaMenu() { $("waMenu").classList.remove("show"); }
+document.addEventListener("keydown", e => { if (e.key === "Escape") { const m = $("waMenu"); if (m && m.classList.contains("show")) closeWaMenu(); } });
 
 /* ---------- Skeleton Loading ---------- */
 function showSkeleton() {
-  $("hotelList").innerHTML = '<div class="skeleton-grid">' +
-    Array(6).fill(0).map(() => `
+  $("hotelList").innerHTML = '<div class="skeleton-grid">' + Array(6).fill(0).map(() => `
       <div class="skel-card">
         <div class="skel-img"></div>
         <div class="skel-line"></div>
@@ -509,16 +682,12 @@ function showSkeleton() {
       </div>`).join('') + '</div>';
 }
 
-/* ---------- الدوال (من نحن - الخصوصية) ---------- */
+/* ---------- Legal ---------- */
 function showLegal(type) {
-  const title = type === 'terms' ? 'الشروط والأحكام' : 'سياسة الخصوصية';
-  const content = type === 'terms'
-    ? `<h3>1. الحجز والدفع</h3><p>يتم تأكيد الحجز فقط بعد سداد العربون المتفق عليه وإرسال صورة التحويل.</p>
-       <h3>2. الإلغاء والاسترداد</h3><p>يمكن إلغاء الحجز قبل موعد السفر بـ 3 أيام على الأقل. في حالات أخرى، يرجى التواصل مع خدمة العملاء.</p>
-       <h3>3. المسؤولية</h3><p>الشركة غير مسؤولة عن أي ظروف خارجة عن إرادتها (طقس، قرارات حكومية، إلخ).</p>`
-    : `<h3>1. جمع البيانات</h3><p>نحن نجمع فقط اسمك ورقم هاتفك لغرض إتمام الحجز والتواصل معك.</p>
-       <h3>2. حماية البيانات</h3><p>بياناتك محفوظة بشكل آمن ولا يتم مشاركتها مع أي طرف ثالث.</p>
-       <h3>3. ملفات تعريف الارتباط (Cookies)</h3><p>الموقع يستخدم التخزين المحلي (Local Storage) لتذكر تفضيلاتك وتحسين تجربتك.</p>`;
+  const title = type === 'terms' ? t('terms') : t('privacy');
+  const content = currentLang === 'ar' 
+    ? (type === 'terms' ? `<h3>1. الحجز والدفع</h3><p>يتم تأكيد الحجز فقط بعد سداد العربون المتفق عليه وإرسال صورة التحويل.</p><h3>2. الإلغاء والاسترداد</h3><p>يمكن إلغاء الحجز قبل موعد السفر بـ 3 أيام على الأقل. في حالات أخرى، يرجى التواصل مع خدمة العملاء.</p><h3>3. المسؤولية</h3><p>الشركة غير مسؤولة عن أي ظروف خارجة عن إرادتها (طقس، قرارات حكومية، إلخ).</p>` : `<h3>1. جمع البيانات</h3><p>نحن نجمع فقط اسمك ورقم هاتفك لغرض إتمام الحجز والتواصل معك.</p><h3>2. حماية البيانات</h3><p>بياناتك محفوظة بشكل آمن ولا يتم مشاركتها مع أي طرف ثالث.</p><h3>3. ملفات تعريف الارتباط (Cookies)</h3><p>الموقع يستخدم التخزين المحلي (Local Storage) لتذكر تفضيلاتك وتحسين تجربتك.</p>`)
+    : (type === 'terms' ? `<h3>1. Booking & Payment</h3><p>Booking is confirmed only after paying the agreed deposit and sending the transfer screenshot.</p><h3>2. Cancellation & Refund</h3><p>Cancellation is allowed at least 3 days before travel. Otherwise, please contact customer service.</p><h3>3. Liability</h3><p>The company is not responsible for circumstances beyond its control (weather, government decisions, etc.).</p>` : `<h3>1. Data Collection</h3><p>We only collect your name and phone number to complete your booking and contact you.</p><h3>2. Data Protection</h3><p>Your data is securely stored and not shared with any third party.</p><h3>3. Cookies</h3><p>The site uses Local Storage to remember your preferences and improve your experience.</p>`);
 
   $("legalTitle").innerText = title;
   $("legalContent").innerHTML = content;
@@ -529,9 +698,9 @@ function closeLegal() { $("legalModal").style.display = "none"; }
 /* ---------- Meals Helper ---------- */
 function getMealsList(h) {
   const meals = [];
-  if (h.meal_breakfast) meals.push("فطار");
-  if (h.meal_lunch) meals.push("غداء");
-  if (h.meal_dinner) meals.push("عشاء");
+  if (h.meal_breakfast) meals.push(currentLang === 'ar' ? "فطار" : "Breakfast");
+  if (h.meal_lunch) meals.push(currentLang === 'ar' ? "غداء" : "Lunch");
+  if (h.meal_dinner) meals.push(currentLang === 'ar' ? "عشاء" : "Dinner");
   return meals;
 }
 
@@ -540,8 +709,8 @@ function getMealBadgeShort(h) {
   if (!meals.length) return "";
   const inc = h.meals_included !== false;
   let label;
-  if (meals.length === 3) label = inc ? "شامل الوجبات" : "وجبات متاحة";
-  else label = meals.join(" و ") + (inc ? " مشمول" : " متاح");
+  if (meals.length === 3) label = inc ? (currentLang === 'ar' ? "شامل الوجبات" : "All Meals Incl.") : (currentLang === 'ar' ? "وجبات متاحة" : "Meals Avail.");
+  else label = meals.join(" & ") + (inc ? (currentLang === 'ar' ? " مشمول" : " Incl.") : (currentLang === 'ar' ? " متاح" : " Avail."));
   return "🍽 " + label;
 }
 
@@ -550,7 +719,7 @@ function renderMealBox(h) {
   if (!meals.length) return "";
   const inc = h.meals_included !== false;
   const icon = meals.length === 1 && meals[0] === "فطار" ? "🍳" : "🍽";
-  const title = inc ? "الوجبات مشمولة في السعر" : "الوجبات متاحة (بسعر إضافي)";
+  const title = inc ? (currentLang === 'ar' ? "الوجبات مشمولة في السعر" : "Meals included in price") : (currentLang === 'ar' ? "الوجبات متاحة (بسعر إضافي)" : "Meals available (extra charge)");
   const note = h.meal_note ? `<small>${esc(h.meal_note)}</small>` : "";
   return `<div class="mealBox ${inc ? 'included' : 'available'}">
     <span class="mIcon">${icon}</span>
@@ -563,16 +732,14 @@ function renderMealBox(h) {
 }
 
 const ROOM_TYPES = [
-  {key: "single", price: "price_single", label: "Single - فرد"},
-  {key: "double", price: "price_double", label: "Double - دبل"},
-  {key: "triple", price: "price_triple", label: "Triple - تربل"},
-  {key: "quad",   price: "price_quad",   label: "Quad - رباعي"},
-  {key: "quint",  price: "price_quint",  label: "Quint - خماسي"}
+  {key: "single", price: "price_single", label: "Single"},
+  {key: "double", price: "price_double", label: "Double"},
+  {key: "triple", price: "price_triple", label: "Triple"},
+  {key: "quad",   price: "price_quad",   label: "Quad"},
+  {key: "quint",  price: "price_quint",  label: "Quint"}
 ];
 
-function getAvailableRoomTypes(hotel) {
-  return ROOM_TYPES.filter(rt => N(hotel[rt.price]) > 0);
-}
+function getAvailableRoomTypes(hotel) { return ROOM_TYPES.filter(rt => N(hotel[rt.price]) > 0); }
 
 function getRoomPrice(hotel, type, trip) {
   if (trip) {
@@ -588,15 +755,15 @@ function renderRoomOptions() {
   const h = sel.h, t = sel.t;
   let opts = [];
   if (t) {
-    opts.push({key: "Double", label: "Double - دبل"});
-    opts.push({key: "Triple", label: "Triple - تربل"});
-    opts.push({key: "Quad", label: "Quad - رباعي"});
-    opts.push({key: "Quint", label: "Quint - خماسي"});
-    if (N(t.price_single) > 0) opts.push({key: "Single", label: "Single - فرد"});
+    opts.push({key: "Double", label: "Double"});
+    opts.push({key: "Triple", label: "Triple"});
+    opts.push({key: "Quad", label: "Quad"});
+    opts.push({key: "Quint", label: "Quint"});
+    if (N(t.price_single) > 0) opts.push({key: "Single", label: "Single"});
   } else {
     const avail = getAvailableRoomTypes(h);
     if (!avail.length) {
-      opts.push({key: "Double", label: "Double - دبل"});
+      opts.push({key: "Double", label: "Double"});
     } else {
       avail.forEach(rt => {
         const cap = rt.key.charAt(0).toUpperCase() + rt.key.slice(1);
@@ -641,8 +808,8 @@ function renderVehicleOptions() {
   if (highOpt) highOpt.style.display = highP > 0 ? "" : "none";
   if (busOpt) busOpt.style.display = busP > 0 ? "" : "none";
 
-  $("busPrice").innerText = busP > 0 ? busP.toLocaleString() + " ج / فرد" : "";
-  $("highsPrice").innerText = highP > 0 ? highP.toLocaleString() + " ج / فرد" : "";
+  $("busPrice").innerText = busP > 0 ? busP.toLocaleString() + (currentLang === 'ar' ? " ج / فرد" : " EGP / person") : "";
+  $("highsPrice").innerText = highP > 0 ? highP.toLocaleString() + (currentLang === 'ar' ? " ج / فرد" : " EGP / person") : "";
 
   selectedVehicle = busP > 0 ? "bus" : "highs";
   document.querySelectorAll(".vehicleOpt").forEach(el => {
@@ -698,19 +865,19 @@ async function loadRatings(hotelIds) {
 async function loadReviews(hotelId) {
   const box = $("mReviews");
   if (!box) return;
-  box.innerHTML = `<div class="reviewCard"><p style="text-align:center;color:#888;font-size:13px">⏳ جاري تحميل التقييمات...</p></div>`;
+  box.innerHTML = `<div class="reviewCard"><p style="text-align:center;color:#888;font-size:13px">⏳ ${currentLang === 'ar' ? "جاري تحميل التقييمات..." : "Loading reviews..."}</p></div>`;
   const r = await db.rpc("get_hotel_reviews", { p_hotel_id: hotelId });
   if (r.error) { console.error(r.error); box.innerHTML = ""; return; }
   const d = r.data || {};
   const reviews = d.reviews || [];
   if (!reviews.length) { box.innerHTML = ""; return; }
   const avg = (reviews.reduce((s,x)=>s+N(x.rating),0) / reviews.length).toFixed(1);
-  let html = `<div class="reviewCard"><h4>⭐ تقييمات العملاء <span style="background:#f5a623;color:#fff;padding:2px 10px;border-radius:12px;font-size:13px">${avg} / 5</span> <span style="color:#888;font-size:13px;font-weight:normal">(${reviews.length} تقييم)</span></h4>`;
+  let html = `<div class="reviewCard"><h4>${t('reviewsTitle')} <span style="background:#f5a623;color:#fff;padding:2px 10px;border-radius:12px;font-size:13px">${avg} / 5</span> <span style="color:#888;font-size:13px;font-weight:normal">(${reviews.length} ${t('reviews')})</span></h4>`;
   reviews.slice(0, 5).forEach(x => {
-    const dt = x.created_at ? new Date(x.created_at).toLocaleDateString("ar-EG") : "";
-    html += `<div class="reviewItem"><div class="head"><div class="name">${esc(x.customer_name || "عميل")}</div><div class="date">${esc(dt)}</div></div>${starsHtml(x.rating)}${x.comment ? `<div class="comment">${esc(x.comment)}</div>` : ""}</div>`;
+    const dt = x.created_at ? new Date(x.created_at).toLocaleDateString(currentLang === 'ar' ? "ar-EG" : "en-US") : "";
+    html += `<div class="reviewItem"><div class="head"><div class="name">${esc(x.customer_name || (currentLang === 'ar' ? "عميل" : "Customer"))}</div><div class="date">${esc(dt)}</div></div>${starsHtml(x.rating)}${x.comment ? `<div class="comment">${esc(x.comment)}</div>` : ""}</div>`;
   });
-  if (reviews.length > 5) html += `<p style="text-align:center;color:#888;font-size:12px;margin-top:8px">يظهر أول 5 تقييمات من أصل ${reviews.length}</p>`;
+  if (reviews.length > 5) html += `<p style="text-align:center;color:#888;font-size:12px;margin-top:8px">${t('showFirst5')} ${reviews.length}</p>`;
   html += `</div>`;
   box.innerHTML = html;
 }
@@ -719,7 +886,7 @@ function openReviewForm() {
   const box = $("trackResult");
   if (!box || !lastBooking.ref || !lastBooking.phone) return;
   currentReviewRating = 0;
-  const html = `<div class="reviewForm" id="reviewFormBox"><h3 style="text-align:center;margin-bottom:6px">⭐ قيّم رحلتك</h3><p style="text-align:center;color:#666;font-size:13px">رأيك بيهمنا وياريت يكون صادق</p><div class="ratingInput" id="ratingInput"><span data-r="1">★</span><span data-r="2">★</span><span data-r="3">★</span><span data-r="4">★</span><span data-r="5">★</span></div><textarea id="reviewComment" placeholder="اكتب رأيك في الرحلة والفندق (اختياري)"></textarea><button class="reviewBtn" onclick="submitReview()">إرسال التقييم</button><button class="reviewBtn" style="background:#999" onclick="document.getElementById('reviewFormBox').remove()">إلغاء</button></div>`;
+  const html = `<div class="reviewForm" id="reviewFormBox"><h3 style="text-align:center;margin-bottom:6px">⭐ ${currentLang === 'ar' ? "قيّم رحلتك" : "Rate your trip"}</h3><p style="text-align:center;color:#666;font-size:13px">${currentLang === 'ar' ? "رأيك بيهمنا وياريت يكون صادق" : "We value your honest feedback"}</p><div class="ratingInput" id="ratingInput"><span data-r="1">★</span><span data-r="2">★</span><span data-r="3">★</span><span data-r="4">★</span><span data-r="5">★</span></div><textarea id="reviewComment" placeholder="${currentLang === 'ar' ? "اكتب رأيك في الرحلة والفندق (اختياري)" : "Write your review (optional)"}"></textarea><button class="reviewBtn" onclick="submitReview()">${currentLang === 'ar' ? "إرسال التقييم" : "Submit Review"}</button><button class="reviewBtn" style="background:#999" onclick="document.getElementById('reviewFormBox').remove()">${currentLang === 'ar' ? "إلغاء" : "Cancel"}</button></div>`;
   box.insertAdjacentHTML("beforeend", html);
   document.querySelectorAll("#ratingInput span").forEach(s => {
     s.addEventListener("click", () => {
@@ -737,19 +904,19 @@ function openReviewForm() {
 }
 
 async function submitReview() {
-  if (!currentReviewRating) { toast("اختار عدد النجوم أولاً", "info"); return; }
+  if (!currentReviewRating) { toast(currentLang === 'ar' ? "اختار عدد النجوم أولاً" : "Select stars first", "info"); return; }
   const btn = document.querySelector(".reviewBtn");
-  if (btn) { btn.disabled = true; btn.innerText = "جاري الإرسال..."; }
+  if (btn) { btn.disabled = true; btn.innerText = currentLang === 'ar' ? "جاري الإرسال..." : "Sending..."; }
   const comment = ($("reviewComment").value || "").trim();
   const r = await db.rpc("submit_review", { p_ref: lastBooking.ref, p_phone: lastBooking.phone, p_rating: currentReviewRating, p_comment: comment });
-  if (btn) { btn.disabled = false; btn.innerText = "إرسال التقييم"; }
-  if (r.error) { console.error(r.error); toast("تعذر إرسال التقييم", "err"); return; }
+  if (btn) { btn.disabled = false; btn.innerText = currentLang === 'ar' ? "إرسال التقييم" : "Submit Review"; }
+  if (r.error) { console.error(r.error); toast(currentLang === 'ar' ? "تعذر إرسال التقييم" : "Failed to submit review", "err"); return; }
   const d = r.data;
-  if (!d || !d.ok) { toast((d && d.message) || "تعذر إرسال التقييم", "err", 4500); return; }
+  if (!d || !d.ok) { toast((d && d.message) || (currentLang === 'ar' ? "تعذر إرسال التقييم" : "Failed to submit review"), "err", 4500); return; }
   toast("✅ " + d.message, "ok", 4000);
   track("review_submitted", {ref: lastBooking.ref, rating: currentReviewRating});
   const box = $("reviewFormBox");
-  if (box) box.outerHTML = `<div class="reviewCard" style="text-align:center;background:#d4edda;color:#155724">✅ تم إرسال تقييمك، شكرًا لك!</div>`;
+  if (box) box.outerHTML = `<div class="reviewCard" style="text-align:center;background:#d4edda;color:#155724">✅ ${currentLang === 'ar' ? "تم إرسال تقييمك، شكرًا لك!" : "Review submitted, thank you!"}</div>`;
 }
 
 function clearFilters() {
@@ -788,24 +955,24 @@ function applyFilters() {
 
 function renderHotelList() {
   const listToRender = filtered;
-  $("resultCount").innerHTML = `عدد النتائج: <b>${listToRender.length}</b> ${listToRender.length < list.length ? `(من أصل ${list.length})` : ""}`;
+  $("resultCount").innerHTML = `${t('results')} <b>${listToRender.length}</b> ${listToRender.length < list.length ? `${t('of')} ${list.length})` : ""}`;
 
   $("hotelList").innerHTML = listToRender.length ? listToRender.map(o => {
     const i = list.indexOf(o);
     const rating = hotelRatings[String(o.h.id)];
     const ratingBadge = rating && rating.count > 0 ? `<span class="badge">★ ${rating.avg} (${rating.count})</span>` : "";
-    const ratingLine = rating && rating.count > 0 ? `<div class="rating">${starsHtml(rating.avg)} <b>${rating.avg}</b> <span>(${rating.count} تقييم)</span></div>` : "";
+    const ratingLine = rating && rating.count > 0 ? `<div class="rating">${starsHtml(rating.avg)} <b>${rating.avg}</b> <span>(${rating.count} ${t('reviews')})</span></div>` : "";
     const mealBadgeText = getMealBadgeShort(o.h);
     const mealIncluded = o.h.meals_included !== false;
     const mealBadge = mealBadgeText ? `<span class="meal-badge ${mealIncluded ? 'included' : ''}">${mealBadgeText}</span>` : "";
     let roomsLine = "";
     if (o.t) {
-      roomsLine = `<p style="font-size:12px;color:#176b87;margin-top:6px">🛏 متوفر: Double / Triple / Quad / Quint</p>`;
+      roomsLine = `<p style="font-size:12px;color:#176b87;margin-top:6px">${t('available')} Double / Triple / Quad / Quint</p>`;
     } else {
       const avail = getAvailableRoomTypes(o.h);
       if (avail.length) {
-        const names = avail.map(rt => rt.label.split(" - ")[0]).join(" / ");
-        roomsLine = `<p style="font-size:12px;color:#176b87;margin-top:6px">🛏 متوفر: ${names}</p>`;
+        const names = avail.map(rt => rt.label).join(" / ");
+        roomsLine = `<p style="font-size:12px;color:#176b87;margin-top:6px">${t('available')} ${names}</p>`;
       }
     }
     return `<div class="card">
@@ -814,32 +981,32 @@ function renderHotelList() {
         ${ratingBadge}${mealBadge}
       </div>
       <div class="card-content">
-        ${(imgs[o.h.id] || []).length > 1 ? `<p style="font-size:12px;color:#888;margin-bottom:6px">📷 اضغط على الصورة لعرض ${imgs[o.h.id].length} صور</p>` : ""}
-        <h3>${o.h.Name || "فندق بدون اسم"}</h3>
+        ${(imgs[o.h.id] || []).length > 1 ? `<p style="font-size:12px;color:#888;margin-bottom:6px">${t('photos')} ${imgs[o.h.id].length} ${t('photos2')}</p>` : ""}
+        <h3>${o.h.Name || t('noName')}</h3>
         ${ratingLine}
         <p>${o.h.description || ""}</p>
         ${roomsLine}
-        ${o.t ? `<p>📅 ${o.t.days} أيام / ${o.t.nights} ليالي</p><p>🚌 المغادرة: ${o.t.start_date} • 🏨 دخول الفندق: ${o.t.hotelIn}</p><p>↩️ الرجوع: ${o.t.end_date}</p><p>✅ السعر شامل الإقامة والانتقالات</p>` : ""}
-        <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + " جنيه / للفرد" : (priceOf(o) ? priceOf(o).toLocaleString() + " جنيه / الليلة" : "السعر غير محدد")}</div>
-        <button onclick="showHotel(${i})">عرض التفاصيل</button>
+        ${o.t ? `<p>📅 ${o.t.days} ${t('days')} / ${o.t.nights} ${t('nights')}</p><p>🚌 ${t('dep')}: ${o.t.start_date} • 🏨 ${t('hotelIn')}: ${o.t.hotelIn}</p><p>↩️ ${t('return')}: ${o.t.end_date}</p><p>${t('priceIncl')}</p>` : ""}
+        <div class="price">${o.t ? N(o.t.price_per_person).toLocaleString() + " EGP / " + t('person') : (priceOf(o) ? priceOf(o).toLocaleString() + " EGP / " + t('night') : t('noPrice'))}</div>
+        <button onclick="showHotel(${i})">${t('viewDetails')}</button>
       </div></div>`;
-  }).join("") : '<p class="note">لا توجد نتائج مطابقة للفلاتر</p>';
+  }).join("") : `<p class="note">${t('noResults')}</p>`;
 }
 
 async function applyCoupon() {
   const code = $("couponCode").value.trim();
   const msg = $("couponMsg");
   const dbox = $("discountBox");
-  if (!code) { msg.className = "couponMsg err"; msg.innerText = "اكتب كود الخصم الأول"; appliedCoupon = null; dbox.classList.remove("show"); calc(); return; }
-  if (!(total > 0)) { msg.className = "couponMsg err"; msg.innerText = "اختر تفاصيل الحجز أولاً"; return; }
-  msg.className = "couponMsg"; msg.style.display = "block"; msg.innerText = "جاري التحقق...";
+  if (!code) { msg.className = "couponMsg err"; msg.innerText = currentLang === 'ar' ? "اكتب كود الخصم الأول" : "Enter coupon code first"; appliedCoupon = null; dbox.classList.remove("show"); calc(); return; }
+  if (!(total > 0)) { msg.className = "couponMsg err"; msg.innerText = currentLang === 'ar' ? "اختر تفاصيل الحجز أولاً" : "Select booking details first"; return; }
+  msg.className = "couponMsg"; msg.style.display = "block"; msg.innerText = currentLang === 'ar' ? "جاري التحقق..." : "Verifying...";
   const r = await db.rpc("validate_coupon", { p_code: code, p_amount: total });
-  if (r.error) { console.error(r.error); msg.className = "couponMsg err"; msg.innerText = "حصل خطأ، حاول تاني"; return; }
+  if (r.error) { console.error(r.error); msg.className = "couponMsg err"; msg.innerText = currentLang === 'ar' ? "حصل خطأ، حاول تاني" : "Error, try again"; return; }
   const d = r.data;
-  if (!d || !d.valid) { msg.className = "couponMsg err"; msg.innerText = (d && d.message) || "كود غير صالح"; appliedCoupon = null; dbox.classList.remove("show"); calc(); return; }
+  if (!d || !d.valid) { msg.className = "couponMsg err"; msg.innerText = (d && d.message) || (currentLang === 'ar' ? "كود غير صالح" : "Invalid code"); appliedCoupon = null; dbox.classList.remove("show"); calc(); return; }
   appliedCoupon = { code: d.code, discount: N(d.discount) };
   msg.className = "couponMsg ok";
-  msg.innerText = "✅ تم تطبيق الكود — خصم " + N(d.discount).toLocaleString() + " جنيه";
+  msg.innerText = (currentLang === 'ar' ? "✅ تم تطبيق الكود — خصم " : "✅ Applied — Discount ") + N(d.discount).toLocaleString() + (currentLang === 'ar' ? " جنيه" : " EGP");
   track("coupon_applied", {code: d.code, discount: d.discount});
   calc();
 }
@@ -855,7 +1022,7 @@ function resizeImage(file, maxSize) {
       canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
       canvas.toBlob(b => { URL.revokeObjectURL(img.src); resolve(b || file); }, "image/jpeg", 0.85);
     };
-    img.onerror = () => reject(new Error("فشل تحميل الصورة"));
+    img.onerror = () => reject(new Error("Failed to load image"));
     img.src = URL.createObjectURL(file);
   });
 }
@@ -865,46 +1032,48 @@ function onProofSelected(el) {
   uploadPaymentProof(lastBooking.ref, lastBooking.phone, el, file);
 }
 async function uploadPaymentProof(ref, phone, inputEl, file) {
-  if (!ref || !phone) { toast("مش قادرين نحدد الحجز", "err"); return; }
-  if (!file.type.startsWith("image/")) { toast("اختار صورة من فضلك", "err"); return; }
-  if (file.size > 10 * 1024 * 1024) { toast("الصورة كبيرة (أقصى 10 ميجا)", "err"); return; }
+  if (!ref || !phone) { toast(currentLang === 'ar' ? "مش قادرين نحدد الحجز" : "Cannot identify booking", "err"); return; }
+  if (!file.type.startsWith("image/")) { toast(currentLang === 'ar' ? "اختار صورة من فضلك" : "Please select an image", "err"); return; }
+  if (file.size > 10 * 1024 * 1024) { toast(currentLang === 'ar' ? "الصورة كبيرة (أقصى 10 ميجا)" : "Image too large (max 10MB)", "err"); return; }
   const btn = inputEl.closest("label") || $("uploadBtn");
   const origText = btn ? btn.innerHTML : "";
-  if (btn) { btn.classList.add("loading"); btn.innerText = "⏳ جاري رفع الصورة..."; }
+  if (btn) { btn.classList.add("loading"); btn.innerText = currentLang === 'ar' ? "⏳ جاري رفع الصورة..." : "⏳ Uploading..."; }
   try {
     const blob = await resizeImage(file, 1400);
     const path = `${ref}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
     const up = await db.storage.from("payment-proofs").upload(path, blob, { contentType: "image/jpeg", upsert: false });
-    if (up.error) { console.error(up.error); toast("تعذر رفع الصورة: " + up.error.message, "err", 5000); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; return; }
+    if (up.error) { console.error(up.error); toast((currentLang === 'ar' ? "تعذر رفع الصورة: " : "Upload failed: ") + up.error.message, "err", 5000); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; return; }
     const url = db.storage.from("payment-proofs").getPublicUrl(path).data.publicUrl;
     const r = await db.rpc("attach_payment_proof", { p_ref: ref, p_phone: phone, p_url: url });
-    if (r.error || !r.data || !r.data.ok) { console.error(r.error, r.data); toast("تعذر تثبيت الصورة على الحجز", "err", 5000); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; return; }
-    toast("✅ تم رفع صورة التحويل بنجاح", "ok", 4000);
+    if (r.error || !r.data || !r.data.ok) { console.error(r.error, r.data); toast(currentLang === 'ar' ? "تعذر تثبيت الصورة على الحجز" : "Failed to attach image to booking", "err", 5000); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; return; }
+    toast(currentLang === 'ar' ? "✅ تم رفع صورة التحويل بنجاح" : "✅ Transfer screenshot uploaded", "ok", 4000);
     track("payment_proof_uploaded", {ref: ref});
     markUploadDone(url);
-  } catch (err) { console.error(err); toast("حصل خطأ أثناء الرفع", "err"); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; }
+  } catch (err) { console.error(err); toast(currentLang === 'ar' ? "حصل خطأ أثناء الرفع" : "Error during upload", "err"); if (btn) { btn.classList.remove("loading"); btn.innerHTML = origText; } inputEl.value = ""; }
 }
 function markUploadDone(url) {
   const area = $("uploadArea");
-  if (area) { area.outerHTML = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${url}" alt="صورة التحويل"></div>`; return; }
+  const doneHtml = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">${currentLang === 'ar' ? "✅ تم رفع صورة التحويل" : "✅ Transfer screenshot uploaded"}</p><img src="${url}" alt="Proof"></div>`;
+  if (area) { area.outerHTML = doneHtml; return; }
   const box = $("trackUploadArea");
-  if (box) { box.outerHTML = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${url}" alt="صورة التحويل"></div>`; }
+  if (box) { box.outerHTML = doneHtml; }
 }
 
 async function cancelBooking(ref, phone) {
-  if (!confirm("هل أنت متأكد من إلغاء الحجز؟\nلا يمكن التراجع عن هذه العملية.")) return;
+  if (!confirm(currentLang === 'ar' ? "هل أنت متأكد من إلغاء الحجز؟\nلا يمكن التراجع عن هذه العملية." : "Are you sure you want to cancel this booking?")) return;
   const r = await db.rpc("cancel_booking", { p_ref: ref, p_phone: phone });
-  if (r.error) { console.error(r.error); toast("حصل خطأ، حاول تاني", "err"); return; }
+  if (r.error) { console.error(r.error); toast(currentLang === 'ar' ? "حصل خطأ، حاول تاني" : "Error, try again", "err"); return; }
   const d = r.data;
-  if (!d || !d.ok) { toast((d && d.message) || "تعذر إلغاء الحجز", "err", 5000); return; }
-  toast("✅ تم إلغاء الحجز", "ok", 4000);
+  if (!d || !d.ok) { toast((d && d.message) || (currentLang === 'ar' ? "تعذر إلغاء الحجز" : "Failed to cancel booking"), "err", 5000); return; }
+  toast(currentLang === 'ar' ? "✅ تم إلغاء الحجز" : "✅ Booking cancelled", "ok", 4000);
   track("booking_cancelled", {ref: ref});
   closeTrack();
-  setTimeout(() => { if (ref) { $("tRef").value = ref; $("tPhone").value = phone; checkBooking({disabled:false, innerText:"عرض حالة الحجز"}); } }, 300);
+  setTimeout(() => { if (ref) { $("tRef").value = ref; $("tPhone").value = phone; checkBooking({disabled:false, innerText: t('trackBtn')}); } }, 300);
 }
 
 async function init() {
   initDark();
+  applyLanguage(); // Apply language on load
 
   const savedDest = localStorage.getItem("nt_saved_dest");
   const savedDate = localStorage.getItem("nt_saved_date");
@@ -912,7 +1081,7 @@ async function init() {
   const d = await db.from("destinations").select("*").order("id");
   if (d.error) { console.error(d.error); return; }
   dests = d.data || [];
-  $("destination").innerHTML = '<option value="">إلى أين تريد الذهاب؟</option>' + dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
+  $("destination").innerHTML = `<option value="">${t('whereTo')}</option>` + dests.map(x => `<option value="${x.id}">${x.Name}</option>`).join("");
 
   if(savedDest) $("destination").value = savedDest;
   if(savedDate) $("date").value = savedDate;
@@ -921,7 +1090,7 @@ async function init() {
     <div class="card">
       <div class="card-img">${img(x) ? `<img loading="lazy" src="${img(x)}" alt="${esc(x.Name)}">` : '🏖️'}</div>
       <div class="card-content"><h3>${x.Name}</h3><p>${x.Description || ''}</p>
-      <button onclick="pickDest(${x.id})">اختر الفندق</button></div>
+      <button onclick="pickDest(${x.id})">${t('chooseHotel')}</button></div>
     </div>`).join("");
 
   const p = await db.from("departure_points").select("*").order("id");
@@ -939,25 +1108,25 @@ async function init() {
 
 function pickDest(id) {
   $("destination").value = id;
-  if (!$("date").value) { toast("اختر تاريخ السفر أولاً ثم اضغط بحث", "info"); window.scrollTo({top: 0, behavior: "smooth"}); return; }
+  if (!$("date").value) { toast(te('datePlaceholder'), "info"); window.scrollTo({top: 0, behavior: "smooth"}); return; }
   searchTrips();
 }
 
 async function searchTrips() {
   const destId = $("destination").value, date = $("date").value;
-  if (!destId || !date) { toast("اختر الوجهة والتاريخ", "info"); return; }
-  if (date < new Date().toISOString().slice(0, 10)) { toast("اختر تاريخًا من اليوم فصاعدًا", "info"); return; }
+  if (!destId || !date) { toast(te('noDestDate'), "info"); return; }
+  if (date < new Date().toISOString().slice(0, 10)) { toast(te('futureDate'), "info"); return; }
 
   localStorage.setItem("nt_saved_dest", destId);
   localStorage.setItem("nt_saved_date", date);
 
-  $("hotelsTitle").innerText = "جاري البحث...";
+  $("hotelsTitle").innerText = t('searchTitle');
   showSkeleton();
   $("hotels").style.display = "block";
   $("hotels").scrollIntoView({behavior: "smooth"});
 
   const h = await db.from("Hotels").select("*").eq("Destination_id", destId).order("Name", {ascending: true});
-  if (h.error) { console.error("Hotels error:", h.error); toast("تعذر تحميل الفنادق", "err"); return; }
+  if (h.error) { console.error("Hotels error:", h.error); toast(te('errHotels'), "err"); return; }
   const hotels = h.data || [];
   const t = await db.from("Series_Trips").select("*");
   if (t.error) console.warn("Series_Trips error:", t.error);
@@ -974,13 +1143,13 @@ async function searchTrips() {
     await loadRatings(hotels.map(x => x.id));
   }
   const dest = dests.find(x => String(x.id) === String(destId));
-  $("hotelsTitle").innerText = "الفنادق والرحلات المتاحة في " + (dest ? dest.Name : "");
+  $("hotelsTitle").innerText = t('availableHotels') + " " + (dest ? dest.Name : "");
 
   clearFilters();
 
-  if (list.length) toast("تم العثور على " + list.length + " نتيجة", "ok");
+  if (list.length) toast((currentLang === 'ar' ? "تم العثور على " : "Found ") + list.length + (currentLang === 'ar' ? " نتيجة" : " results"), "ok");
   else {
-    $("hotelList").innerHTML = '<p class="note" style="margin-top:30px">لا توجد فنادق متاحة لهذه الوجهة في هذا التاريخ.</p>';
+    $("hotelList").innerHTML = `<p class="note" style="margin-top:30px">${t('noHotels')}</p>`;
   }
 }
 
@@ -1001,26 +1170,23 @@ function showHotel(i) {
   if (!oldArea) {
     const newArea = document.createElement("div");
     newArea.id = "uploadArea";
-    newArea.innerHTML = `<p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">أو ارفع صورة التحويل مباشرة هنا:</p><label class="uploadBtn" id="uploadBtn">📷 ارفع صورة التحويل<input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)"></label>`;
+    newArea.innerHTML = `<p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">${t('uploadDesc')}</p><label class="uploadBtn" id="uploadBtn">${t('uploadBtn')}<input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)"></label>`;
     $("doneBox").appendChild(newArea);
   }
 
   $("mName").innerText = h.Name;
   $("mDesc").innerText = h.description || "";
-  $("mImg").innerHTML = img(h)
-    ? `<img loading="lazy" src="${img(h)}" alt="${esc(h.Name)}">`
-    : "🏨";
+  $("mImg").innerHTML = img(h) ? `<img loading="lazy" src="${img(h)}" alt="${esc(h.Name)}">` : "🏨";
 
   const r = hotelRatings[String(h.id)];
-  $("mRating").innerHTML = r && r.count > 0 ? `<div style="margin:6px 0;display:flex;align-items:center;gap:8px">${starsHtml(r.avg)} <b>${r.avg}</b> <span style="color:#888;font-size:13px">(${r.count} تقييم)</span></div>` : "";
+  $("mRating").innerHTML = r && r.count > 0 ? `<div style="margin:6px 0;display:flex;align-items:center;gap:8px">${starsHtml(r.avg)} <b>${r.avg}</b> <span style="color:#888;font-size:13px">(${r.count} ${t('reviews')})</span></div>` : "";
 
   $("mMeals").innerHTML = renderMealBox(h);
-
   renderRoomOptions();
 
   let mapsHtml = "";
   const mapsUrl = h.google_maps_url || (h.latitude && h.longitude ? `https://www.google.com/maps?q=${h.latitude},${h.longitude}` : "");
-  if (mapsUrl) mapsHtml = `<a class="mapsBtn" href="${esc(mapsUrl)}" target="_blank" onclick="track('maps_click',{hotel:'${esc(h.Name)}'})">📍 موقع الفندق على خرائط جوجل</a>`;
+  if (mapsUrl) mapsHtml = `<a class="mapsBtn" href="${esc(mapsUrl)}" target="_blank" onclick="track('maps_click',{hotel:'${esc(h.Name)}'})">📍 ${currentLang === 'ar' ? "موقع الفندق على خرائط جوجل" : "Hotel Location on Google Maps"}</a>`;
   $("mMaps").innerHTML = mapsHtml;
 
   $("adults").value = a;
@@ -1031,8 +1197,8 @@ function showHotel(i) {
   $("nonBox").style.display = t ? "none" : "block";
   $("transRow").style.display = t ? "none" : "flex";
   $("transBox").style.display = t ? "block" : "none";
-  $("childAge").innerText = "(حتى 10 سنوات مجانًا في الفندق، الأكبر يُحسب بالغًا)";
-  $("mInfo").innerText = t ? `رحلة سيريال ${t.days} أيام / ${t.nights} ليالي\nالمغادرة: ${t.start_date} • دخول الفندق: ${t.hotelIn} • الرجوع: ${t.end_date}\nالسعر شامل الإقامة والانتقالات` : "اختر تاريخ الدخول والخروج";
+  $("childAge").innerText = currentLang === 'ar' ? "(حتى 10 سنوات مجانًا في الفندق، الأكبر يُحسب بالغًا)" : "(Under 10 free in hotel, older counted as adult)";
+  $("mInfo").innerText = t ? `${currentLang === 'ar' ? "رحلة سيريال" : "Series Trip"} ${t.days} ${t('days')} / ${t.nights} ${t('nights')}\n${t('dep')}: ${t.start_date} • ${t('hotelIn')}: ${t.hotelIn} • ${t('return')}: ${t.end_date}\n${t('priceIncl')}` : (currentLang === 'ar' ? "اختر تاريخ الدخول والخروج" : "Select check-in and check-out dates");
   if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
   renderVehicleOptions();
   fillCustomer();
@@ -1077,7 +1243,7 @@ function calc() {
       extraSeatPrice = N(h.extra_bus_seat_price);
     }
   }
-  $("seatInfo").innerText = needT ? `كراسي: ${seats} (${a} بالغين + ${x} إضافي) • ${selectedVehicle === "highs" ? "High S" : "Bus"}` : "";
+  $("seatInfo").innerText = needT ? `${currentLang === 'ar' ? "كراسي" : "Seats"}: ${seats} (${a} ${currentLang === 'ar' ? "بالغين" : "adults"} + ${x} ${currentLang === 'ar' ? "إضافي" : "extra"}) • ${selectedVehicle === "highs" ? "High S" : "Bus"}` : "";
   total = 0;
   if (t) {
     const rp = type === "Single" ? (N(t.price_single) || N(t.price_per_person)) : N(t.price_per_person);
@@ -1099,7 +1265,7 @@ function calc() {
   if (!t && needT && $("cin").value) {
     const depDate = addDays($("cin").value, -1);
     $("depInfo").style.display = "block";
-    $("depInfo").innerHTML = `🚌 تاريخ التحرك: <b>${depDate}</b> (اليوم السابق للدخول)`;
+    $("depInfo").innerHTML = `🚌 ${currentLang === 'ar' ? "تاريخ التحرك" : "Departure date"}: <b>${depDate}</b> ${currentLang === 'ar' ? "(اليوم السابق للدخول)" : "(day before check-in)"}`;
   } else {
     $("depInfo").style.display = "none";
   }
@@ -1109,25 +1275,25 @@ function calc() {
     discount = Math.min(appliedCoupon.discount, total);
     const dbox = $("discountBox");
     dbox.classList.add("show");
-    dbox.innerText = "🎟️ خصم " + appliedCoupon.code + ": -" + discount.toLocaleString() + " جنيه";
+    dbox.innerText = `🎟️ ${t('discount')} ${appliedCoupon.code}: -${discount.toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}`;
   } else {
     $("discountBox").classList.remove("show");
   }
   const final = Math.max(total - discount, 0);
   if (final > 0) {
-    $("total").innerText = "الإجمالي: " + final.toLocaleString() + " جنيه" + (discount > 0 ? " (بعد الخصم)" : "");
+    $("total").innerText = `${t('totalStr')} ${final.toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"} ${discount > 0 ? t('afterDiscount') : ""}`;
   } else if (discount > 0) {
-    $("total").innerText = "الإجمالي: " + total.toLocaleString() + " جنيه";
+    $("total").innerText = `${t('totalStr')} ${total.toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}`;
   } else {
-    $("total").innerText = "الإجمالي: اختر البيانات المطلوبة";
+    $("total").innerText = `${t('totalStr')} ${t('chooseData')}`;
   }
 }
 
 async function sendBooking() {
   const name = $("name").value.trim(), phone = $("phone").value.trim();
-  if (!name || !phone) { toast("اكتب الاسم ورقم الموبايل", "info"); return; }
-  if (!(total > 0)) { toast("اختر تاريخ الدخول والخروج", "info"); return; }
-  if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) { toast("رقم الموبايل غير صحيح — اكتبه بالشكل 01xxxxxxxxx", "err"); return; }
+  if (!name || !phone) { toast(te('namePhone'), "info"); return; }
+  if (!(total > 0)) { toast(te('invalidDate'), "info"); return; }
+  if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) { toast(te('invalidPhone'), "err"); return; }
 
   const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!t || $("transChk").checked;
@@ -1154,7 +1320,7 @@ async function sendBooking() {
   };
 
   const r = await db.rpc("create_booking", { payload: row });
-  if (r.error) { console.error(r.error); toast("تعذر إرسال الطلب: " + r.error.message, "err", 5000); return; }
+  if (r.error) { console.error(r.error); toast((currentLang === 'ar' ? "تعذر إرسال الطلب: " : "Failed to send request: ") + r.error.message, "err", 5000); return; }
 
   const saved = r.data;
   const finalTotal = N(saved.total_price);
@@ -1168,7 +1334,7 @@ async function sendBooking() {
   const depName = needT ? ((deps.find(y => y.id == saved.departure_points_id) || {}).name || "-") : "-";
   const nights = Math.round((new Date(saved.check_out) - new Date(saved.check_in)) / 86400000);
 
-  const msgLines = [
+  const msgLines = currentLang === 'ar' ? [
     "طلب حجز جديد", "رقم الحجز: " + ref, "الاسم: " + name, "الموبايل: " + phone,
     "الفندق: " + sel.h.Name, "النوع: " + (t ? "سيريال" : "عادي"),
     "التاريخ: " + saved.check_in + " ← " + saved.check_out, "عدد الليالي: " + nights,
@@ -1178,40 +1344,51 @@ async function sendBooking() {
     "الغرف: " + saved.number_of_rooms,
     "الانتقالات: " + (needT ? "نعم (" + saved.bus_seats + " كراسي) - " + (selectedVehicle === "highs" ? "High S" : "Bus") : "لا"),
     "مكان التحرك: " + depName
+  ] : [
+    "New Booking Request", "Booking Ref: " + ref, "Name: " + name, "Phone: " + phone,
+    "Hotel: " + sel.h.Name, "Type: " + (t ? "Series" : "Normal"),
+    "Date: " + saved.check_in + " -> " + saved.check_out, "Nights: " + nights,
+    "Departure Date: " + (departureDate || "-"),
+    "Adults: " + a + " | Children: " + c,
+    "Room Type: " + $("roomType").value,
+    "Rooms: " + saved.number_of_rooms,
+    "Transport: " + (needT ? "Yes (" + saved.bus_seats + " seats) - " + (selectedVehicle === "highs" ? "High S" : "Bus") : "No"),
+    "Departure Point: " + depName
   ];
+
   const mealsList = getMealsList(sel.h);
   if (mealsList.length) {
     const inc = sel.h.meals_included !== false;
-    msgLines.push("🍽 الوجبات: " + mealsList.join("، ") + (inc ? " (مشمولة)" : " (متاحة)") + (sel.h.meal_note ? " — " + sel.h.meal_note : ""));
+    msgLines.push((currentLang === 'ar' ? "🍽 الوجبات: " : "🍽 Meals: ") + mealsList.join("، ") + (inc ? (currentLang === 'ar' ? " (مشمولة)" : " (Included)") : (currentLang === 'ar' ? " (متاحة)" : " (Available)")) + (sel.h.meal_note ? " — " + sel.h.meal_note : ""));
   }
-  if (disc > 0 && saved.coupon_code) msgLines.push("كود الخصم: " + saved.coupon_code + " (-" + disc.toLocaleString() + " جنيه)");
-  msgLines.push("الإجمالي: " + finalTotal.toLocaleString() + " جنيه");
-  msgLines.push("العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه");
+  if (disc > 0 && saved.coupon_code) msgLines.push((currentLang === 'ar' ? "كود الخصم: " : "Coupon: ") + saved.coupon_code + " (-" + disc.toLocaleString() + (currentLang === 'ar' ? " جنيه)" : " EGP)"));
+  msgLines.push((currentLang === 'ar' ? "الإجمالي: " : "Total: ") + finalTotal.toLocaleString() + (currentLang === 'ar' ? " جنيه" : " EGP"));
+  msgLines.push((currentLang === 'ar' ? "العربون المطلوب (" : "Required Deposit (") + pay.pct + "%): " + dep.toLocaleString() + (currentLang === 'ar' ? " جنيه" : " EGP"));
   const msg = msgLines.join("\n");
 
-  let payText = "رقم حجزك: " + ref + "\n";
-  if (disc > 0 && saved.coupon_code) payText += "🎟️ خصم " + saved.coupon_code + ": -" + disc.toLocaleString() + " جنيه\n";
-  payText += "العربون المطلوب (" + pay.pct + "%): " + dep.toLocaleString() + " جنيه" +
-    "\n\nحوّل المبلغ على:\n• إنستاباي: " + pay.insta +
-    "\n• فودافون كاش: " + pay.voda +
-    "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب.";
+  let payText = (currentLang === 'ar' ? "رقم حجزك: " : "Your Booking Ref: ") + ref + "\n";
+  if (disc > 0 && saved.coupon_code) payText += (currentLang === 'ar' ? "🎟️ خصم " : "🎟️ Discount ") + saved.coupon_code + ": -" + disc.toLocaleString() + (currentLang === 'ar' ? " جنيه\n" : " EGP\n");
+  payText += (currentLang === 'ar' ? "العربون المطلوب (" : "Required Deposit (") + pay.pct + "%): " + dep.toLocaleString() + (currentLang === 'ar' ? " جنيه" : " EGP") +
+    (currentLang === 'ar' ? "\n\nحوّل المبلغ على:\n• إنستاباي: " : "\n\nTransfer to:\n• InstaPay: ") + pay.insta +
+    (currentLang === 'ar' ? "\n• فودافون كاش: " : "\n• Vodafone Cash: ") + pay.voda +
+    (currentLang === 'ar' ? "\n\nثم أرسل صورة التحويل مع رقم الحجز على واتساب." : "\n\nThen send the transfer screenshot with the booking ref on WhatsApp.");
 
   $("payInfo").innerText = payText;
   $("waLink").href = "https://wa.me/" + salesPhone + "?text=" + encodeURIComponent(msg);
 
   track("booking", {hotel: sel.h.Name, total: finalTotal, coupon: saved.coupon_code || null, vehicle: selectedVehicle});
-  toast("✅ تم تسجيل حجزك: " + ref, "ok", 4000);
+  toast((currentLang === 'ar' ? "✅ تم تسجيل حجزك: " : "✅ Booking registered: ") + ref, "ok", 4000);
   $("formBox").style.display = "none";
   $("doneBox").style.display = "block";
 }
 
 const ST_LABELS = {
-  "Pending Confirmation":  {label:"قيد التأكيد",        color:"#e0a800", icon:"⏳"},
-  "Waiting Confirmation":  {label:"في انتظار التأكيد",   color:"#e0a800", icon:"⏳"},
-  "Confirmed":             {label:"تم التأكيد",          color:"#17a2b8", icon:"✅"},
-  "Waiting Payment":       {label:"في انتظار الدفع",     color:"#fd7e14", icon:"💳"},
-  "Paid":                  {label:"تم الدفع",            color:"#28a745", icon:"💰"},
-  "Cancelled":             {label:"ملغي",                color:"#dc3545", icon:"❌"}
+  "Pending Confirmation":  {ar:"قيد التأكيد", en:"Pending Confirmation", color:"#e0a800", icon:"⏳"},
+  "Waiting Confirmation":  {ar:"في انتظار التأكيد", en:"Waiting Confirmation", color:"#e0a800", icon:"⏳"},
+  "Confirmed":             {ar:"تم التأكيد", en:"Confirmed", color:"#17a2b8", icon:"✅"},
+  "Waiting Payment":       {ar:"في انتظار الدفع", en:"Waiting Payment", color:"#fd7e14", icon:"💳"},
+  "Paid":                  {ar:"تم الدفع", en:"Paid", color:"#28a745", icon:"💰"},
+  "Cancelled":             {ar:"ملغي", en:"Cancelled", color:"#dc3545", icon:"❌"}
 };
 
 function openTrack() {
@@ -1227,13 +1404,13 @@ function closeTrack() { $("trackModal").style.display = "none"; }
 async function checkBooking(btn) {
   const ref = $("tRef").value.trim(), phone = $("tPhone").value.trim();
   $("tError").innerText = "";
-  if (!ref || !phone) { $("tError").innerText = "اكتب رقم الحجز ورقم الموبايل"; return; }
-  btn.disabled = true; btn.innerText = "جاري البحث...";
+  if (!ref || !phone) { $("tError").innerText = currentLang === 'ar' ? "اكتب رقم الحجز ورقم الموبايل" : "Enter booking ref and phone"; return; }
+  btn.disabled = true; btn.innerText = currentLang === 'ar' ? "جاري البحث..." : "Searching...";
   const r = await db.rpc("track_booking", { p_ref: ref, p_phone: phone });
-  btn.disabled = false; btn.innerText = "عرض حالة الحجز";
-  if (r.error) { $("tError").innerText = "حصل خطأ، حاول تاني"; console.error(r.error); return; }
+  btn.disabled = false; btn.innerText = t('trackBtn');
+  if (r.error) { $("tError").innerText = currentLang === 'ar' ? "حصل خطأ، حاول تاني" : "Error, try again"; console.error(r.error); return; }
   const d = r.data;
-  if (!d || !d.found) { $("tError").innerText = "مفيش حجز بالبيانات دي. اتأكد من رقم الحجز والموبايل"; return; }
+  if (!d || !d.found) { $("tError").innerText = currentLang === 'ar' ? "مفيش حجز بالبيانات دي. اتأكد من رقم الحجز والموبايل" : "No booking found. Check your booking ref and phone."; return; }
   lastBooking = { ref: d.booking_ref, phone: phone };
   showBookingResult(d);
   track("track_view", {ref:d.booking_ref, status:d.status});
@@ -1242,74 +1419,29 @@ async function checkBooking(btn) {
 function showBookingResult(d) {
   $("trackForm").style.display = "none";
   $("trackResult").style.display = "block";
-  const st = ST_LABELS[d.status] || {label:d.status, color:"#999", icon:"📋"};
+  const st = ST_LABELS[d.status] || {ar:d.status, en:d.status, color:"#999", icon:"📋"};
+  const stLabel = currentLang === 'ar' ? st.ar : st.en;
   const nights = (d.check_in && d.check_out) ? Math.round((new Date(d.check_out) - new Date(d.check_in)) / 86400000) : 0;
+  
   let html = `
     <div style="text-align:center;margin-bottom:18px">
       <div style="font-size:50px">${st.icon}</div>
-      <h2 style="margin:10px 0 6px">${st.label}</h2>
+      <h2 style="margin:10px 0 6px">${stLabel}</h2>
       <span class="stBadge" style="background:${st.color}">${d.booking_ref}</span>
     </div>
     <div class="stBox">
-الفندق: ${d.hotel_name}
-التاريخ: ${d.check_in} ← ${d.check_out}
-عدد الليالي: ${nights}
-الأفراد: ${d.adults||0} كبار${d.children?" + "+d.children+" أطفال":""}
-الغرف: ${d.number_of_rooms} (${d.room_type})
-الإجمالي: ${Number(d.total_price||0).toLocaleString()} جنيه
-العربون: ${Number(d.deposit_amount||0).toLocaleString()} جنيه
+${currentLang === 'ar' ? "الفندق" : "Hotel"}: ${d.hotel_name}
+${currentLang === 'ar' ? "التاريخ" : "Date"}: ${d.check_in} ← ${d.check_out}
+${currentLang === 'ar' ? "عدد الليالي" : "Nights"}: ${nights}
+${currentLang === 'ar' ? "الأفراد" : "Guests"}: ${d.adults||0} ${currentLang === 'ar' ? "كبار" : "Adults"}${d.children?(currentLang === 'ar' ? " + "+d.children+" أطفال" : " + "+d.children+" Children"):""}
+${currentLang === 'ar' ? "الغرف" : "Rooms"}: ${d.number_of_rooms} (${d.room_type})
+${currentLang === 'ar' ? "الإجمالي" : "Total"}: ${Number(d.total_price||0).toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}
+${currentLang === 'ar' ? "العربون" : "Deposit"}: ${Number(d.deposit_amount||0).toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}
     </div>`;
   if (d.status === "Waiting Payment") {
     const s = d.settings || {};
     const remaining = Math.max(Number(d.total_price||0) - Number(d.deposit_amount||0), 0);
-    const waHref = "https://wa.me/" + String(s.sales_phone||"").replace(/\D/g,"") + "?text=" + encodeURIComponent("تحويل عربون حجز " + d.booking_ref);
-    html += `<div class="payBox"><h3 style="margin-bottom:10px">💳 يرجى إتمام الدفع</h3><p>حوّل العربون <b>${Number(d.deposit_amount||0).toLocaleString()} جنيه</b> على:</p><p>• إنستاباي: <b>${s.instapay_address||"-"}</b></p><p>• فودافون كاش: <b>${s.vodafone_cash||"-"}</b></p><p style="margin-top:10px;color:#666;font-size:13px">المبلغ المتبقي: ${remaining.toLocaleString()} جنيه</p></div>`;
+    const waHref = "https://wa.me/" + String(s.sales_phone||"").replace(/\D/g,"") + "?text=" + encodeURIComponent((currentLang === 'ar' ? "تحويل عربون حجز " : "Deposit transfer for booking ") + d.booking_ref);
+    html += `<div class="payBox"><h3 style="margin-bottom:10px">💳 ${currentLang === 'ar' ? "يرجى إتمام الدفع" : "Please Complete Payment"}</h3><p>${currentLang === 'ar' ? "حوّل العربون" : "Transfer deposit"} <b>${Number(d.deposit_amount||0).toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}</b> ${currentLang === 'ar' ? "على" : "to"}:</p><p>• ${currentLang === 'ar' ? "إنستاباي" : "InstaPay"}: <b>${s.instapay_address||"-"}</b></p><p>• ${currentLang === 'ar' ? "فودافون كاش" : "Vodafone Cash"}: <b>${s.vodafone_cash||"-"}</b></p><p style="margin-top:10px;color:#666;font-size:13px">${currentLang === 'ar' ? "المبلغ المتبقي" : "Remaining amount"}: ${remaining.toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}</p></div>`;
     if (d.payment_proof_url) {
-      html += `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">✅ تم رفع صورة التحويل</p><img src="${d.payment_proof_url}" alt="صورة التحويل"></div>`;
-    } else {
-      html += `<div id="trackUploadArea"><p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">ارفع صورة التحويل:</p><label class="uploadBtn">📷 ارفع صورة التحويل<input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)"></label></div>`;
-    }
-    html += `<a class="wa" href="${waHref}" target="_blank" onclick="track('whatsapp_click')">إرسال صورة التحويل على واتساب</a>`;
-  }
-  const today = new Date().toISOString().slice(0, 10);
-  const canReview = (d.status === "Paid" || d.status === "Confirmed" || d.payment_status === "Paid") && d.check_out && d.check_out <= today;
-  if (canReview) html += `<button class="reviewBtn" onclick="openReviewForm()">⭐ قيّم رحلتك</button>`;
-  if (d.status !== "Cancelled" && d.status !== "Paid") html += `<button class="cancelBtn" onclick="cancelBooking('${d.booking_ref}', '${lastBooking.phone}')">❌ إلغاء الحجز</button>`;
-  html += `<button style="width:100%;margin-top:10px;background:#ddd;color:#172033" onclick="closeTrack()">إغلاق</button>`;
-  $("trackResult").innerHTML = html;
-}
-
-document.addEventListener("click", e => {
-  const tm = $("trackModal");
-  if (tm && e.target === tm) closeTrack();
-});
-
-document.addEventListener("keydown", e => {
-  const g = $("gal");
-  if (!g || g.style.display !== "flex") return;
-  if (e.key === "ArrowLeft") galNav(1);
-  else if (e.key === "ArrowRight") galNav(-1);
-  else if (e.key === "Escape") closeGal();
-});
-
-(function initSwipe() {
-  let x0 = null;
-  document.addEventListener("touchstart", e => {
-    const g = $("gal");
-    if (!g || g.style.display !== "flex") return;
-    x0 = e.touches[0].clientX;
-  }, {passive: true});
-  document.addEventListener("touchend", e => {
-    const g = $("gal");
-    if (!g || g.style.display !== "flex" || x0 === null) return;
-    const dx = e.changedTouches[0].clientX - x0;
-    if (Math.abs(dx) > 50) galNav(dx > 0 ? -1 : 1);
-    x0 = null;
-  }, {passive: true});
-})();
-
-init();
-track("page_view");
-</script>
-</body>
-</html>
+      html += `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">${currentLang === 'ar' ? "✅ تم رفع صورة التحويل" : "✅
