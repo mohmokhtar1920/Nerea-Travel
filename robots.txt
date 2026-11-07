@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mohmokhtar1920.github.io/Nerea-Travel/sitemap.xml
