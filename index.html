@@ -302,7 +302,31 @@ body.dark .skel-img,body.dark .skel-line{background:linear-gradient(90deg,#1e293
 </footer>
 
 <!-- زرار واتساب عائم -->
-<a href="https://wa.me/201012853009" class="float-wa" target="_blank" title="تواصل معنا عبر واتساب">💬</a>
+<button class="float-wa" onclick="openWaMenu()" title="تواصل معنا عبر واتساب">💬</button>
+
+<!-- قائمة واتساب -->
+<div class="wa-menu" id="waMenu">
+  <div class="wa-menu-box">
+    <div class="wa-menu-header">
+      <h3>تواصل معنا على واتساب</h3>
+      <span class="wa-close" onclick="closeWaMenu()">×</span>
+    </div>
+    <a href="https://wa.me/201212188719" class="wa-item" target="_blank" onclick="track('wa_click',{type:'customer_service'})">
+      <span class="wa-icon">💬</span>
+      <div>
+        <b>خدمة العملاء</b>
+        <small>01212188719</small>
+      </div>
+    </a>
+    <a href="https://wa.me/201012853009" class="wa-item" target="_blank" onclick="track('wa_click',{type:'complaints'})">
+      <span class="wa-icon">📞</span>
+      <div>
+        <b>الشكاوي</b>
+        <small>01012853009</small>
+      </div>
+    </a>
+  </div>
+</div> target="_blank" title="تواصل معنا عبر واتساب">💬</a>
 
 <button class="fab" onclick="openTrack()">📋 متابعة الحجز</button>
 
