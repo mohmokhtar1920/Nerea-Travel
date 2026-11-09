@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nerea Travel | احجز رحلتك</title>
   <meta name="google-site-verification" content="1YLsNUmkPoQLdDCi8B_V981Dg3ycHDLhovQgQzE6JAs" />
+  
+  <!-- Auto Cache Busting Meta Tags -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
@@ -1500,6 +1506,15 @@ document.addEventListener("keydown", e => {
     x0 = null;
   }, {passive: true});
 })();
+
+// مسح الكاش القديم (Service Worker) أوتوماتيك
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      registration.unregister();
+    }
+  });
+}
 
 init();
 track("page_view");
