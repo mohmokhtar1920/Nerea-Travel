@@ -45,7 +45,6 @@
 
 <!-- Language Alternatives (Step 3) -->
 <link rel="alternate" hreflang="ar" href="https://mohmokhtar1920.github.io/Nerea-Travel/" />
-<link rel="alternate" hreflang="en" href="https://mohmokhtar1920.github.io/Nerea-Travel/" />
 <link rel="alternate" hreflang="x-default" href="https://mohmokhtar1920.github.io/Nerea-Travel/" />
 
 <!-- Structured Data Schema (Step 3) -->
@@ -468,7 +467,7 @@ body.dark .wa-item small{color:#94a3b8}
 <div style="font-size:50px">✅</div>
 <h2 style="margin:10px 0" class="tr" data-ar="تم تسجيل طلب الحجز" data-en="Booking Request Registered">تم تسجيل طلب الحجز</h2>
 <div class="info" id="payInfo" style="text-align:right;white-space:pre-line;margin:12px 0"></div>
-<a id="waLink" class="wa" href="#" target="_blank" rel="noopener noreferrer" onclick="track('whatsapp_click')" class="tr" data-ar="إرسال الحجز وصورة التحويل على واتساب" data-en="Send booking & transfer screenshot on WhatsApp">إرسال الحجز وصورة التحويل على واتساب</a>
+<a id="waLink" class="wa tr" href="#" target="_blank" rel="noopener noreferrer" onclick="track('whatsapp_click')" data-ar="إرسال الحجز وصورة التحويل على واتساب" data-en="Send booking & transfer screenshot on WhatsApp">إرسال الحجز وصورة التحويل على واتساب</a>
 <div id="uploadArea">
   <p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center" class="tr" data-ar="أو ارفع صورة التحويل مباشرة هنا:" data-en="Or upload transfer screenshot here:">أو ارفع صورة التحويل مباشرة هنا:</p>
   <label class="uploadBtn" id="uploadBtn"><span class="tr" data-ar="📷 ارفع صورة التحويل" data-en="📷 Upload Transfer Screenshot">📷 ارفع صورة التحويل</span>
@@ -492,7 +491,7 @@ body.dark .wa-item small{color:#94a3b8}
 </div>
 
 <label class="tr" data-ar="عدد البالغين" data-en="Adults">عدد البالغين</label><input type="number" id="adults" min="1" value="1" oninput="calc()">
-<label class="tr" data-ar="عدد الأطفال" data-en="Children">عدد الأطفال <span id="childAge"></span></label><input type="number" id="children" min="0" value="0" oninput="calc()">
+<label><span class="tr" data-ar="عدد الأطفال" data-en="Children">عدد الأطفال</span> <span id="childAge"></span></label><input type="number" id="children" min="0" value="0" oninput="calc()">
 <label class="tr" data-ar="عدد الغرف (الطفل لا يحتاج غرفة)" data-en="Rooms (Child doesn't need a room)">عدد الغرف (الطفل لا يحتاج غرفة)</label><input type="number" id="rooms" min="1" value="1" oninput="calc()">
 <label class="tr" data-ar="نوع الغرفة" data-en="Room Type">نوع الغرفة</label>
 <select id="roomType" onchange="calc()"></select>
@@ -561,18 +560,20 @@ if (!window.supabase || typeof window.supabase.createClient !== "function") {
 }
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const LS = {get: k => { try { return window.localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { window.localStorage.setItem(k, v); } catch (e) {} }};
 let imgs = {}, galImgs = [], galIdx = 0, dests = [], deps = [], list = [], filtered = [], sel = null, total = 0, salesPhone = "201012853009", pay = {insta: "mohamed.mokhtar99@instapay", voda: "01012853009", pct: 25};
 let lastBooking = { ref: "", phone: "" };
 let appliedCoupon = null;
 let hotelRatings = {};
 let currentReviewRating = 0;
 let selectedVehicle = "bus";
-let currentLang = localStorage.getItem("nt_lang") || "ar";
+let currentLang = LS.get("nt_lang") || "ar";
 
 const $ = id => document.getElementById(id);
 const N = v => Number(v) || 0;
+const normPhone = v => { let d = String(v || "").replace(/\D/g, ""); if (/^20\d{10}$/.test(d)) d = "0" + d.slice(2); return d; };
 const localDate = (d = new Date()) => { const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0"); return `${y}-${m}-${day}`; };
-const vid = (() => { try { let v = localStorage.getItem("nt_vid"); if (!v) { v = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)); localStorage.setItem("nt_vid", v); } return v; } catch (e) { return "anon"; } })();
+const vid = (() => { try { let v = LS.get("nt_vid"); if (!v) { v = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)); LS.set("nt_vid", v); } return v; } catch (e) { return "anon"; } })();
 const sid = Math.random().toString(36).slice(2);
 function track(ev, meta) { try { db.from("site_events").insert({visitor_id: vid, session_id: sid, event: ev, meta: meta || null}).then(() => {}, () => {}); } catch (e) {} }
 const RULES = {4: {days: 4, nights: 3, inOff: 1, outOff: 4}, 0: {days: 5, nights: 4, inOff: 1, outOff: 5}};
@@ -673,10 +674,10 @@ function applyLanguage() {
 
   if (dests.length) {
     $("destination").innerHTML = `<option value="">${t('whereTo')}</option>` + dests.map(x => `<option value="${x.id}">${esc(x.Name)}</option>`).join("");
-    if(localStorage.getItem("nt_saved_dest")) $("destination").value = localStorage.getItem("nt_saved_dest");
+    if(LS.get("nt_saved_dest")) $("destination").value = LS.get("nt_saved_dest");
   }
   if (deps.length) {
-    $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
+    $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${esc(x.name)}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
   }
   if (list.length) {
     $("hotelsTitle").innerText = t('availableHotels') + " " + (dests.find(x => String(x.id) === String($("destination").value))?.Name || "");
@@ -690,7 +691,7 @@ function applyLanguage() {
 
 function toggleLang() {
   currentLang = currentLang === 'ar' ? 'en' : 'ar';
-  localStorage.setItem("nt_lang", currentLang);
+  LS.set("nt_lang", currentLang);
   applyLanguage();
   track("lang_switch", { lang: currentLang });
 }
@@ -862,22 +863,22 @@ function toast(msg, type, dur) {
 
 function toggleDark() {
   const isDark = document.body.classList.toggle("dark");
-  try { localStorage.setItem("nt_dark", isDark ? "1" : "0"); } catch (e) {}
+  try { LS.set("nt_dark", isDark ? "1" : "0"); } catch (e) {}
   $("darkBtn").innerText = isDark ? "☀️" : "🌙";
 }
 function initDark() {
   try {
-    const saved = localStorage.getItem("nt_dark");
+    const saved = LS.get("nt_dark");
     if (saved === "1") { document.body.classList.add("dark"); $("darkBtn").innerText = "☀️"; }
   } catch (e) {}
 }
 
 function saveCustomer(name, phone) {
-  try { localStorage.setItem("nt_name", name); localStorage.setItem("nt_phone", phone); } catch (e) {}
+  try { LS.set("nt_name", name); LS.set("nt_phone", phone); } catch (e) {}
 }
 function fillCustomer() {
   try {
-    const n = localStorage.getItem("nt_name"), p = localStorage.getItem("nt_phone");
+    const n = LS.get("nt_name"), p = LS.get("nt_phone");
     if (n && !$("name").value) $("name").value = n;
     if (p && !$("phone").value) $("phone").value = p;
   } catch (e) {}
@@ -1033,7 +1034,7 @@ async function applyCoupon() {
   if (r.error) { console.error(r.error); msg.className = "couponMsg err"; msg.innerText = currentLang === 'ar' ? "حصل خطأ، حاول تاني" : "Error, try again"; return; }
   const d = r.data;
   if (!d || !d.valid) { msg.className = "couponMsg err"; msg.innerText = (d && d.message) || (currentLang === 'ar' ? "كود غير صالح" : "Invalid code"); appliedCoupon = null; dbox.classList.remove("show"); calc(); return; }
-  appliedCoupon = { code: d.code, discount: N(d.discount) };
+  appliedCoupon = { code: d.code, discount: N(d.discount), baseTotal: total };
   msg.className = "couponMsg ok";
   msg.innerText = (currentLang === 'ar' ? "✅ تم تطبيق الكود — خصم " : "✅ Applied — Discount ") + N(d.discount).toLocaleString() + (currentLang === 'ar' ? " جنيه" : " EGP");
   track("coupon_applied", {code: d.code, discount: d.discount});
@@ -1082,7 +1083,7 @@ async function uploadPaymentProof(ref, phone, inputEl, file) {
 }
 function markUploadDone(url) {
   const area = $("uploadArea");
-  const doneHtml = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">${currentLang === 'ar' ? "✅ تم رفع صورة التحويل" : "✅ Transfer screenshot uploaded"}</p><img src="${url}" alt="Proof"></div>`;
+  const doneHtml = `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">${currentLang === 'ar' ? "✅ تم رفع صورة التحويل" : "✅ Transfer screenshot uploaded"}</p><img src="${esc(safeUrl(url))}" alt="Proof"></div>`;
   if (area) { area.outerHTML = doneHtml; return; }
   const box = $("trackUploadArea");
   if (box) { box.outerHTML = doneHtml; }
@@ -1104,8 +1105,8 @@ async function init() {
   initDark();
   applyLanguage();
 
-  const savedDest = localStorage.getItem("nt_saved_dest");
-  const savedDate = localStorage.getItem("nt_saved_date");
+  const savedDest = LS.get("nt_saved_dest");
+  const savedDate = LS.get("nt_saved_date");
 
   const d = await db.from("destinations").select("*").order("id");
   if (d.error) { console.error(d.error); return; }
@@ -1124,7 +1125,7 @@ async function init() {
 
   const p = await db.from("departure_points").select("*").order("id");
   deps = p.data || [];
-  $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${x.name}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
+  $("dep").innerHTML = deps.map(x => `<option value="${x.id}">${esc(x.name)}${x.extra_price > 0 ? ' (+' + x.extra_price + ')' : ''}</option>`).join("");
 
   const s = await db.from("settings").select("key,value");
   (s.data || []).forEach(r => {
@@ -1146,8 +1147,8 @@ async function searchTrips() {
   if (!destId || !date) { toast(te('noDestDate'), "info"); return; }
   if (date < localDate()) { toast(te('futureDate'), "info"); return; }
 
-  localStorage.setItem("nt_saved_dest", destId);
-  localStorage.setItem("nt_saved_date", date);
+  LS.set("nt_saved_dest", destId);
+  LS.set("nt_saved_date", date);
 
   $("hotelsTitle").innerText = t('searchTitle');
   showSkeleton();
@@ -1169,7 +1170,7 @@ async function searchTrips() {
   imgs = {};
   if (hotels.length) {
     const gi = await db.from("hotel_images").select("hotel_id,url").in("hotel_id", hotels.map(x => x.id)).order("id");
-    (gi.data || []).forEach(r => (imgs[r.hotel_id] = imgs[r.hotel_id] || []).push(r.url));
+    (gi.data || []).forEach(r => { const u = safeUrl(r.url); if (u) (imgs[r.hotel_id] = imgs[r.hotel_id] || []).push(u); });
     await loadRatings(hotels.map(x => x.id));
   }
   const dest = dests.find(x => String(x.id) === String(destId));
@@ -1216,7 +1217,7 @@ function showHotel(i) {
 
   let mapsHtml = "";
   const mapsUrl = h.google_maps_url || (h.latitude && h.longitude ? `https://www.google.com/maps?q=${h.latitude},${h.longitude}` : "");
-  if (mapsUrl) mapsHtml = `<a class="mapsBtn" href="${esc(mapsUrl)}" target="_blank" rel="noopener noreferrer" onclick="track('maps_click',{hotel:'${esc(h.Name)}'})">📍 ${currentLang === 'ar' ? "موقع الفندق على خرائط جوجل" : "Hotel Location on Google Maps"}</a>`;
+  if (mapsUrl) mapsHtml = `<a class="mapsBtn" href="${esc(mapsUrl)}" target="_blank" rel="noopener noreferrer" data-h="${esc(h.Name)}" onclick="track('maps_click',{hotel:this.dataset.h})">📍 ${currentLang === 'ar' ? "موقع الفندق على خرائط جوجل" : "Hotel Location on Google Maps"}</a>`;
   $("mMaps").innerHTML = mapsHtml;
 
   $("adults").value = a;
@@ -1248,7 +1249,7 @@ function openGallery(id) {
 function showGal() {
   $("galMain").src = galImgs[galIdx];
   $("galCount").innerText = (galIdx + 1) + " / " + galImgs.length;
-  $("galThumbs").innerHTML = galImgs.map((u, i) => `<img loading="lazy" src="${u}" class="${i === galIdx ? "on" : ""}" onclick="galIdx=${i};showGal()">`).join("");
+  $("galThumbs").innerHTML = galImgs.map((u, i) => `<img loading="lazy" src="${esc(u)}" class="${i === galIdx ? "on" : ""}" onclick="galIdx=${i};showGal()">`).join("");
 }
 function galNav(d) { galIdx = (galIdx + d + galImgs.length) % galImgs.length; showGal(); }
 function closeGal() { $("gal").style.display = "none"; }
@@ -1300,6 +1301,11 @@ function calc() {
     $("depInfo").style.display = "none";
   }
 
+  if (appliedCoupon && appliedCoupon.baseTotal !== total) {
+    appliedCoupon = null;
+    $("couponMsg").className = "couponMsg"; $("couponMsg").innerText = "";
+    toast(currentLang === 'ar' ? "تغيّر الإجمالي، أعد تطبيق كود الخصم" : "Total changed, please re-apply the coupon", "info", 3500);
+  }
   let discount = 0;
   if (appliedCoupon && total > 0) {
     discount = Math.min(appliedCoupon.discount, total);
@@ -1319,14 +1325,24 @@ function calc() {
   }
 }
 
+let sending = false;
 async function sendBooking() {
-  const name = $("name").value.trim(), phone = $("phone").value.trim();
+  if (sending) return;
+  sending = true;
+  const btn = document.querySelector('#formBox button[onclick="sendBooking()"]');
+  if (btn) btn.disabled = true;
+  try { await _sendBooking(); } finally { sending = false; if (btn) btn.disabled = false; }
+}
+async function _sendBooking() {
+  const name = $("name").value.trim(), phone = normPhone($("phone").value);
   if (!name || !phone) { toast(te('namePhone'), "info"); return; }
   if (!(total > 0)) { toast(te('invalidDate'), "info"); return; }
   if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) { toast(te('invalidPhone'), "err"); return; }
 
   const trip = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
   const needT = !!trip || $("transChk").checked;
+  const tPrice = selectedVehicle === "highs" ? N(sel.h.highs_price) : N(sel.h.extra_seat_price);
+  if (!trip && needT && tPrice <= 0) { toast(currentLang === 'ar' ? "سعر الانتقالات غير محدد لهذا الفندق، تواصل معنا لتأكيد السعر" : "Transport price is not set for this hotel, please contact us", "info", 5000); return; }
 
   let departureDate = null;
   if (trip) departureDate = trip.start_date;
@@ -1432,7 +1448,7 @@ function openTrack() {
 function closeTrack() { $("trackModal").style.display = "none"; }
 
 async function checkBooking(btn) {
-  const ref = $("tRef").value.trim(), phone = $("tPhone").value.trim();
+  const ref = $("tRef").value.trim(), phone = normPhone($("tPhone").value);
   $("tError").innerText = "";
   if (!ref || !phone) { $("tError").innerText = currentLang === 'ar' ? "اكتب رقم الحجز ورقم الموبايل" : "Enter booking ref and phone"; return; }
   btn.disabled = true; btn.innerText = currentLang === 'ar' ? "جاري البحث..." : "Searching...";
@@ -1457,10 +1473,10 @@ function showBookingResult(d) {
     <div style="text-align:center;margin-bottom:18px">
       <div style="font-size:50px">${st.icon}</div>
       <h2 style="margin:10px 0 6px">${stLabel}</h2>
-      <span class="stBadge" style="background:${st.color}">${d.booking_ref}</span>
+      <span class="stBadge" style="background:${st.color}">${esc(d.booking_ref)}</span>
     </div>
     <div class="stBox">
-${currentLang === 'ar' ? "الفندق" : "Hotel"}: ${d.hotel_name}
+${currentLang === 'ar' ? "الفندق" : "Hotel"}: ${esc(d.hotel_name)}
 ${currentLang === 'ar' ? "التاريخ" : "Date"}: ${d.check_in} ← ${d.check_out}
 ${currentLang === 'ar' ? "عدد الليالي" : "Nights"}: ${nights}
 ${currentLang === 'ar' ? "الأفراد" : "Guests"}: ${d.adults||0} ${currentLang === 'ar' ? "كبار" : "Adults"}${d.children?(currentLang === 'ar' ? " + "+d.children+" أطفال" : " + "+d.children+" Children"):""}
@@ -1472,9 +1488,9 @@ ${currentLang === 'ar' ? "العربون" : "Deposit"}: ${Number(d.deposit_amoun
     const s = d.settings || {};
     const remaining = Math.max(Number(d.total_price||0) - Number(d.deposit_amount||0), 0);
     const waHref = "https://wa.me/" + String(s.sales_phone||"").replace(/\D/g,"") + "?text=" + encodeURIComponent((currentLang === 'ar' ? "تحويل عربون حجز " : "Deposit transfer for booking ") + d.booking_ref);
-    html += `<div class="payBox"><h3 style="margin-bottom:10px">💳 ${currentLang === 'ar' ? "يرجى إتمام الدفع" : "Please Complete Payment"}</h3><p>${currentLang === 'ar' ? "حوّل العربون" : "Transfer deposit"} <b>${Number(d.deposit_amount||0).toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}</b> ${currentLang === 'ar' ? "على" : "to"}:</p><p>• ${currentLang === 'ar' ? "إنستاباي" : "InstaPay"}: <b>${s.instapay_address||"-"}</b></p><p>• ${currentLang === 'ar' ? "فودافون كاش" : "Vodafone Cash"}: <b>${s.vodafone_cash||"-"}</b></p><p style="margin-top:10px;color:#666;font-size:13px">${currentLang === 'ar' ? "المبلغ المتبقي" : "Remaining amount"}: ${remaining.toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}</p></div>`;
+    html += `<div class="payBox"><h3 style="margin-bottom:10px">💳 ${currentLang === 'ar' ? "يرجى إتمام الدفع" : "Please Complete Payment"}</h3><p>${currentLang === 'ar' ? "حوّل العربون" : "Transfer deposit"} <b>${Number(d.deposit_amount||0).toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}</b> ${currentLang === 'ar' ? "على" : "to"}:</p><p>• ${currentLang === 'ar' ? "إنستاباي" : "InstaPay"}: <b>${esc(s.instapay_address||"-")}</b></p><p>• ${currentLang === 'ar' ? "فودافون كاش" : "Vodafone Cash"}: <b>${esc(s.vodafone_cash||"-")}</b></p><p style="margin-top:10px;color:#666;font-size:13px">${currentLang === 'ar' ? "المبلغ المتبقي" : "Remaining amount"}: ${remaining.toLocaleString()} ${currentLang === 'ar' ? "جنيه" : "EGP"}</p></div>`;
     if (d.payment_proof_url) {
-      html += `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">${currentLang === 'ar' ? "✅ تم رفع صورة التحويل" : "✅ Transfer screenshot uploaded"}</p><img src="${d.payment_proof_url}" alt="Proof"></div>`;
+      html += `<div class="proofPreview"><p style="font-size:14px;color:#28a745;margin:14px 0 8px;text-align:center;font-weight:bold">${currentLang === 'ar' ? "✅ تم رفع صورة التحويل" : "✅ Transfer screenshot uploaded"}</p><img src="${esc(safeUrl(d.payment_proof_url))}" alt="Proof"></div>`;
     } else {
       html += `<div id="trackUploadArea"><p style="font-size:13px;color:#666;margin:14px 0 0;text-align:center">${currentLang === 'ar' ? "ارفع صورة التحويل:" : "Upload transfer screenshot:"}</p><label class="uploadBtn">${t('uploadBtn')}<input type="file" accept="image/*" style="display:none" onchange="onProofSelected(this)"></label></div>`;
     }
