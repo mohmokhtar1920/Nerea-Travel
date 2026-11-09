@@ -766,14 +766,14 @@ function getRoomPrice(hotel, type, trip) {
 }
 
 function renderRoomOptions() {
-  const h = sel.h, t = sel.t;
+  const h = sel.h, trip = sel.t;
   let opts = [];
-  if (t) {
+  if (trip) {
     opts.push({key: "Double", label: "Double"});
     opts.push({key: "Triple", label: "Triple"});
     opts.push({key: "Quad", label: "Quad"});
     opts.push({key: "Quint", label: "Quint"});
-    if (N(t.price_single) > 0) opts.push({key: "Single", label: "Single"});
+    if (N(trip.price_single) > 0) opts.push({key: "Single", label: "Single"});
   } else {
     const avail = getAvailableRoomTypes(h);
     if (!avail.length) {
@@ -1142,10 +1142,10 @@ async function searchTrips() {
   const h = await db.from("Hotels").select("*").eq("Destination_id", destId).order("Name", {ascending: true});
   if (h.error) { console.error("Hotels error:", h.error); toast(te('errHotels'), "err"); return; }
   const hotels = h.data || [];
-  const t = await db.from("Series_Trips").select("*");
-  if (t.error) console.warn("Series_Trips error:", t.error);
+  const tripsRes = await db.from("Series_Trips").select("*");
+  if (tripsRes.error) console.warn("Series_Trips error:", tripsRes.error);
   const wd = new Date(date + "T00:00:00").getDay(), rule = RULES[wd];
-  const trips = rule ? (t.data || []).filter(y => dayKey(y) === wd).map(y => ({...y, start_date: date, hotelIn: addDays(date, rule.inOff), end_date: addDays(date, rule.outOff), days: rule.days, nights: rule.nights})) : [];
+  const trips = rule ? (tripsRes.data || []).filter(y => dayKey(y) === wd).map(y => ({...y, start_date: date, hotelIn: addDays(date, rule.inOff), end_date: addDays(date, rule.outOff), days: rule.days, nights: rule.nights})) : [];
   const hasTrip = x => trips.some(y => String(y.hotel_id) === String(x.id));
   const ser = hotels.filter(hasTrip).map(x => ({h: x, t: trips.find(y => String(y.hotel_id) === String(x.id))}));
   const non = hotels.filter(x => x.is_series !== true && !hasTrip(x)).map(x => ({h: x, t: null}));
@@ -1170,7 +1170,7 @@ async function searchTrips() {
 function showHotel(i) {
   sel = list[i];
   track("hotel_view", {hotel: list[i].h.Name});
-  const h = sel.h, t = sel.t, a = N($("sAdults").value) || 1;
+  const h = sel.h, trip = sel.t, a = N($("sAdults").value) || 1;
   $("formBox").style.display = "block"; $("doneBox").style.display = "none";
 
   appliedCoupon = null;
@@ -1208,12 +1208,12 @@ function showHotel(i) {
   $("rooms").value = Math.ceil(a / 2);
   $("extraSeats").value = 0;
   $("transChk").checked = false;
-  $("nonBox").style.display = t ? "none" : "block";
-  $("transRow").style.display = t ? "none" : "flex";
-  $("transBox").style.display = t ? "block" : "none";
+  $("nonBox").style.display = trip ? "none" : "block";
+  $("transRow").style.display = trip ? "none" : "flex";
+  $("transBox").style.display = trip ? "block" : "none";
   $("childAge").innerText = currentLang === 'ar' ? "(حتى 10 سنوات مجانًا في الفندق، الأكبر يُحسب بالغًا)" : "(Under 10 free in hotel, older counted as adult)";
-  $("mInfo").innerText = t ? `${currentLang === 'ar' ? "رحلة سيريال" : "Series Trip"} ${t.days} ${t('days')} / ${t.nights} ${t('nights')}\n${t('dep')}: ${t.start_date} • ${t('hotelIn')}: ${t.hotelIn} • ${t('return')}: ${t.end_date}\n${t('priceIncl')}` : (currentLang === 'ar' ? "اختر تاريخ الدخول والخروج" : "Select check-in and check-out dates");
-  if (!t) { $("cin").value = $("date").value; $("cout").value = ""; }
+  $("mInfo").innerText = trip ? `${currentLang === 'ar' ? "رحلة سيريال" : "Series Trip"} ${trip.days} ${t('days')} / ${trip.nights} ${t('nights')}\n${t('dep')}: ${trip.start_date} • ${t('hotelIn')}: ${trip.hotelIn} • ${t('return')}: ${trip.end_date}\n${t('priceIncl')}` : (currentLang === 'ar' ? "اختر تاريخ الدخول والخروج" : "Select check-in and check-out dates");
+  if (!trip) { $("cin").value = $("date").value; $("cout").value = ""; }
   renderVehicleOptions();
   fillCustomer();
   calc();
@@ -1241,9 +1241,9 @@ function toggleTrans() { $("transBox").style.display = $("transChk").checked ? "
 
 function calc() {
   if (!sel) return;
-  const h = sel.h, t = sel.t, a = N($("adults").value), c = N($("children").value), r = N($("rooms").value) || 1;
+  const h = sel.h, trip = sel.t, a = N($("adults").value), c = N($("children").value), r = N($("rooms").value) || 1;
   const x = Math.min(N($("extraSeats").value), c), type = $("roomType").value;
-  const needT = !!t || $("transChk").checked, seats = a + x;
+  const needT = !!trip || $("transChk").checked, seats = a + x;
   const d = deps.find(y => y.id == $("dep").value), dep = d ? N(d.extra_price) : 0;
 
   let adultPrice = 0;
@@ -1259,8 +1259,8 @@ function calc() {
   }
   $("seatInfo").innerText = needT ? `${currentLang === 'ar' ? "كراسي" : "Seats"}: ${seats} (${a} ${currentLang === 'ar' ? "بالغين" : "adults"} + ${x} ${currentLang === 'ar' ? "إضافي" : "extra"}) • ${selectedVehicle === "highs" ? "High S" : "Bus"}` : "";
   total = 0;
-  if (t) {
-    const rp = type === "Single" ? (N(t.price_single) || N(t.price_per_person)) : N(t.price_per_person);
+  if (trip) {
+    const rp = type === "Single" ? (N(trip.price_single) || N(trip.price_per_person)) : N(trip.price_per_person);
     if (selectedVehicle === "highs" && N(h.highs_price) > 0) {
       const diff = Math.max(0, N(h.highs_price) - N(h.extra_seat_price));
       total = rp * a + diff * a + x * N(h.extra_highs_seat_price) + dep * seats;
@@ -1276,7 +1276,7 @@ function calc() {
     }
   }
 
-  if (!t && needT && $("cin").value) {
+  if (!trip && needT && $("cin").value) {
     const depDate = addDays($("cin").value, -1);
     $("depInfo").style.display = "block";
     $("depInfo").innerHTML = `🚌 ${currentLang === 'ar' ? "تاريخ التحرك" : "Departure date"}: <b>${depDate}</b> ${currentLang === 'ar' ? "(اليوم السابق للدخول)" : "(day before check-in)"}`;
@@ -1309,18 +1309,18 @@ async function sendBooking() {
   if (!(total > 0)) { toast(te('invalidDate'), "info"); return; }
   if (!/^01[0-9]{9}$/.test(phone.replace(/\D/g,""))) { toast(te('invalidPhone'), "err"); return; }
 
-  const t = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
-  const needT = !!t || $("transChk").checked;
+  const trip = sel.t, a = N($("adults").value), c = N($("children").value), x = Math.min(N($("extraSeats").value), c);
+  const needT = !!trip || $("transChk").checked;
 
   let departureDate = null;
-  if (t) departureDate = t.start_date;
+  if (trip) departureDate = trip.start_date;
   else if (needT && $("cin").value) departureDate = addDays($("cin").value, -1);
 
   const row = {
     customer_name: name, customer_phone: phone, hotel_id: sel.h.id,
-    Series_Trips_id: t ? t.id : null,
-    check_in: t ? t.hotelIn : $("cin").value,
-    check_out: t ? t.end_date : $("cout").value,
+    Series_Trips_id: trip ? trip.id : null,
+    check_in: trip ? trip.hotelIn : $("cin").value,
+    check_out: trip ? trip.end_date : $("cout").value,
     number_of_people: a + c, number_of_rooms: N($("rooms").value),
     departure_points_id: needT ? N($("dep").value) : null,
     bus_seats: needT ? a + x : 0,
@@ -1350,7 +1350,7 @@ async function sendBooking() {
 
   const msgLines = currentLang === 'ar' ? [
     "طلب حجز جديد", "رقم الحجز: " + ref, "الاسم: " + name, "الموبايل: " + phone,
-    "الفندق: " + sel.h.Name, "النوع: " + (t ? "سيريال" : "عادي"),
+    "الفندق: " + sel.h.Name, "النوع: " + (trip ? "سيريال" : "عادي"),
     "التاريخ: " + saved.check_in + " ← " + saved.check_out, "عدد الليالي: " + nights,
     "تاريخ التحرك: " + (departureDate || "-"),
     "البالغين: " + a + " | الأطفال: " + c,
@@ -1360,7 +1360,7 @@ async function sendBooking() {
     "مكان التحرك: " + depName
   ] : [
     "New Booking Request", "Booking Ref: " + ref, "Name: " + name, "Phone: " + phone,
-    "Hotel: " + sel.h.Name, "Type: " + (t ? "Series" : "Normal"),
+    "Hotel: " + sel.h.Name, "Type: " + (trip ? "Series" : "Normal"),
     "Date: " + saved.check_in + " -> " + saved.check_out, "Nights: " + nights,
     "Departure Date: " + (departureDate || "-"),
     "Adults: " + a + " | Children: " + c,
