@@ -100,20 +100,48 @@ button{border:none;border-radius:8px;padding:14px 20px;background:#d9b45b;color:
 .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center}
 .feature{background:#fff;padding:30px 20px;border-radius:15px}
 .feature-icon{font-size:40px;margin-bottom:15px}
-footer{background:#0b1f3a;color:#fff;text-align:center;padding:40px 20px}
-footer .social-links{margin:15px 0}
-footer .social-links a{color:#d9b45b;text-decoration:none;margin:0 10px;font-size:15px}
-footer .legal-links{margin-top:15px;font-size:13px;color:#8899a6}
-footer .legal-links a{color:#8899a6;text-decoration:none;margin:0 8px;cursor:pointer}
-footer .legal-links a:hover{color:#fff}
 
-/* About Section */
-.about-content{max-width:800px;margin:auto;text-align:center;line-height:1.8;font-size:16px;color:#444;background:#fff;padding:30px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.05);margin-bottom: 30px;}
-.about-stats {display: grid;grid-template-columns: repeat(3, 1fr);gap: 20px;max-width: 800px;margin: 0 auto;}
-.stat-item {background: #fff;padding: 25px 15px;border-radius: 15px;text-align: center;box-shadow: 0 4px 15px rgba(0,0,0,.05);transition: transform .3s ease;border-bottom: 4px solid #176b87;}
-.stat-item:hover {transform: translateY(-5px);}
-.stat-number {font-size: 34px;font-weight: bold;color: #176b87;margin-bottom: 8px;}
-.stat-label {font-size: 15px;color: #555;font-weight: bold;}
+/* === About Section New === */
+.about-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.about-text h2 { color: #0b1f3a; font-size: 32px; margin-bottom: 20px; position: relative; text-align: right; }
+.about-text h2::after { content: ""; position: absolute; bottom: -8px; right: 0; width: 60px; height: 4px; background: #d9b45b; border-radius: 2px; }
+.about-text p { color: #444; line-height: 1.8; font-size: 16px; margin-bottom: 15px; }
+.about-text strong { color: #176b87; }
+.about-image-placeholder { width: 100%; height: 350px; background: linear-gradient(135deg, #0b1f3a, #176b87); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; overflow: hidden; border: 4px solid #fff; }
+.about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 40px auto 0; }
+.stat-item { background: #fff; padding: 25px 15px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-bottom: 4px solid #d9b45b; transition: transform 0.3s; }
+.stat-item:hover { transform: translateY(-5px); }
+.stat-icon { font-size: 35px; margin-bottom: 10px; }
+.stat-number { font-size: 32px; font-weight: 700; color: #176b87; }
+.stat-label { font-size: 15px; color: #555; font-weight: 600; margin-top: 5px; }
+
+/* === Footer New === */
+footer { background: #0b1f3a; color: #fff; padding: 60px 7% 20px; }
+.footer-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 30px; }
+.footer-col h4 { color: #d9b45b; font-size: 18px; margin-bottom: 20px; position: relative; }
+.footer-col h4::after { content: ""; position: absolute; bottom: -6px; right: 0; width: 30px; height: 2px; background: #d9b45b; }
+.footer-logo { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 10px; display: block; }
+.footer-logo span { color: #d9b45b; }
+.footer-desc { color: #8899a6; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+.social-icons { display: flex; gap: 10px; }
+.social-icons a { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(255,255,255,0.1); color: #fff; border-radius: 50%; text-decoration: none; transition: 0.3s; font-size: 18px; }
+.social-icons a:hover { background: #d9b45b; color: #0b1f3a; transform: translateY(-3px); }
+
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 12px; }
+.footer-links a { color: #8899a6; text-decoration: none; font-size: 14px; transition: 0.3s; }
+.footer-links a:hover { color: #d9b45b; padding-right: 5px; }
+
+.footer-contact p { color: #8899a6; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.footer-contact span { font-size: 18px; }
+
+.payment-methods { display: flex; flex-wrap: wrap; gap: 10px; }
+.pay-icon { background: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; color: #0b1f3a; display: flex; align-items: center; gap: 5px; }
+
+.footer-bottom { max-width: 1100px; margin: 40px auto 0; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+.footer-bottom p { color: #8899a6; font-size: 13px; }
+.footer-bottom a { color: #8899a6; text-decoration: none; font-size: 13px; margin: 0 10px; cursor: pointer;}
+.footer-bottom a:hover { color: #fff; }
 
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);justify-content:center;align-items:center;z-index:1000;overflow:auto}
 .modal-box{background:#fff;width:92%;max-width:520px;max-height:92vh;overflow:auto;padding:25px;border-radius:15px;animation:fadeUp .3s ease}
@@ -135,7 +163,24 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .float-wa{position:fixed;bottom:25px;right:25px;background:#25d366;color:#fff;border-radius:50%;width:60px;height:60px;display:flex;justify-content:center;align-items:center;font-size:32px;box-shadow:0 4px 15px rgba(37,211,102,.4);z-index:999;text-decoration:none;transition:transform .2s;border:none;cursor:pointer;padding:0}
 .float-wa:hover{transform:scale(1.1)}
 
-@media(max-width:800px){.search-box,.trips,.features{grid-template-columns:1fr}.hero h1{font-size:32px}nav{display:none}header{justify-content:center;padding:14px 7%}.logo img{height:150px}.header-actions{position:absolute;top:14px;left:14px;margin:0}.float-wa{width:50px;height:50px;font-size:26px;bottom:15px;right:15px}.about-stats {grid-template-columns: 1fr; gap: 12px;}.stat-item {padding: 15px;}.stat-number {font-size: 28px;}}
+@media(max-width:800px){
+  .search-box,.trips,.features{grid-template-columns:1fr}
+  .hero h1{font-size:32px}
+  nav{display:none}
+  header{justify-content:center;padding:14px 7%}
+  .logo img{height:150px}
+  .header-actions{position:absolute;top:14px;left:14px;margin:0}
+  .float-wa{width:50px;height:50px;font-size:26px;bottom:15px;right:15px}
+  
+  .about-container { grid-template-columns: 1fr; }
+  .about-stats { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; text-align: center; }
+  .footer-col h4::after { right: 50%; transform: translateX(50%); }
+  .social-icons { justify-content: center; }
+  .footer-contact p { justify-content: center; }
+  .payment-methods { justify-content: center; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+}
 
 /* بقية الستايلات زي ما هي */
 .gal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:3000;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:15px}#galMain{max-width:100%;max-height:68vh;border-radius:10px}.gthumbs{display:flex;gap:6px;overflow:auto;max-width:100%}.gthumbs img{height:56px;border-radius:6px;opacity:.55;cursor:pointer}.gthumbs img.on{opacity:1;outline:2px solid #d9b45b}.gnav{display:flex;gap:14px;align-items:center;color:#fff}.gnav button{background:rgba(255,255,255,.15);color:#fff;border:none;padding:10px 18px;border-radius:50%;font-size:20px;cursor:pointer}.gx{position:absolute;top:12px;left:18px;color:#fff;font-size:34px;cursor:pointer;background:transparent;padding:0}
@@ -201,25 +246,23 @@ label{display:block;font-size:13px;margin:4px 0;color:#555}
 .toast.ok{border-color:#28a745;background:#d4edda;color:#155724}
 .toast.err{border-color:#dc3545;background:#f8d7da;color:#721c24}
 .toast.info{border-color:#176b87;background:#e3f2fd;color:#0d47a1}
+
+/* === Dark Mode Overrides === */
 body.dark{background:#0f172a;color:#e2e8f0}
-body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select,body.dark .filtersBar,body.dark .vehicleOpt,body.dark .about-content,body.dark .stat-item{background:#1e293b;color:#e2e8f0;border-color:#334155}
+body.dark .card,body.dark .feature,body.dark .modal-box,body.dark input,body.dark select,body.dark .filtersBar,body.dark .vehicleOpt,body.dark .stat-item{background:#1e293b;color:#e2e8f0;border-color:#334155}
 body.dark .info,body.dark .stBox{background:#1e293b;color:#cbd5e1}
-body.dark .card-content p,body.dark label,body.dark .about-content p,body.dark .stat-label{color:#94a3b8}
-body.dark .section h2{color:#e2e8f0}
-body.dark .price,body.dark .total,body.dark .stat-number{color:#5eb8d6}
+body.dark .card-content p,body.dark label,body.dark .about-text p,body.dark .stat-label{color:#94a3b8}
+body.dark .section h2, body.dark .about-text h2{color:#e2e8f0}
+body.dark .price,body.dark .total,body.dark .stat-number, body.dark .about-text strong{color:#5eb8d6}
 body.dark .mealBox.included{background:linear-gradient(135deg,#14532d,#166534);color:#bbf7d0}
 body.dark .mealBox.available{background:linear-gradient(135deg,#3a2f0f,#4a3a15);color:#ffe4a1}
 body.dark .depInfo{background:linear-gradient(135deg,#1e3a5f,#2a4a6f);color:#bbdefb}
 body.dark .vehicleOpt.selected{background:linear-gradient(135deg,#1e3a5f,#2a4a6f);color:#bbdefb;border-color:#5eb8d6}
+
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes slideOut{to{transform:translateX(120%);opacity:0}}
-
-/* === Footer Contact === */
-.footer-contact{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:15px 0;font-size:14px}
-.footer-contact a{color:#d9b45b;text-decoration:none;transition:color .2s}
-.footer-contact a:hover{color:#fff}
 
 /* === Skeleton Loading === */
 .skeleton-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;grid-column:1/-1;width:100%}
@@ -260,7 +303,6 @@ body.dark .wa-item small{color:#94a3b8}
 
 @media(max-width:800px){
   .skeleton-grid{grid-template-columns:1fr}
-  .footer-contact{flex-direction:column;gap:8px}
 }
 
 /* === LTR (English) Overrides === */
@@ -277,9 +319,20 @@ body.dark .wa-item small{color:#94a3b8}
 [dir="ltr"] .wa-item small { text-align: left; }
 [dir="ltr"] .search-box { text-align: left; }
 [dir="ltr"] .hero h1 { font-family: 'Arial', sans-serif; }
+[dir="ltr"] .about-text h2 { text-align: left; }
+[dir="ltr"] .about-text h2::after { right: auto; left: 0; }
+[dir="ltr"] .footer-col h4::after { right: auto; left: 0; }
+[dir="ltr"] .footer-links a:hover { padding-right: 0; padding-left: 5px; }
+[dir="ltr"] .footer-col { text-align: left; }
+[dir="ltr"] .footer-contact p { justify-content: flex-start; }
+[dir="ltr"] .social-icons { justify-content: flex-start; }
 
 @media(max-width:800px){
   [dir="ltr"] .wa-menu-box { margin: 0 auto 95px 20px; }
+  [dir="ltr"] .footer-col { text-align: center; }
+  [dir="ltr"] .footer-col h4::after { left: 50%; transform: translateX(-50%); }
+  [dir="ltr"] .footer-contact p { justify-content: center; }
+  [dir="ltr"] .social-icons { justify-content: center; }
 }
 </style>
 </head>
@@ -356,52 +409,101 @@ body.dark .wa-item small{color:#94a3b8}
 </div>
 </section>
 
-<!-- قسم من نحن -->
+<!-- قسم من نحن (الشكل الجديد) -->
 <section class="section" id="about" style="background:#e3f2fd">
-<h2 class="tr" data-ar="من نحن" data-en="About Us">من نحن</h2>
-<div class="about-content">
-  <p class="tr" data-ar="شركة <b>Nerea Travel</b> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية." data-en="<b>Nerea Travel</b> is a leading company in organizing internal and external tourist trips. We aim to provide an exceptional travel experience combining comfort, fun, and competitive prices.">
-    شركة <b>Nerea Travel</b> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية.
-  </p>
-  <p class="tr" data-ar="نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة." data-en="We work with the best hotels and tour operators to ensure an unforgettable vacation, whether you are looking for a desert adventure, beach relaxation, or a fun family trip.">
-    نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة.
-  </p>
-</div>
+  <div class="about-container">
+    <div class="about-text">
+      <h2 class="tr" data-ar="من نحن" data-en="About Us">من نحن</h2>
+      <p class="tr" data-ar="شركة <strong>Nerea Travel</strong> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية." data-en="<strong>Nerea Travel</strong> is a leading company in organizing internal and external tourist trips. We aim to provide an exceptional travel experience combining comfort, fun, and competitive prices.">
+        شركة <strong>Nerea Travel</strong> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية.
+      </p>
+      <p class="tr" data-ar="نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة." data-en="We work with the best hotels and tour operators to ensure an unforgettable vacation, whether you are looking for a desert adventure, beach relaxation, or a fun family trip.">
+        نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة.
+      </p>
+      <p class="tr" data-ar="<strong>رؤيتنا:</strong> أن نكون الخيار الأول لكل باحث عن السفر المثالي في مصر والوطن العربي." data-en="<strong>Our Vision:</strong> To be the first choice for everyone seeking the perfect travel experience in Egypt and the Arab world.">
+        <strong>رؤيتنا:</strong> أن نكون الخيار الأول لكل باحث عن السفر المثالي في مصر والوطن العربي.
+      </p>
+    </div>
+    <div class="about-image-placeholder">
+       <span class="tr" data-ar="🖼️ مكان الصورة هنا (مثال: صورة للفريق أو رحلة)" data-en="🖼️ Image Placeholder (e.g., Team or Trip)"></span>
+    </div>
+  </div>
 
-<div class="about-stats">
-  <div class="stat-item">
-    <div class="stat-number">+10</div>
-    <div class="stat-label tr" data-ar="سنوات خبرة" data-en="Years of Experience">سنوات خبرة</div>
+  <div class="about-stats">
+    <div class="stat-item">
+      <div class="stat-icon">🏆</div>
+      <div class="stat-number">+10</div>
+      <div class="stat-label tr" data-ar="سنوات خبرة" data-en="Years of Experience">سنوات خبرة</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">👥</div>
+      <div class="stat-number">+5000</div>
+      <div class="stat-label tr" data-ar="عميل سعيد" data-en="Happy Clients">عميل سعيد</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🌍</div>
+      <div class="stat-number">+50</div>
+      <div class="stat-label tr" data-ar="وجهة سياحية" data-en="Destinations">وجهة سياحية</div>
+    </div>
   </div>
-  <div class="stat-item">
-    <div class="stat-number">+5000</div>
-    <div class="stat-label tr" data-ar="عميل سعيد" data-en="Happy Clients">عميل سعيد</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-number">+50</div>
-    <div class="stat-label tr" data-ar="وجهة سياحية" data-en="Destinations">وجهة سياحية</div>
-  </div>
-</div>
 </section>
 
+<!-- الفوتر (الشكل الجديد) -->
 <footer id="contact">
-  <h3>Nerea Travel</h3>
-  <p class="tr" data-ar="رحلتك تبدأ من هنا ✈️" data-en="Your journey starts here ✈️">رحلتك تبدأ من هنا ✈️</p>
+  <div class="footer-grid">
+    <!-- العمود الأول: اللوجو والوصف -->
+    <div class="footer-col">
+      <span class="footer-logo">Nerea <span>Travel</span></span>
+      <p class="footer-desc tr" data-ar="رحلتك تبدأ من هنا ✈️. نقدم لك أفضل العروض والوجهات السياحية لتصنع ذكريات لا تُنسى." data-en="Your journey starts here ✈️. We offer you the best travel deals and destinations to create unforgettable memories.">
+        رحلتك تبدأ من هنا ✈️. نقدم لك أفضل العروض والوجهات السياحية لتصنع ذكريات لا تُنسى.
+      </p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/share/1DoG6Xcybd/" target="_blank" rel="noopener" title="Facebook">📘</a>
+        <a href="https://www.instagram.com/nerea_travel1" target="_blank" rel="noopener" title="Instagram">📸</a>
+        <a href="https://www.tiktok.com/@nerea_travel" target="_blank" rel="noopener" title="TikTok">🎵</a>
+        <a href="https://wa.me/201012853009" target="_blank" rel="noopener" title="WhatsApp">💬</a>
+      </div>
+    </div>
 
-  <div class="footer-contact">
-    <p>📞 <a href="tel:01012853009">01012853009</a></p>
-    <p class="tr" data-ar="📍 القاهرة، مصر" data-en="📍 Cairo, Egypt">📍 القاهرة، مصر</p>
+    <!-- العمود التاني: روابط سريعة -->
+    <div class="footer-col">
+      <h4 class="tr" data-ar="روابط سريعة" data-en="Quick Links">روابط سريعة</h4>
+      <ul class="footer-links">
+        <li><a href="#" class="tr" data-ar="الرئيسية" data-en="Home">الرئيسية</a></li>
+        <li><a href="#trips" class="tr" data-ar="الوجهات" data-en="Destinations">الوجهات</a></li>
+        <li><a href="#about" class="tr" data-ar="من نحن" data-en="About Us">من نحن</a></li>
+        <li><a href="#contact" class="tr" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a></li>
+      </ul>
+    </div>
+
+    <!-- العمود التالت: تواصل معنا -->
+    <div class="footer-col">
+      <h4 class="tr" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</h4>
+      <div class="footer-contact">
+        <p>📞 <a href="tel:01012853009" style="color:inherit;text-decoration:none;">01012853009</a></p>
+        <p class="tr" data-ar="📍 القاهرة، مصر" data-en="📍 Cairo, Egypt">📍 القاهرة، مصر</p>
+      </div>
+    </div>
+
+    <!-- العمود الرابع: الدفع -->
+    <div class="footer-col">
+      <h4 class="tr" data-ar="وسائل الدفع الآمنة" data-en="Secure Payments">وسائل الدفع الآمنة</h4>
+      <div class="payment-methods">
+        <div class="pay-icon">💳 <span class="tr" data-ar="فيزا" data-en="Visa">فيزا</span></div>
+        <div class="pay-icon">💳 <span class="tr" data-ar="ماستركارد" data-en="Mastercard">ماستركارد</span></div>
+        <div class="pay-icon">📱 <span class="tr" data-ar="إنستاباي" data-en="InstaPay">إنستاباي</span></div>
+        <div class="pay-icon">📱 <span class="tr" data-ar="فودافون كاش" data-en="Vodafone Cash">فودافون كاش</span></div>
+      </div>
+    </div>
   </div>
 
-    <div class="social-links">
-    <a href="https://www.facebook.com/share/1DoG6Xcybd/" target="_blank" rel="noopener" class="tr" data-ar="فيسبوك" data-en="Facebook">فيسبوك</a>
-    <a href="https://www.instagram.com/nerea_travel1" target="_blank" rel="noopener" class="tr" data-ar="إنستجرام" data-en="Instagram">إنستجرام</a>
-    <a href="https://www.tiktok.com/@nerea_travel" target="_blank" rel="noopener" class="tr" data-ar="تيك توك" data-en="TikTok">تيك توك</a>
-  </div>
-  <p class="tr" data-ar="© 2026 Nerea Travel. جميع الحقوق محفوظة." data-en="© 2026 Nerea Travel. All rights reserved.">© 2026 Nerea Travel. جميع الحقوق محفوظة.</p>
-  <div class="legal-links">
-    <a onclick="showLegal('terms')" class="tr" data-ar="الشروط والأحكام" data-en="Terms & Conditions">الشروط والأحكام</a> |
-    <a onclick="showLegal('privacy')" class="tr" data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</a>
+  <!-- حقوق النشر والروابط القانونية -->
+  <div class="footer-bottom">
+    <p class="tr" data-ar="© 2026 Nerea Travel. جميع الحقوق محفوظة." data-en="© 2026 Nerea Travel. All rights reserved.">© 2026 Nerea Travel. جميع الحقوق محفوظة.</p>
+    <div>
+      <a onclick="showLegal('terms')" class="tr" data-ar="الشروط والأحكام" data-en="Terms & Conditions">الشروط والأحكام</a> | 
+      <a onclick="showLegal('privacy')" class="tr" data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</a>
+    </div>
   </div>
 </footer>
 
@@ -604,7 +706,7 @@ const dict = {
     whyBook: "ليه تحجز مع Nerea Travel؟", feat1: "فنادق متنوعة", feat1d: "اختيارات إقامة تناسب ميزانيتك.",
     feat2: "انتقالات", feat2d: "تنظيم الانتقالات من وإلى الوجهة.",
     feat3: "دعم العملاء", feat3d: "نساعدك قبل وأثناء الرحلة.",
-    aboutTitle: "من نحن", aboutP1: "شركة <b>Nerea Travel</b> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية.",
+    aboutTitle: "من نحن", aboutP1: "شركة <strong>Nerea Travel</strong> هي شركة رائدة في تنظيم الرحلات السياحية الداخلية والخارجية. نحن نهدف إلى تقديم تجربة سفر استثنائية تجمع بين الراحة، المتعة، والأسعار التنافسية.",
     aboutP2: "نعمل مع أفضل الفنادق ومنظمي الرحلات لنضمن لك إجازة لا تُنسى، سواء كنت تبحث عن مغامرة في الصحراء، أو استرخاء على الشاطئ، أو رحلة عائلية ممتعة.",
     stats1: "سنوات خبرة", stats2: "عميل سعيد", stats3: "وجهة سياحية",
     footerTagline: "رحلتك تبدأ من هنا ✈️", footerLoc: "📍 القاهرة، مصر", footerRights: "© 2026 Nerea Travel. جميع الحقوق محفوظة.",
@@ -635,7 +737,7 @@ const dict = {
     whyBook: "Why book with Nerea Travel?", feat1: "Diverse Hotels", feat1d: "Accommodation options for every budget.",
     feat2: "Transfers", feat2d: "Organized transfers to and from your destination.",
     feat3: "Customer Support", feat3d: "We help you before and during your trip.",
-    aboutTitle: "About Us", aboutP1: "<b>Nerea Travel</b> is a leading company in organizing internal and external tourist trips. We aim to provide an exceptional travel experience combining comfort, fun, and competitive prices.",
+    aboutTitle: "About Us", aboutP1: "<strong>Nerea Travel</strong> is a leading company in organizing internal and external tourist trips. We aim to provide an exceptional travel experience combining comfort, fun, and competitive prices.",
     aboutP2: "We work with the best hotels and tour operators to ensure an unforgettable vacation, whether you are looking for a desert adventure, beach relaxation, or a fun family trip.",
     stats1: "Years of Experience", stats2: "Happy Clients", stats3: "Destinations",
     footerTagline: "Your journey starts here ✈️", footerLoc: "📍 Cairo, Egypt", footerRights: "© 2026 Nerea Travel. All rights reserved.",
